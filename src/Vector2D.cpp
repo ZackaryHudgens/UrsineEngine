@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+using gMath::Vector2D;
+
 const double ALLOWABLE_ERROR = 1e-5;
 
 Vector2D::Vector2D()

@@ -7,24 +7,27 @@
 
 #include "Vector2D.hpp"
 
-class Texture
+namespace gCore
 {
-  public:
-    Texture();
-    ~Texture();
+  class Texture
+  {
+    public:
+      Texture();
+      ~Texture();
 
-    bool LoadFromFile(const std::string& aFilePath);
-    bool LoadFromPixels(GLuint* aPixelData, int aWidth, int aHeight);
+      bool LoadFromFile(const std::string& aFilePath);
+      bool LoadFromPixels(GLuint* aPixelData, int aWidth, int aHeight);
 
-    void Render(const Vector2D& aLocation, double aScalar = 1);
-    void RenderPortion(const Vector2D& aLocation, const SDL_Rect& aPortion, double aScalar = 1);
+      void Render(const Vector2D& aLocation, double aScalar = 1);
+      void RenderPortion(const Vector2D& aLocation, const SDL_Rect& aPortion, double aScalar = 1);
 
-  private:
-    void FreeTexture();
+    private:
+      void FreeTexture();
 
-    GLuint mTextureID;
-    GLuint mTextureWidth;
-    GLuint mTextureHeight;
-};
+      GLuint mTextureID;
+      GLuint mTextureWidth;
+      GLuint mTextureHeight;
+  };
+}
 
 #endif

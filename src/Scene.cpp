@@ -2,6 +2,8 @@
 
 #include "Scene.hpp"
 
+using gCore::Scene;
+
 Scene::Scene()
   : mCamera(new Camera())
 {

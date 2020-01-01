@@ -3,6 +3,8 @@
 #include <iostream>
 #include "Environment.hpp"
 
+using gCore::Animation;
+
 Animation::Animation()
   : mCurrentFrame(1)
   , mSpeed(0)
@@ -12,7 +14,7 @@ Animation::Animation()
 
 void Animation::Update()
 {
-  double elapsedTime = env->GetTime() - mFrameTimer;
+  double elapsedTime = env.GetTime() - mFrameTimer;
   if(elapsedTime > mSpeed)
   {
     ++mCurrentFrame;
@@ -20,7 +22,7 @@ void Animation::Update()
     {
       mCurrentFrame = 1;
     }
-    mFrameTimer = env->GetTime();
+    mFrameTimer = env.GetTime();
   }
 }
 

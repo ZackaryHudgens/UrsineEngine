@@ -5,6 +5,8 @@
 #include <IL/ilu.h>
 #include <iostream>
 
+using gCore::Texture;
+
 Texture::Texture()
   : mTextureID(0)
   , mTextureWidth(0)

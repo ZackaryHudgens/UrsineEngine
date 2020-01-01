@@ -2,6 +2,8 @@
 
 #include "Environment.hpp"
 
+using gCore::Camera;
+
 Camera::Camera()
   : mCurrentZoom(1.0)
   , mTargetZoom(1.0)
@@ -9,7 +11,7 @@ Camera::Camera()
   , mZoomSpeed(1.0)
 {
   int w, h;
-  SDL_GetWindowSize(env->GetWindow(), &w, &h);
+  SDL_GetWindowSize(env.GetWindow(), &w, &h);
   mCurrentRect = SDL_Rect{0, 0, w, h};
   mTargetRect = mCurrentRect;
 }

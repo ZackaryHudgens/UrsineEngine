@@ -4,28 +4,32 @@
 #include <vector>
 #include <memory>
 
+#include "Component.hpp"
 #include "Texture.hpp"
 
-class Animation
+namespace gCore
 {
-  public:
-    Animation();
+  class Animation : public Component
+  {
+    public:
+      Animation();
 
-    void Update();
-    void Render(const Vector2D& aPosition, double aScalar = 1.0) const;
+      void Update() override;
+      void Render(const Vector2D& aPosition, double aScalar = 1.0) const;
 
-    void SetTexture(std::unique_ptr<Texture> aTexture);
-    void AddFrame(const SDL_Rect& aFrame);
+      void SetTexture(std::unique_ptr<Texture> aTexture);
+      void AddFrame(const SDL_Rect& aFrame);
 
-    void SetSpeed(double aSpeed) { mSpeed = aSpeed; }
+      void SetSpeed(double aSpeed) { mSpeed = aSpeed; }
 
-  private:
-    std::unique_ptr<Texture> mTexture;
-    std::vector<SDL_Rect> mFrames;
+    private:
+      std::unique_ptr<Texture> mTexture;
+      std::vector<SDL_Rect> mFrames;
 
-    int mCurrentFrame;
-    double mSpeed;
-    double mFrameTimer;
-};
+      int mCurrentFrame;
+      double mSpeed;
+      double mFrameTimer;
+  };
+}
 
 #endif

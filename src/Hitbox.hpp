@@ -1,9 +1,12 @@
 #ifndef HITBOX_HPP
 #define HITBOX_HPP
 
-class Hitbox
+namespace gCore
 {
+  class Hitbox
+  {
 
-};
+  };
+}
 
 #endif

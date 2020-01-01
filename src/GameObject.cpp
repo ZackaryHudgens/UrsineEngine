@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <iostream>
 
+using gCore::GameObject;
+
 GameObject::GameObject()
   : mLocation(Vector2D(0, 0))
   , mVelocity(Vector2D(0, 0))

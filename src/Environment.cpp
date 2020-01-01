@@ -3,11 +3,21 @@
 #include <IL/ilu.h>
 #include <iostream>
 
+using gCore::Environment;
+
+// Initialize the environment instance to nullptr.
 std::unique_ptr<Environment> Environment::mInstancePtr = nullptr;
-std::unique_ptr<Scene> Environment::mScenePtr = nullptr;
-SDL_Window*  Environment::mWindowPtr = nullptr;
-bool Environment::mQuit = false;
-double Environment::mCurrentTime = 0;
+
+/**
+ * Environment constructor.
+ */
+Environment::Environment()
+  : mScenePtr(nullptr)
+  , mWindowPtr(nullptr)
+  , mIsQuitting(false)
+  , mCurrentTime(0)
+{
+}
 
 /**
  * Frees the SDL_Window and sets it to nullptr.
@@ -22,14 +32,14 @@ Environment::~Environment()
  * Returns the single environment instance, or creates one
  * if there isn't one already.
  */
-Environment* Environment::GetInstance()
+Environment& Environment::GetInstance()
 {
   if(mInstancePtr == nullptr)
   {
     mInstancePtr.reset(new Environment());
   }
 
-  return mInstancePtr.get();
+  return *(mInstancePtr.get());
 }
 
 /**
@@ -197,6 +207,16 @@ void Environment::SetScene(std::unique_ptr<Scene> aScene)
   mScenePtr = std::move(aScene);
 }
 
+/**
+ * Sets the internal resolution, which is the resolution the game is
+ * expected to run at before scaling to screen size.
+ */
+void Environment::SetInternalResolution(int aWidth, int aHeight)
+{
+  mInternalWidth = aWidth;
+  mInternalHeight = aHeight;
+}
+
 // Polls the SDL event queue and decides what to do with the event.
 void Environment::ProcessSDLEvents()
 {
@@ -208,7 +228,7 @@ void Environment::ProcessSDLEvents()
     {
       case SDL_QUIT:
       {
-        mQuit = true;
+        mIsQuitting = true;
         break;
       }
 
@@ -219,7 +239,7 @@ void Environment::ProcessSDLEvents()
         {
           case SDLK_ESCAPE:
           {
-            mQuit = true;
+            mIsQuitting = true;
             break;
           }
           default:

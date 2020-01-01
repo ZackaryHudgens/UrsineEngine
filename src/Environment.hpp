@@ -1,13 +1,6 @@
 #ifndef ENVIRONMENT_HPP
 #define ENVIRONMENT_HPP
 
-/**
- * Define "env" as a shorthand to get the Envrionment instance.
- */
-#ifndef env
-#define env Environment::GetInstance()
-#endif
-
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <GL/glu.h>
@@ -17,47 +10,58 @@
 
 #include "Scene.hpp"
 
-/**
- * A singleton class that creates an SDL_Window for the game,
- * manages updates and rendering calls for the current scene,
- * and provides a few SDL-related utility functions.
- */
-class Environment
+namespace gCore
 {
-  public:
-    ~Environment();
+  /**
+   * Define "env" as a shorthand to get the Envrionment instance.
+   */
+  #ifndef env
+  #define env Environment::GetInstance()
+  #endif
 
-    static Environment* GetInstance();
-    static void DeleteInstance();
+  /**
+   * A singleton class that creates an SDL_Window for the game,
+   * manages updates and rendering calls for the current scene,
+   * and provides a few SDL-related utility functions.
+   */
+  class Environment
+  {
+    public:
+      static Environment& GetInstance();
+      void DeleteInstance();
 
-    static bool Initialize(const char* aTitle, int aWidth, int aHeight);
+      bool Initialize(const char* aTitle, int aWidth, int aHeight);
 
-    static void Update();
-    static void RenderScene();
+      void Update();
+      void RenderScene();
 
-    static SDL_Window* GetWindow()     { return mWindowPtr; }
-    static bool IsQuitting()           { return mQuit; }
+      SDL_Window* GetWindow()     { return mWindowPtr; }
+      bool IsQuitting()           { return mIsQuitting; }
 
-    static void SetScene(std::unique_ptr<Scene> aScene);
+      void SetScene(std::unique_ptr<Scene> aScene);
+      void SetInternalResolution(int aWidth, int aHeight);
 
-    static bool IsKeyPressed(const SDL_Scancode& aScancode);
+      bool IsKeyPressed(const SDL_Scancode& aScancode);
 
-    static double GetTime() { return mCurrentTime; }
+      double GetTime() { return mCurrentTime; }
 
-  private:
-    Environment() = default;
+    private:
+      Environment();
+      ~Environment();
 
-    static void ProcessSDLEvents();
+      void ProcessSDLEvents();
 
-    static std::unique_ptr<Environment> mInstancePtr;
-    static std::unique_ptr<Scene> mScenePtr;
+      static std::unique_ptr<Environment> mInstancePtr;
+      std::unique_ptr<Scene> mScenePtr;
 
-    // TODO: internal resolution?
+      int mInternalWidth;
+      int mInternalHeight;
 
-    static SDL_Window* mWindowPtr;
-    static SDL_GLContext mContext;
-    static bool mQuit;
-    static double mCurrentTime;
-};
+      SDL_Window* mWindowPtr;
+      SDL_GLContext mContext;
+      bool mIsQuitting;
+      double mCurrentTime;
+  };
+}
 
 #endif
