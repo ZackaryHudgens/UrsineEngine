@@ -9,10 +9,10 @@
 
 namespace gCore
 {
-  class Animation : public Component
+  class AnimationManager : public Component
   {
     public:
-      Animation();
+      AnimationManager();
 
       void Update() override;
       void Render(const Vector2D& aPosition, double aScalar = 1.0) const;

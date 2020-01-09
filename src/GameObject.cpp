@@ -1,52 +1,49 @@
 #include "GameObject.hpp"
-#include "Environment.hpp"
 
-#include <algorithm>
-#include <iostream>
+#include "Component.hpp"
 
+using gCore::Component;
 using gCore::GameObject;
 
+/**
+ * Constructor for the base GameObject class.
+ */
 GameObject::GameObject()
-  : mLocation(Vector2D(0, 0))
-  , mVelocity(Vector2D(0, 0))
 {
 }
 
+/**
+ * Calls the Update() method for each component.
+ */
 void GameObject::Update()
 {
-  mLocation += mVelocity;
-
-  if(!mCurrentAnimation.empty())
+  for(auto& c : mComponents)
   {
-    mAnimations.find(mCurrentAnimation)->second->Update();
+    c->Update();
   }
 }
 
-void GameObject::Render(const Camera& aCamera) const
+/**
+ * Sends an SDL_Event to each component for processing.
+ *
+ * @param aEvent The event to be processed.
+ */
+void GameObject::ProcessEvent(const SDL_Event& aEvent)
 {
-  if(!mCurrentAnimation.empty())
+  for(auto& c : mComponents)
   {
-    mAnimations.find(mCurrentAnimation)->second->Render(mLocation, aCamera.GetZoom());
+    c->ProcessEvent(aEvent);
   }
 }
 
-void GameObject::AddAnimation(const std::string& aName,
-                              std::unique_ptr<Animation> aAnimation)
+/**
+ * Adds a Component to this GameObject, which takes ownership
+ * of it.
+ *
+ * @param aComponent The Component to add.
+ */
+void GameObject::AddComponent(std::unique_ptr<Component> aComponent)
 {
-  if(mAnimations.find(aName) == mAnimations.end())
-  {
-    mAnimations.emplace(aName, std::move(aAnimation));
-  }
-}
-
-void GameObject::SetAnimation(const std::string& aName)
-{
-  if(mAnimations.find(aName) != mAnimations.end())
-  {
-    mCurrentAnimation = aName;
-  }
-  else
-  {
-    mCurrentAnimation = "";
-  }
+  aComponent->SetParent(this);
+  mComponents.emplace_back(std::move(aComponent));
 }

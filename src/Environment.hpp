@@ -10,15 +10,15 @@
 
 #include "Scene.hpp"
 
+/**
+ * Define "env" as a shorthand to get the Envrionment instance.
+ */
+#ifndef env
+#define env gCore::Environment::GetInstance()
+#endif
+
 namespace gCore
 {
-  /**
-   * Define "env" as a shorthand to get the Envrionment instance.
-   */
-  #ifndef env
-  #define env Environment::GetInstance()
-  #endif
-
   /**
    * A singleton class that creates an SDL_Window for the game,
    * manages updates and rendering calls for the current scene,
@@ -31,25 +31,28 @@ namespace gCore
       void DeleteInstance();
 
       bool Initialize(const char* aTitle, int aWidth, int aHeight);
+      int Run();
 
-      void Update();
-      void RenderScene();
-
-      SDL_Window* GetWindow()     { return mWindowPtr; }
-      bool IsQuitting()           { return mIsQuitting; }
+      SDL_Window* GetWindow() { return mWindowPtr; }
+      bool IsQuitting()       { return mIsQuitting; }
 
       void SetScene(std::unique_ptr<Scene> aScene);
       void SetInternalResolution(int aWidth, int aHeight);
 
       bool IsKeyPressed(const SDL_Scancode& aScancode);
 
-      double GetTime() { return mCurrentTime; }
+      double GetTime();
+
+      void SetTimePerUpdate(double aTime)  { mTimePerUpdate = aTime; }
+      void SetMaxUpdatesPerFrame(int aMax) { mMaxUpdatesPerFrame = aMax; }
 
     private:
       Environment();
       ~Environment();
 
       void ProcessSDLEvents();
+      void Update();
+      void RenderScene();
 
       static std::unique_ptr<Environment> mInstancePtr;
       std::unique_ptr<Scene> mScenePtr;
@@ -60,7 +63,9 @@ namespace gCore
       SDL_Window* mWindowPtr;
       SDL_GLContext mContext;
       bool mIsQuitting;
-      double mCurrentTime;
+
+      double mTimePerUpdate;
+      int mMaxUpdatesPerFrame;
   };
 }
 

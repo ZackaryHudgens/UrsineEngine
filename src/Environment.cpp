@@ -15,7 +15,8 @@ Environment::Environment()
   : mScenePtr(nullptr)
   , mWindowPtr(nullptr)
   , mIsQuitting(false)
-  , mCurrentTime(0)
+  , mTimePerUpdate(15)
+  , mMaxUpdatesPerFrame(1000)
 {
 }
 
@@ -147,77 +148,52 @@ bool Environment::Initialize(const char* aTitle, int aWidth, int aHeight)
   return true;
 }
 
-void Environment::Update()
+/**
+ * Begins the game loop and continues until the user quits.
+ * Updates happen on a fixed timestep (15 ms by default),
+ * while rendering is tied to the display's refresh rate
+ * (see SDL_GL_SetSwapInterval in Initialize()).
+ */
+int Environment::Run()
 {
-  // Before updating the current scene, poll the SDL event queue.
-  ProcessSDLEvents();
+  double previousTime = GetTime();
+  double updateLag = 0.0;
 
-  if(mScenePtr == nullptr)
+  while(!mIsQuitting)
   {
-    mScenePtr.reset(new Scene());
+    ProcessSDLEvents();
 
-    std::unique_ptr<GameObject> bkg = std::make_unique<GameObject>();
-    std::unique_ptr<Animation> bkgA = std::make_unique<Animation>();
-    std::unique_ptr<Texture> bkgT = std::make_unique<Texture>();
+    // Add the amount of real time that has passed to the updateLag,
+    // then avoid rendering until the game has caught up to real time.
+    double elapsedTime = GetTime() - previousTime;
+    previousTime = GetTime();
+    updateLag += elapsedTime;
 
-    bkgT->LoadFromFile("resources/bg.jpg");
-    bkgA->SetTexture(std::move(bkgT));
-    bkgA->AddFrame(SDL_Rect{0, 0, 1920, 1080});
-    bkg->AddAnimation("default", std::move(bkgA));
-    bkg->SetAnimation("default");
+    int updateCounter = 0;
+    while(updateLag >= mTimePerUpdate)
+    {
+      Update();
+      updateLag -= mTimePerUpdate;
 
-    mScenePtr->AddObject("bkg", std::move(bkg));
+      // If we've hit a maximum number of updates (maybe because we're
+      // running too slowly), break out of the loop instead of locking up.
+      ++updateCounter;
+      if(updateCounter >= mMaxUpdatesPerFrame)
+      {
+        std::cout << "Maximum number of updates reached!" << std::endl;
+        break;
+      }
+    }
 
-    std::unique_ptr<GameObject> obj = std::make_unique<GameObject>();
-    std::unique_ptr<Animation> ani = std::make_unique<Animation>();
-    std::unique_ptr<Texture> tex = std::make_unique<Texture>();
-
-    tex->LoadFromFile("resources/test.jpg");
-    ani->SetTexture(std::move(tex));
-    ani->AddFrame(SDL_Rect{0, 0, 100, 100});
-    ani->AddFrame(SDL_Rect{100, 100, 100, 100});
-    ani->SetSpeed(0.1);
-    obj->AddAnimation("default", std::move(ani));
-    obj->SetAnimation("default");
-
-    mScenePtr->AddObject("obj", std::move(obj));
-  }
-  else
-  {
-    mScenePtr->UpdateObjects();
-  }
-
-  // Update the current time in seconds.
-  mCurrentTime = (double(SDL_GetTicks()) / double(1000));
-}
-
-void Environment::RenderScene()
-{
-  if(mScenePtr != nullptr)
-  {
-    glClear(GL_COLOR_BUFFER_BIT);
-    mScenePtr->RenderObjects();
+    RenderScene();
   }
 
-  SDL_GL_SwapWindow(mWindowPtr);
-}
-
-void Environment::SetScene(std::unique_ptr<Scene> aScene)
-{
-  mScenePtr = std::move(aScene);
+  return 0;
 }
 
 /**
- * Sets the internal resolution, which is the resolution the game is
- * expected to run at before scaling to screen size.
+ * Polls the SDL event queue and decides what to do with the event.
  */
-void Environment::SetInternalResolution(int aWidth, int aHeight)
-{
-  mInternalWidth = aWidth;
-  mInternalHeight = aHeight;
-}
-
-// Polls the SDL event queue and decides what to do with the event.
 void Environment::ProcessSDLEvents()
 {
   SDL_Event e;
@@ -229,24 +205,6 @@ void Environment::ProcessSDLEvents()
       case SDL_QUIT:
       {
         mIsQuitting = true;
-        break;
-      }
-
-      // TODO: Temporary
-      case SDL_KEYDOWN:
-      {
-        switch(e.key.keysym.sym)
-        {
-          case SDLK_ESCAPE:
-          {
-            mIsQuitting = true;
-            break;
-          }
-          default:
-          {
-            break;
-          }
-        }
         break;
       }
       default:
@@ -261,9 +219,73 @@ void Environment::ProcessSDLEvents()
   }
 }
 
-// Returns true if the key corresponding to the given scancode is pressed.
+/**
+ * Updates the current Scene and all of the GameObjects therein.
+ */
+void Environment::Update()
+{
+  if(mScenePtr == nullptr)
+  {
+  }
+  else
+  {
+    mScenePtr->UpdateObjects();
+  }
+}
+
+/**
+ * Renders all of the GameObjects within the current Scene.
+ */
+void Environment::RenderScene()
+{
+  if(mScenePtr != nullptr)
+  {
+    glClear(GL_COLOR_BUFFER_BIT);
+    mScenePtr->RenderObjects();
+  }
+
+  SDL_GL_SwapWindow(mWindowPtr);
+}
+
+/**
+ * Sets the current Scene.
+ *
+ * @param aScene A unique_ptr to a Scene object, which the
+ *               Environment takes ownership of.
+ */
+void Environment::SetScene(std::unique_ptr<Scene> aScene)
+{
+  mScenePtr = std::move(aScene);
+}
+
+/**
+ * Sets the internal resolution, which is the resolution the game is
+ * expected to run at before scaling to screen size.
+ *
+ * @param aWidth The internal width of the game window.
+ * @param aHeight The internal height of the game window.
+ */
+void Environment::SetInternalResolution(int aWidth, int aHeight)
+{
+  mInternalWidth = aWidth;
+  mInternalHeight = aHeight;
+}
+
+/** 
+ * Returns true if the key corresponding to the given scancode is pressed.
+ *
+ * @param aScancode An SDL Scancode representing a key.
+ */
 bool Environment::IsKeyPressed(const SDL_Scancode& aScancode)
 {
     const Uint8* keyboardState = SDL_GetKeyboardState(nullptr);
     return keyboardState[aScancode];
+}
+
+/**
+ * Returns the amount of time passed since SDL initialized (in seconds).
+ */
+double Environment::GetTime()
+{
+  return (double)(SDL_GetTicks()) / 1000.0;
 }
