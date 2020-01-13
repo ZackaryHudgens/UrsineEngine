@@ -43,7 +43,7 @@ namespace gCore
 
       double GetTime();
 
-      void SetTimePerUpdate(double aTime)  { mTimePerUpdate = aTime; }
+      void SetUpdateInterval(double aTime) { mUpdateInterval = aTime; }
       void SetMaxUpdatesPerFrame(int aMax) { mMaxUpdatesPerFrame = aMax; }
 
     private:
@@ -64,7 +64,7 @@ namespace gCore
       SDL_GLContext mContext;
       bool mIsQuitting;
 
-      double mTimePerUpdate;
+      double mUpdateInterval;
       int mMaxUpdatesPerFrame;
   };
 }

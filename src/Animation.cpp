@@ -48,3 +48,9 @@ void Animation::AddFrame(const SDL_Rect& aFrame)
 {
   mFrames.emplace_back(aFrame);
 }
+
+void Animation::Reset()
+{
+  mCurrentFrame = 1;
+  mFrameTimer = 0;
+}

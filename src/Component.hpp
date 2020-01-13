@@ -24,7 +24,7 @@ namespace gCore
       virtual void ProcessEvent(const SDL_Event& aEvent) = 0;
 
       void SetParent(GameObject* aParent) { mParent = aParent; }
-      GameObject* GetParent()             { return mParent; }
+      GameObject* GetParent() const       { return mParent; }
 
     private:
       GameObject* mParent;

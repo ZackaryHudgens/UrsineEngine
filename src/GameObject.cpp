@@ -1,25 +1,44 @@
 #include "GameObject.hpp"
 
 #include "Component.hpp"
+#include "GraphicalComponent.hpp"
 
 using gCore::Component;
 using gCore::GameObject;
+using gCore::GraphicalComponent;
 
 /**
  * Constructor for the base GameObject class.
  */
 GameObject::GameObject()
+  : mLocation(0.0, 0.0)
 {
 }
 
 /**
- * Calls the Update() method for each component.
+ * Calls the Update() method for each Component.
  */
 void GameObject::Update()
 {
   for(auto& c : mComponents)
   {
     c->Update();
+  }
+
+  for(auto& gc : mGraphicalComponents)
+  {
+    gc->Update();
+  }
+}
+
+/**
+ * Calls the Render() method for each GraphicalComponent.
+ */
+void GameObject::Render()
+{
+  for(auto& gc : mGraphicalComponents)
+  {
+    gc->Render();
   }
 }
 
@@ -34,16 +53,31 @@ void GameObject::ProcessEvent(const SDL_Event& aEvent)
   {
     c->ProcessEvent(aEvent);
   }
+
+  for(auto& gc : mGraphicalComponents)
+  {
+    gc->ProcessEvent(aEvent);
+  }
 }
 
 /**
  * Adds a Component to this GameObject, which takes ownership
- * of it.
+ * of it. 
  *
  * @param aComponent The Component to add.
  */
 void GameObject::AddComponent(std::unique_ptr<Component> aComponent)
 {
   aComponent->SetParent(this);
-  mComponents.emplace_back(std::move(aComponent));
+
+  // Keep GraphicalComponents and Components separate for the sake
+  // of the Render() function.
+  if(dynamic_cast<GraphicalComponent*>(aComponent.get()) != nullptr)
+  {
+    mGraphicalComponents.emplace_back(std::move(aComponent));
+  }
+  else
+  {
+    mComponents.emplace_back(std::move(aComponent));
+  }
 }

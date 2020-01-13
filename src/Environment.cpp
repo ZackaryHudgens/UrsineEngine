@@ -15,7 +15,7 @@ Environment::Environment()
   : mScenePtr(nullptr)
   , mWindowPtr(nullptr)
   , mIsQuitting(false)
-  , mTimePerUpdate(15)
+  , mUpdateInterval(15)
   , mMaxUpdatesPerFrame(1000)
 {
 }
@@ -170,10 +170,10 @@ int Environment::Run()
     updateLag += elapsedTime;
 
     int updateCounter = 0;
-    while(updateLag >= mTimePerUpdate)
+    while(updateLag >= mUpdateInterval)
     {
       Update();
-      updateLag -= mTimePerUpdate;
+      updateLag -= mUpdateInterval;
 
       // If we've hit a maximum number of updates (maybe because we're
       // running too slowly), break out of the loop instead of locking up.

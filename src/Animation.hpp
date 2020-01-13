@@ -1,26 +1,30 @@
 #ifndef ANIMATION_HPP
 #define ANIMATION_HPP
 
-#include <vector>
 #include <memory>
+#include <vector>
 
-#include "Component.hpp"
 #include "Texture.hpp"
+#include "Vector2D.hpp"
+
+using gMath::Vector2D;
 
 namespace gCore
 {
-  class AnimationManager : public Component
+  class Animation
   {
     public:
-      AnimationManager();
+      Animation();
 
-      void Update() override;
+      void Update();
       void Render(const Vector2D& aPosition, double aScalar = 1.0) const;
 
       void SetTexture(std::unique_ptr<Texture> aTexture);
       void AddFrame(const SDL_Rect& aFrame);
 
       void SetSpeed(double aSpeed) { mSpeed = aSpeed; }
+
+      void Reset();
 
     private:
       std::unique_ptr<Texture> mTexture;
