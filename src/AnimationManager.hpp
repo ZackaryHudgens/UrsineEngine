@@ -23,13 +23,13 @@ namespace gCore
       void Update() override;
       void Render() const override;
 
-      void AddAnimation(const std::string& aName,
+      bool AddAnimation(const std::string& aName,
                         std::unique_ptr<Animation> aAnimation);
       void SetAnimation(const std::string& aName);
 
     private:
       std::map<std::string, std::unique_ptr<Animation>> mAnimationMap;
-      std::string mCurrentAnimation;
+      Animation* mCurrentAnimation;
   };
 }
 
