@@ -5,7 +5,6 @@
 using gCore::Scene;
 
 Scene::Scene()
-  : mCamera(new Camera())
 {
 }
 
@@ -20,29 +19,27 @@ void Scene::AddObject(const std::string& aObjectName,
 }
 
 // Updates each GameObject in the scene.
-void Scene::UpdateObjects()
+void Scene::Update()
 {
   for(auto& object : mObjectMap)
   {
     object.second->Update();
   }
-
-  mCamera->Update();
 }
 
-void Scene::RenderObjects()
+void Scene::Render()
 {
   for(const auto& object : mObjectMap)
   {
-    object.second->Render(*mCamera);
+    object.second->Render();
   }
 }
 
 // Processes an SDLEvent by passing it to each object in the scene.
-void Scene::ProcessSDLEvent(const SDL_Event& aEvent)
+void Scene::ProcessEvent(const SDL_Event& aEvent)
 {
   for(auto& object : mObjectMap)
   {
-    object.second->ProcessSDLEvent(aEvent);
+    object.second->ProcessEvent(aEvent);
   }
 }

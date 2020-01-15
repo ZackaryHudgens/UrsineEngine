@@ -75,7 +75,7 @@ bool Texture::LoadFromPixels(GLuint* aPixelData, int aWidth, int aHeight)
   return true;
 }
 
-void Texture::Render(const Vector2D& aLocation, double aScalar)
+void Texture::Render(const Vector2D& aLocation)
 {
   if(mTextureID != 0)
   {
@@ -99,7 +99,7 @@ void Texture::Render(const Vector2D& aLocation, double aScalar)
   }
 }
 
-void Texture::RenderPortion(const Vector2D& aLocation, const SDL_Rect& aPortion, double aScalar)
+void Texture::RenderPortion(const Vector2D& aLocation, const SDL_Rect& aPortion)
 {
   if(mTextureID != 0)
   {

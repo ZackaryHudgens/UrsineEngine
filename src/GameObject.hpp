@@ -6,15 +6,14 @@
 
 #include <SDL2/SDL.h>
 
+#include "Component.hpp"
+#include "GraphicalComponent.hpp"
 #include "Vector2D.hpp"
 
 using gMath::Vector2D;
 
 namespace gCore
 {
-  class Component;
-  class GraphicalComponent;
-
   /**
    * A GameObject is essentially just a sack of components.
    * The components themselves are what determine the behavior

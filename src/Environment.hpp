@@ -27,6 +27,8 @@ namespace gCore
   class Environment
   {
     public:
+      ~Environment();
+
       static Environment& GetInstance();
       void DeleteInstance();
 
@@ -48,11 +50,10 @@ namespace gCore
 
     private:
       Environment();
-      ~Environment();
 
       void ProcessSDLEvents();
       void Update();
-      void RenderScene();
+      void Render();
 
       static std::unique_ptr<Environment> mInstancePtr;
       std::unique_ptr<Scene> mScenePtr;

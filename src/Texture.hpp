@@ -7,6 +7,8 @@
 
 #include "Vector2D.hpp"
 
+using gMath::Vector2D;
+
 namespace gCore
 {
   class Texture
@@ -18,8 +20,8 @@ namespace gCore
       bool LoadFromFile(const std::string& aFilePath);
       bool LoadFromPixels(GLuint* aPixelData, int aWidth, int aHeight);
 
-      void Render(const Vector2D& aLocation, double aScalar = 1);
-      void RenderPortion(const Vector2D& aLocation, const SDL_Rect& aPortion, double aScalar = 1);
+      void Render(const Vector2D& aLocation);
+      void RenderPortion(const Vector2D& aLocation, const SDL_Rect& aPortion);
 
     private:
       void FreeTexture();

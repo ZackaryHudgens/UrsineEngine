@@ -11,13 +11,18 @@ using gMath::Vector2D;
 
 namespace gCore
 {
+  /**
+   * A class for 2D animation using spirtesheets. To use, create a Texture
+   * and load the spritesheet into it. Then, add clipping rectangles
+   * using AddFrame().
+   */
   class Animation
   {
     public:
       Animation();
 
       void Update();
-      void Render(const Vector2D& aPosition, double aScalar = 1.0) const;
+      void Render(const Vector2D& aPosition) const;
 
       void SetTexture(std::unique_ptr<Texture> aTexture);
       void AddFrame(const SDL_Rect& aFrame);

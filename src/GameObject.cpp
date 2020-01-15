@@ -1,8 +1,5 @@
 #include "GameObject.hpp"
 
-#include "Component.hpp"
-#include "GraphicalComponent.hpp"
-
 using gCore::Component;
 using gCore::GameObject;
 using gCore::GraphicalComponent;
@@ -72,9 +69,22 @@ void GameObject::AddComponent(std::unique_ptr<Component> aComponent)
 
   // Keep GraphicalComponents and Components separate for the sake
   // of the Render() function.
-  if(dynamic_cast<GraphicalComponent*>(aComponent.get()) != nullptr)
+  GraphicalComponent* g = dynamic_cast<GraphicalComponent*>(aComponent.get());
+  if(g != nullptr)
   {
-    mGraphicalComponents.emplace_back(std::move(aComponent));
+    // Releases the given pointer from being responsible for deleting
+    // the Component...
+    aComponent.release();
+
+    // ...so we can create a new unique_ptr to a GraphicalComponent
+    // and assign it to that Component. This is done to place the given
+    // Component into a vector of GraphicalComponents, since
+    // std::unique_ptr<Component> can't be cast to a
+    // std::unique_ptr<GraphicalComponent>.
+    // TODO: there might be a better way of doing this?
+    std::unique_ptr<GraphicalComponent> gPointer;
+    gPointer.reset(g);
+    mGraphicalComponents.emplace_back(std::move(gPointer));
   }
   else
   {

@@ -185,7 +185,7 @@ int Environment::Run()
       }
     }
 
-    RenderScene();
+    Render();
   }
 
   return 0;
@@ -211,7 +211,7 @@ void Environment::ProcessSDLEvents()
       {
         if(mScenePtr != nullptr)
         {
-          mScenePtr->ProcessSDLEvent(e);
+          mScenePtr->ProcessEvent(e);
         }
         break;
       }
@@ -229,19 +229,19 @@ void Environment::Update()
   }
   else
   {
-    mScenePtr->UpdateObjects();
+    mScenePtr->Update();
   }
 }
 
 /**
  * Renders all of the GameObjects within the current Scene.
  */
-void Environment::RenderScene()
+void Environment::Render()
 {
   if(mScenePtr != nullptr)
   {
     glClear(GL_COLOR_BUFFER_BIT);
-    mScenePtr->RenderObjects();
+    mScenePtr->Render();
   }
 
   SDL_GL_SwapWindow(mWindowPtr);
