@@ -15,7 +15,7 @@ Environment::Environment()
   : mScenePtr(nullptr)
   , mWindowPtr(nullptr)
   , mIsQuitting(false)
-  , mUpdateInterval(15)
+  , mUpdateInterval(0.0015)
   , mMaxUpdatesPerFrame(1000)
 {
 }

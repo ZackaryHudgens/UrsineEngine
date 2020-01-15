@@ -63,7 +63,10 @@ bool AnimationManager::AddAnimation(const std::string& aName,
  */
 void AnimationManager::SetAnimation(const std::string& aName)
 {
-  mCurrentAnimation->Reset();
+  if(mCurrentAnimation != nullptr)
+  {
+    mCurrentAnimation->Reset();
+  }
 
   auto ani = mAnimationMap.find(aName);
   if(ani != mAnimationMap.end())
