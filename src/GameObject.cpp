@@ -1,6 +1,9 @@
 #include "GameObject.hpp"
 
+#include "CoreObserver.hpp"
+
 using gCore::Component;
+using gCore::CoreObserver;
 using gCore::GameObject;
 using gCore::GraphicalComponent;
 
@@ -10,6 +13,7 @@ using gCore::GraphicalComponent;
 GameObject::GameObject()
   : mLocation(0.0, 0.0)
 {
+  CoreObserver::AnimationAdvanced.Connect([&](const gCore::Animation& a) { std::cout << "woohoo" << std::endl; });
 }
 
 /**

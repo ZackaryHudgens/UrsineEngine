@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "CoreObserver.hpp"
 #include "Scene.hpp"
 
 /**
@@ -54,6 +55,8 @@ namespace gCore
       void ProcessSDLEvents();
       void Update();
       void Render();
+
+      static CoreObserver mCoreObserver;
 
       static std::unique_ptr<Environment> mInstancePtr;
       std::unique_ptr<Scene> mScenePtr;

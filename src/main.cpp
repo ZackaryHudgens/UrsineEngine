@@ -1,5 +1,6 @@
 #include "Environment.hpp"
 
+#include <iostream>
 #include <memory>
 #include "AnimationManager.hpp"
 #include "Scene.hpp"
@@ -21,13 +22,17 @@ int main(int argc, char* args[])
   std::unique_ptr<Texture> tex = std::make_unique<Texture>();
 
   tex->LoadFromFile("resources/bg.jpg");
+
   ani->SetTexture(std::move(tex));
   ani->AddFrame(SDL_Rect{0, 0, 100, 100});
   ani->AddFrame(SDL_Rect{100, 100, 100, 100});
   ani->SetSpeed(1);
+
   aniMan->AddAnimation("one", std::move(ani));
   aniMan->SetAnimation("one");
+
   obj->AddComponent(std::move(aniMan));
+
   scene->AddObject("obj", std::move(obj));
 
   env.SetScene(std::move(scene));

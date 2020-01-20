@@ -1,12 +1,12 @@
 #include "Animation.hpp"
 
-#include <iostream>
 #include "Environment.hpp"
 
 using gCore::Animation;
+using gCore::CoreObserver;
 
 Animation::Animation()
-  : mCurrentFrame(1)
+  : mCurrentFrame(0)
   , mSpeed(0)
   , mFrameTimer(0)
 {
@@ -22,9 +22,12 @@ void Animation::Update()
   if(elapsedTime > mSpeed)
   {
     ++mCurrentFrame;
-    if(mCurrentFrame > mFrames.size())  // Loop back around.
+
+    CoreObserver::AnimationAdvanced.Notify(*this);
+
+    if(mCurrentFrame > mFrames.size() - 1)  // Loop back around.
     {
-      mCurrentFrame = 1;
+      mCurrentFrame = 0;
     }
     mFrameTimer = env.GetTime();
   }
@@ -38,14 +41,9 @@ void Animation::Update()
  */
 void Animation::Render(const Vector2D& aPosition) const
 {
-  int frameCount = 0;
-  for(const auto& frame : mFrames)
+  if(mCurrentFrame < mFrames.size())
   {
-    ++frameCount;
-    if(frameCount == mCurrentFrame)
-    {
-      mTexture->RenderPortion(aPosition, frame);
-    }
+    mTexture->RenderPortion(aPosition, mFrames.at(mCurrentFrame));
   }
 }
 
@@ -74,6 +72,6 @@ void Animation::AddFrame(const SDL_Rect& aFrame)
  */
 void Animation::Reset()
 {
-  mCurrentFrame = 1;
+  mCurrentFrame = 0;
   mFrameTimer = 0;
 }
