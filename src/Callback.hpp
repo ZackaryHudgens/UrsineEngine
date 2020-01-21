@@ -18,7 +18,7 @@ namespace gCore
   class Callback
   {
     public:
-      Callback() { std::cout << "test" << std::endl; };
+      Callback() {};
 
       void Notify(Args... args)
       {

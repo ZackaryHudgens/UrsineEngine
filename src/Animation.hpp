@@ -28,6 +28,7 @@ namespace gCore
       void AddFrame(const SDL_Rect& aFrame);
 
       void SetSpeed(double aSpeed) { mSpeed = aSpeed; }
+      int GetFrame() const { return mCurrentFrame; }
 
       void Reset();
 

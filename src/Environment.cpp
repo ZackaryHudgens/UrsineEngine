@@ -3,10 +3,7 @@
 #include <IL/ilu.h>
 #include <iostream>
 
-using gCore::CoreObserver;
 using gCore::Environment;
-
-CoreObserver Environment::mCoreObserver = CoreObserver();
 
 // Initialize the environment instance to nullptr.
 std::unique_ptr<Environment> Environment::mInstancePtr = nullptr;
@@ -21,7 +18,6 @@ Environment::Environment()
   , mUpdateInterval(0.0015)
   , mMaxUpdatesPerFrame(1000)
 {
-  CoreObserver::AnimationAdvanced.Connect([&](const Animation& a) { std::cout << "woo" << std::endl; });
 }
 
 /**
