@@ -13,7 +13,6 @@ using gCore::GraphicalComponent;
 GameObject::GameObject()
   : mLocation(0.0, 0.0)
 {
-  CoreObserver::AnimationAdvanced.Connect([&](const gCore::Animation& a) { std::cout << "woohoo" << std::endl; });
 }
 
 /**
