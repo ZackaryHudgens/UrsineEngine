@@ -13,13 +13,9 @@ using gCore::AnimationManager;
 using gCore::Animation;
 using gCore::Texture;
 
-typedef gCore::Callback<void, int> testCallback;
-
 int main(int argc, char* args[])
 {
   env.Initialize("game!", 480, 270);
-
-  testCallback TestCall;
 
   std::unique_ptr<Scene> scene = std::make_unique<Scene>();
   std::unique_ptr<GameObject> obj = std::make_unique<GameObject>();
@@ -43,11 +39,6 @@ int main(int argc, char* args[])
   scene->AddObject("obj", std::move(obj));
 
   env.SetScene(std::move(scene));
-
-  TestCall.Connect([&](int a) { std::cout << obj2->GetLocation().x << std::endl; });
-  TestCall.Notify(0);
-  obj2.reset(nullptr);
-  //TestCall.Notify(0);
 
   return env.Run();
 }

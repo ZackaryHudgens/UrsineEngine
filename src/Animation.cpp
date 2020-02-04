@@ -22,7 +22,6 @@ void Animation::Update()
   if(elapsedTime > mSpeed)
   {
     ++mCurrentFrame;
-
     CoreObserver::AnimationAdvanced.Notify(*this);
 
     if(mCurrentFrame > mFrames.size() - 1)  // Loop back around.

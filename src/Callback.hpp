@@ -2,20 +2,24 @@
 #define CALLBACK_HPP
 
 #include <functional>
+#include <map>
 #include <vector>
 
 #include <iostream>
 
 namespace gCore
 {
+  /**
+   * A base Callback class that doesn't need templates.
+   * Contains two pure virtual functions that are implemented
+   * by the Callback implementation.
+   */
   class CallbackBase
   {
     public:
-      CallbackBase();
+      CallbackBase() {};
 
-      // Clear() empties mConnectedFunctions;
-      // a Disconnect() function should be implemented,
-      // but I don't know how to parameterize it.
+      virtual void Disconnect(int aId) = 0;
       virtual void Clear() = 0;
   };
 
@@ -31,22 +35,69 @@ namespace gCore
     public:
       Callback() {};
 
+      /**
+       * Calls each function in mFunctionMap.
+       *
+       * @param args The arguments associated with this Callback.
+       */
       void Notify(Args... args)
       {
-        for(auto& func : mConnectedFunctions)
+        for(auto& funcData : mFunctionMap)
         {
-          func(args...);
+          for(auto& func : funcData.second)
+          {
+            func(args...);
+          }
         }
       }
 
-      CallbackBase* Connect(const std::function<void(Args...)>& aFunction)
+      /**
+       * Connects a function to this callback. This is intended to be used
+       * with the CallbackHolder class.
+       *
+       * @param aId The ID to be associated with this function.
+       * @param aFunction A function to call when Notify is called.
+       */
+      CallbackBase* Connect(int aId, const std::function<void(Args...)>& aFunction)
       {
-        mConnectedFunctions.emplace_back(aFunction);
+        if(mFunctionMap.find(aId) != mFunctionMap.end())
+        {
+          mFunctionMap.at(aId).emplace_back(aFunction);
+        }
+        else
+        {
+          std::vector<std::function<void(Args...)>> newList;
+          newList.emplace_back(aFunction);
+          mFunctionMap.emplace(aId, newList);
+        }
+
         return this;
       }
 
+      /**
+       * Disconnects all functions represented by the given ID.
+       *
+       * @param aId The ID to remove.
+       */
+      void Disconnect(int aId) override
+      {
+        auto functionList = mFunctionMap.find(aId);
+        if(functionList != mFunctionMap.end())
+        {
+          mFunctionMap.erase(functionList);
+        }
+      }
+
+      /**
+       * Disconnects all functions connected to this Callback.
+       */
+      void Clear() override
+      {
+        mFunctionMap.clear();
+      }
+
     private:
-      std::vector<std::function<void(Args...)>> mConnectedFunctions;
+      std::map<int, std::vector<std::function<void(Args...)>>> mFunctionMap;
   };
 }
 

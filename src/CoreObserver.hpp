@@ -13,7 +13,7 @@ namespace gCore
     public:
       CoreObserver();
 
-      typedef Callback<void, const Animation&> animationAdvancedCallback;
+      typedef Callback<const Animation&> animationAdvancedCallback;
       static animationAdvancedCallback AnimationAdvanced;
   };
 }

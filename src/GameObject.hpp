@@ -6,6 +6,7 @@
 
 #include <SDL2/SDL.h>
 
+#include "CallbackHolder.hpp"
 #include "Component.hpp"
 #include "GraphicalComponent.hpp"
 #include "Vector2D.hpp"
@@ -41,6 +42,7 @@ namespace gCore
       std::vector<std::unique_ptr<GraphicalComponent>> mGraphicalComponents;
 
       Vector2D mLocation;
+      CallbackHolder mCallbacks;
   };
 }
 

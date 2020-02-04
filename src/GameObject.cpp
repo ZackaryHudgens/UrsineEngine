@@ -13,6 +13,11 @@ using gCore::GraphicalComponent;
 GameObject::GameObject()
   : mLocation(0.0, 0.0)
 {
+  mCallbacks.Add(CoreObserver::AnimationAdvanced.Connect(mCallbacks.GetId(),
+    [&](const Animation& a)
+    {
+      std::cout << a.GetFrame() << std::endl;
+    }));
 }
 
 /**
