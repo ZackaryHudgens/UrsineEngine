@@ -11,7 +11,7 @@ namespace gCore
 {
   /**
    * A base Callback class that doesn't need templates.
-   * Contains two pure virtual functions that are implemented
+   * Contains three pure virtual functions that are implemented
    * by the Callback implementation.
    */
   class CallbackBase
@@ -19,6 +19,7 @@ namespace gCore
     public:
       CallbackBase() {};
 
+      virtual void ConnectTempToId(int aId) = 0;
       virtual void Disconnect(int aId) = 0;
       virtual void Clear() = 0;
   };
@@ -52,26 +53,23 @@ namespace gCore
       }
 
       /**
-       * Connects a function to this callback. This is intended to be used
-       * with the CallbackHolder class.
+       * Connects the stored temporary function to this callback using the
+       * given ID. This is intended to be used with the CallbackHolder class.
        *
-       * @param aId The ID to be associated with this function.
-       * @param aFunction A function to call when Notify is called.
+       * @param aId The ID to be associated with the temporary function.
        */
-      CallbackBase* Connect(int aId, const std::function<void(Args...)>& aFunction)
+      void ConnectTempToId(int aId) override
       {
         if(mFunctionMap.find(aId) != mFunctionMap.end())
         {
-          mFunctionMap.at(aId).emplace_back(aFunction);
+          mFunctionMap.at(aId).emplace_back(mTempFunction);
         }
         else
         {
           std::vector<std::function<void(Args...)>> newList;
-          newList.emplace_back(aFunction);
+          newList.emplace_back(mTempFunction);
           mFunctionMap.emplace(aId, newList);
         }
-
-        return this;
       }
 
       /**
@@ -96,8 +94,23 @@ namespace gCore
         mFunctionMap.clear();
       }
 
+      /**
+       * Saves the given function in a member variable. The function
+       * will be added to the function map on the next call to ConnectToId.
+       *
+       * @param aFunction The function to store temporarily.
+       * @return A pointer to this object as a CallbackBase.
+       */
+      CallbackBase* Connect(const std::function<void(Args...)>& aFunction)
+      {
+        mTempFunction = aFunction;
+
+        return this;
+      }
+
     private:
       std::map<int, std::vector<std::function<void(Args...)>>> mFunctionMap;
+      std::function<void(Args...)> mTempFunction;
   };
 }
 

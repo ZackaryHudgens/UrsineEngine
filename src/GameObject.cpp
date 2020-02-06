@@ -13,11 +13,10 @@ using gCore::GraphicalComponent;
 GameObject::GameObject()
   : mLocation(0.0, 0.0)
 {
-  mCallbacks.Add(CoreObserver::AnimationAdvanced.Connect(mCallbacks.GetId(),
-    [&](const Animation& a)
-    {
-      std::cout << a.GetFrame() << std::endl;
-    }));
+  mCallbacks.Add(CoreObserver::AnimationAdvanced.Connect([&](const Animation& a)
+  {
+    std::cout << mGraphicalComponents.size() << std::endl;
+  }));
 }
 
 /**
@@ -87,9 +86,7 @@ void GameObject::AddComponent(std::unique_ptr<Component> aComponent)
     // ...so we can create a new unique_ptr to a GraphicalComponent
     // and assign it to that Component. This is done to place the given
     // Component into a vector of GraphicalComponents, since
-    // std::unique_ptr<Component> can't be cast to a
-    // std::unique_ptr<GraphicalComponent>.
-    // TODO: there might be a better way of doing this?
+    // std::unique_ptr can't be cast to another type.
     std::unique_ptr<GraphicalComponent> gPointer;
     gPointer.reset(g);
     mGraphicalComponents.emplace_back(std::move(gPointer));

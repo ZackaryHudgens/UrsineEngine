@@ -15,25 +15,12 @@ namespace gCore
       CallbackHolder();
       ~CallbackHolder();
 
-      /**
-       * Adds a Callback to this CallbackHolder.
-       *
-       * @param aCallback The Callback to add to this CallbackHolder.
-       */
-      void Add(CallbackBase* aCallback)
-      {
-        mCallbacks.emplace_back(aCallback);
-      }
-
-      /**
-       * Returns the Id for this CallbackHolder.
-       */
-      int GetId() { return mId; }
+      void Add(CallbackBase* aCallback);
 
     private:
       static int mIdCounter;
+      static std::vector<int> mAvailableIds;
       int mId;
-      std::vector<int> mAvailableIds;
 
       std::vector<CallbackBase*> mCallbacks;
   };
