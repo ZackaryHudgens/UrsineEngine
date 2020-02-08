@@ -7,9 +7,13 @@ find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(DevIL REQUIRED)
-include_directories("src" ${SDL2_INCLUDE_DIRS})
 
-file(GLOB SOURCES "src/*.cpp")
+include_directories("src/core"
+                    "src/math"
+                    ${SDL2_INCLUDE_DIRS})
+
+file(GLOB SOURCES "src/core/*.cpp"
+                  "src/math/*.cpp")
 
 add_executable(a_game ${SOURCES})
 target_link_libraries(a_game ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${IL_LIBRARIES} ${ILU_LIBRARIES})
