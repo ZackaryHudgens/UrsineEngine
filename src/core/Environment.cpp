@@ -161,6 +161,8 @@ int Environment::Run()
 
   while(!mIsQuitting)
   {
+    // First, process any and all SDL events since our last update.
+    // This is mostly used to handle user input.
     ProcessSDLEvents();
 
     // Add the amount of real time that has passed to the updateLag,
@@ -185,6 +187,7 @@ int Environment::Run()
       }
     }
 
+    // After updating, render the scene as it currently stands.
     Render();
   }
 
@@ -192,13 +195,13 @@ int Environment::Run()
 }
 
 /**
- * Polls the SDL event queue and decides what to do with the event.
+ * Retrieves and processes each SDL event since the previous call.
  */
 void Environment::ProcessSDLEvents()
 {
   SDL_Event e;
 
-  if(SDL_PollEvent(&e) != 0)
+  while(SDL_PollEvent(&e) != 0)
   {
     switch(e.type)
     {
@@ -207,12 +210,57 @@ void Environment::ProcessSDLEvents()
         mIsQuitting = true;
         break;
       }
+      case SDL_MOUSEMOTION:
+      {
+        CoreObserver::MouseMoved.Notify(e.motion.x, e.motion.y);
+        break;
+      }
+      case SDL_MOUSEBUTTONDOWN:
+      {
+        if(e.button.clicks == 1)
+        {
+          CoreObserver::SingleClick.Notify(e.button.x, e.button.y);
+        }
+        else if(e.button.clicks == 2)
+        {
+          CoreObserver::DoubleClick.Notify(e.button.x, e.button.y);
+        }
+        break;
+      }
+      case SDL_MOUSEBUTTONUP:
+      {
+        CoreObserver::MouseReleased.Notify(e.button.x, e.button.y);
+        break;
+      }
+      case SDL_MOUSEWHEEL:
+      {
+        CoreObserver::MouseScroll.Notify(e.wheel.x, e.wheel.y);
+        break;
+      }
+      case SDL_KEYDOWN:
+      {
+        CoreObserver::KeyPressed.Notify(e.key.keysym.scancode);
+        break;
+      }
+      case SDL_KEYUP:
+      {
+        CoreObserver::KeyReleased.Notify(e.key.keysym.scancode);
+        break;
+      }
+      case SDL_CONTROLLERBUTTONDOWN:
+      {
+        SDL_GameControllerButton button;
+        button = static_cast<SDL_GameControllerButton>(e.cbutton.button);
+        CoreObserver::ButtonPressed.Notify(button);
+      }
+      case SDL_CONTROLLERBUTTONUP:
+      {
+        SDL_GameControllerButton button;
+        button = static_cast<SDL_GameControllerButton>(e.cbutton.button);
+        CoreObserver::ButtonReleased.Notify(button);
+      }
       default:
       {
-        if(mScenePtr != nullptr)
-        {
-          mScenePtr->ProcessEvent(e);
-        }
         break;
       }
     }
@@ -224,10 +272,7 @@ void Environment::ProcessSDLEvents()
  */
 void Environment::Update()
 {
-  if(mScenePtr == nullptr)
-  {
-  }
-  else
+  if(mScenePtr != nullptr)
   {
     mScenePtr->Update();
   }
@@ -278,8 +323,8 @@ void Environment::SetInternalResolution(int aWidth, int aHeight)
  */
 bool Environment::IsKeyPressed(const SDL_Scancode& aScancode)
 {
-    const Uint8* keyboardState = SDL_GetKeyboardState(nullptr);
-    return keyboardState[aScancode];
+  const Uint8* keyboardState = SDL_GetKeyboardState(nullptr);
+  return keyboardState[aScancode];
 }
 
 /**

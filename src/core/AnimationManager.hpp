@@ -9,8 +9,7 @@
 namespace gCore
 {
   /**
-   * A container Component for Animations. Note that this class
-   * has an empty implementation of ProcessEvent().
+   * A container Component for Animations.
    */
   class AnimationManager : public GraphicalComponent
   {
@@ -19,7 +18,6 @@ namespace gCore
 
       void Update() override;
       void Render() const override;
-      void ProcessEvent(const SDL_Event& aEvent) override {}
 
       bool AddAnimation(const std::string& aName,
                         std::unique_ptr<Animation> aAnimation);

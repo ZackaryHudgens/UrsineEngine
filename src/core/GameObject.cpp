@@ -13,10 +13,6 @@ using gCore::GraphicalComponent;
 GameObject::GameObject()
   : mLocation(0.0, 0.0)
 {
-  mCallbacks.Add(CoreObserver::AnimationAdvanced.Connect([&](const Animation& a)
-  {
-    std::cout << mGraphicalComponents.size() << std::endl;
-  }));
 }
 
 /**
@@ -47,24 +43,6 @@ void GameObject::Render()
 }
 
 /**
- * Sends an SDL_Event to each component for processing.
- *
- * @param aEvent The event to be processed.
- */
-void GameObject::ProcessEvent(const SDL_Event& aEvent)
-{
-  for(auto& c : mComponents)
-  {
-    c->ProcessEvent(aEvent);
-  }
-
-  for(auto& gc : mGraphicalComponents)
-  {
-    gc->ProcessEvent(aEvent);
-  }
-}
-
-/**
  * Adds a Component to this GameObject, which takes ownership
  * of it. 
  *
@@ -74,8 +52,8 @@ void GameObject::AddComponent(std::unique_ptr<Component> aComponent)
 {
   aComponent->SetParent(this);
 
-  // Keep GraphicalComponents and Components separate for the sake
-  // of the Render() function.
+  // Keep GraphicalComponents and regular Components separate to optimize
+  // the Render() function.
   GraphicalComponent* g = dynamic_cast<GraphicalComponent*>(aComponent.get());
   if(g != nullptr)
   {

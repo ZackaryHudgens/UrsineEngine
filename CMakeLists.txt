@@ -10,10 +10,16 @@ find_package(DevIL REQUIRED)
 
 include_directories("src/core"
                     "src/math"
+                    "src/test_game"
                     ${SDL2_INCLUDE_DIRS})
 
 file(GLOB SOURCES "src/core/*.cpp"
-                  "src/math/*.cpp")
+                  "src/math/*.cpp"
+                  "src/test_game/*.cpp")
 
 add_executable(a_game ${SOURCES})
-target_link_libraries(a_game ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${IL_LIBRARIES} ${ILU_LIBRARIES})
+target_link_libraries(a_game ${SDL2_LIBRARIES}
+                             ${OPENGL_LIBRARIES}
+                             ${GLUT_LIBRARY}
+                             ${IL_LIBRARIES}
+                             ${ILU_LIBRARIES})

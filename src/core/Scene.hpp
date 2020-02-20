@@ -22,7 +22,6 @@ namespace gCore
 
       void Update();
       void Render();
-      void ProcessEvent(const SDL_Event& aEvent);
 
     private:
       std::map<std::string, std::unique_ptr<GameObject>> mObjectMap;

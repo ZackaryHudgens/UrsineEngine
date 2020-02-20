@@ -5,12 +5,10 @@
 #include <map>
 #include <vector>
 
-#include <iostream>
-
 namespace gCore
 {
   /**
-   * A base Callback class that doesn't need templates.
+   * A base Callback class that doesn't need a template type.
    * Contains three pure virtual functions that are implemented
    * by the Callback implementation.
    */
@@ -96,7 +94,7 @@ namespace gCore
 
       /**
        * Saves the given function in a member variable. The function
-       * will be added to the function map on the next call to ConnectToId.
+       * will be added to the function map on the next call to ConnectTempToId.
        *
        * @param aFunction The function to store temporarily.
        * @return A pointer to this object as a CallbackBase.

@@ -35,11 +35,3 @@ void Scene::Render()
   }
 }
 
-// Processes an SDLEvent by passing it to each object in the scene.
-void Scene::ProcessEvent(const SDL_Event& aEvent)
-{
-  for(auto& object : mObjectMap)
-  {
-    object.second->ProcessEvent(aEvent);
-  }
-}

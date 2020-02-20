@@ -1,8 +1,6 @@
 #ifndef COMPONENT_HPP
 #define COMPONENT_HPP
 
-#include <SDL2/SDL.h>
-
 namespace gCore
 {
   class GameObject;
@@ -21,7 +19,6 @@ namespace gCore
       Component();
 
       virtual void Update() = 0;
-      virtual void ProcessEvent(const SDL_Event& aEvent) = 0;
 
       void SetParent(GameObject* aParent) { mParent = aParent; }
       GameObject* GetParent() const       { return mParent; }
