@@ -1,2 +1,2 @@
-# unnamed-game-engine
-A cross-platform game engine utilizing C++, SDL, and OpenGL.
+# UrsineEngine
+A cross-platform game engine written in C++ and scriptable via Python.
