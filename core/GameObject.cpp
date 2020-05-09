@@ -2,10 +2,10 @@
 
 #include "CoreObserver.hpp"
 
-using gCore::Component;
-using gCore::CoreObserver;
-using gCore::GameObject;
-using gCore::GraphicalComponent;
+using core::Component;
+using core::CoreObserver;
+using core::GameObject;
+using core::GraphicalComponent;
 
 /**
  * Constructor for the base GameObject class.
@@ -16,7 +16,7 @@ GameObject::GameObject()
 }
 
 /**
- * Calls the Update() method for each Component.
+ * Calls the Update() method for each Component and child.
  */
 void GameObject::Update()
 {
@@ -29,10 +29,15 @@ void GameObject::Update()
   {
     gc->Update();
   }
+
+  for(auto& child : mChildren)
+  {
+    child->Update();
+  }
 }
 
 /**
- * Calls the Render() method for each GraphicalComponent.
+ * Calls the Render() method for each GraphicalComponent and child.
  */
 void GameObject::Render()
 {
@@ -40,6 +45,63 @@ void GameObject::Render()
   {
     gc->Render();
   }
+
+  for(auto& child : mChildren)
+  {
+    child->Render();
+  }
+}
+
+/**
+ * Calls the Load() method for each Component and child.
+ */
+void GameObject::Load()
+{
+  for(auto& c : mComponents)
+  {
+    c->Load();
+  }
+
+  for(auto& gc : mGraphicalComponents)
+  {
+    gc->Load();
+  }
+
+  for(auto& child : mChildren)
+  {
+    child->Load();
+  }
+}
+
+/**
+ * Calls the Unload() method for each Component and child.
+ */
+void GameObject::Unload()
+{
+  for(auto& c : mComponents)
+  {
+    c->Unload();
+  }
+
+  for(auto& gc : mGraphicalComponents)
+  {
+    gc->Unload();
+  }
+
+  for(auto& child : mChildren)
+  {
+    child->Unload();
+  }
+}
+
+/**
+ * Adds a child GameObject.
+ *
+ * @param aObject The GameObject to add.
+ */
+void GameObject::AddChild(std::unique_ptr<GameObject> aObject)
+{
+  mChildren.emplace_back(std::move(aObject));
 }
 
 /**

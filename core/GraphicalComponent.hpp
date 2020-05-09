@@ -3,7 +3,7 @@
 
 #include "Component.hpp"
 
-namespace gCore
+namespace core
 {
   /**
    * A GraphicalComponent is a Component that also requires

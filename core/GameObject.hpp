@@ -8,9 +8,9 @@
 #include "GraphicalComponent.hpp"
 #include "Vector2D.hpp"
 
-using gMath::Vector2D;
+using math::Vector2D;
 
-namespace gCore
+namespace core
 {
   /**
    * A GameObject is essentially just a sack of components.
@@ -28,12 +28,16 @@ namespace gCore
 
       void Update();
       void Render();
+      void Load();
+      void Unload();
 
+      void AddChild(std::unique_ptr<GameObject> aObject);
       void AddComponent(std::unique_ptr<Component> aComponent);
 
       Vector2D GetLocation() const { return mLocation; }
 
     private:
+      std::vector<std::unique_ptr<GameObject>> mChildren;
       std::vector<std::unique_ptr<Component>> mComponents;
       std::vector<std::unique_ptr<GraphicalComponent>> mGraphicalComponents;
 

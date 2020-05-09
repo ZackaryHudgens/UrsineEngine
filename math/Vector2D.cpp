@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-using gMath::Vector2D;
+using math::Vector2D;
 
 const double ALLOWABLE_ERROR = 1e-5;
 

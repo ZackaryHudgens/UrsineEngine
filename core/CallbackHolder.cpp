@@ -1,6 +1,6 @@
 #include "CallbackHolder.hpp"
 
-using gCore::CallbackHolder;
+using core::CallbackHolder;
 
 int CallbackHolder::mIdCounter = 0;
 std::vector<int> CallbackHolder::mAvailableIds;

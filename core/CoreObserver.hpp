@@ -1,14 +1,9 @@
 #ifndef COREOBSERVER_HPP
 #define COREOBSERVER_HPP
 
-#include <SDL2/SDL.h>
-
-#include "Animation.hpp"
 #include "Callback.hpp"
 
-using gCore::Animation;
-
-namespace gCore
+namespace core
 {
   /**
    * An Observer class that contains several static Callback objects
@@ -36,27 +31,6 @@ namespace gCore
 
       typedef Callback<int, int> mouseWheelCallback;
       static mouseWheelCallback MouseScroll;
-
-      typedef Callback<const SDL_Scancode&> keyPressedCallback;
-      static keyPressedCallback KeyPressed;
-
-      typedef Callback<const SDL_Scancode&> keyReleasedCallback;
-      static keyReleasedCallback KeyReleased;
-
-      /**
-       * Controller input callbacks.
-       */
-      typedef Callback<const SDL_GameControllerButton&> buttonPressedCallback;
-      static buttonPressedCallback ButtonPressed;
-
-      typedef Callback<const SDL_GameControllerButton&> buttonReleasedCallback;
-      static buttonReleasedCallback ButtonReleased;
-
-      /**
-       * Animation callbacks.
-       */
-      typedef Callback<const Animation&> animationAdvancedCallback;
-      static animationAdvancedCallback AnimationAdvanced;
   };
 }
 

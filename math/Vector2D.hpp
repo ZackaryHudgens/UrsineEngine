@@ -1,7 +1,7 @@
 #ifndef VECTOR2D
 #define VECTOR2D
 
-namespace gMath
+namespace math
 {
   class Vector2D
   {

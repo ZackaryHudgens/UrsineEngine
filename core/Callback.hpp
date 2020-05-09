@@ -5,7 +5,7 @@
 #include <map>
 #include <vector>
 
-namespace gCore
+namespace core
 {
   /**
    * A base Callback class that doesn't need a template type.

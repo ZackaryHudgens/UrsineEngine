@@ -1,7 +1,9 @@
 #ifndef COMPONENT_HPP
 #define COMPONENT_HPP
 
-namespace gCore
+#include <iostream>
+
+namespace core
 {
   class GameObject;
 
@@ -11,7 +13,7 @@ namespace gCore
    * of this behavior include animations, sounds, and input.
    *
    * Each different type of Component will need to implement their own
-   * Update() and ProcessEvent() logic.
+   * Update() logic.
    */
   class Component
   {
@@ -19,6 +21,9 @@ namespace gCore
       Component();
 
       virtual void Update() = 0;
+
+      virtual void Load() { std::cout << "Loading" << std::endl; }
+      virtual void Unload() { std::cout << "Unloading" << std::endl; }
 
       void SetParent(GameObject* aParent) { mParent = aParent; }
       GameObject* GetParent() const       { return mParent; }

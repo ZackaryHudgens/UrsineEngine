@@ -1,6 +1,6 @@
 #include "GraphicalComponent.hpp"
 
-using gCore::GraphicalComponent;
+using core::GraphicalComponent;
 
 GraphicalComponent::GraphicalComponent()
   : Component()

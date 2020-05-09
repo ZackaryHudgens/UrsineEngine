@@ -3,7 +3,7 @@
 
 #include "Callback.hpp"
 
-namespace gCore
+namespace core
 {
   /**
    * A helper class that maintains a list of Callbacks and disconnects
