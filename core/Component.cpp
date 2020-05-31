@@ -2,6 +2,8 @@
 
 #include "GameObject.hpp"
 
+#include "Signal.hpp"
+
 using core::Component;
 using core::GameObject;
 

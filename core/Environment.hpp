@@ -29,9 +29,10 @@ namespace core
 
       void LoadScene(Scene& aScene);
 
-    private:
+    protected:
       Environment();
 
+    private:
       void Update();
       void Render();
 

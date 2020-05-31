@@ -1,9 +1,6 @@
 #include "GameObject.hpp"
 
-#include "CoreObserver.hpp"
-
 using core::Component;
-using core::CoreObserver;
 using core::GameObject;
 using core::GraphicalComponent;
 

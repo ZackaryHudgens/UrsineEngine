@@ -2,87 +2,58 @@
 
 #include "Environment.hpp"
 
+#include "ComponentWrapper.hpp"
+#include "GameObjectWrapper.hpp"
+#include "SceneWrapper.hpp"
+
 using namespace boost::python;
 
-using core::Component;
+using coreWrappers::ComponentWrapper;
+using coreWrappers::GameObjectWrapper;
+using coreWrappers::SceneWrapper;
+
 using core::Environment;
-using core::GameObject;
-using core::Scene;
 
-class ComponentWrapper : public Component,
-                         public wrapper<Component>
+// TESTING
+object obj;
+
+void setFunc(object aFunc)
 {
-  public:
-    ComponentWrapper()
-      : Component()
-    {
-    }
+  obj = aFunc;
+}
 
-    void Update() override { this->get_override("update")(); }
-};
-
-class GameObjectWrapper : public GameObject,
-                          public wrapper<GameObject>
+void callFunc(list aArgs)
 {
-  public:
-    GameObjectWrapper()
-      : GameObject()
-    {
-    }
-
-    void AddChildWrapper(GameObject& aObject)
-    {
-      std::unique_ptr<GameObject> child;
-      child.reset(&aObject);
-      AddChild(std::move(child));
-    }
-
-    void AddComponentWrapper(Component& aComponent)
-    {
-      std::unique_ptr<Component> comp;
-      comp.reset(&aComponent);
-      AddComponent(std::move(comp));
-    }
-};
-
-class SceneWrapper : public Scene,
-                     public wrapper<Scene>
-{
-  public:
-    SceneWrapper(const std::string& aName)
-      : Scene(aName)
-    {
-    }
-
-    void AddObjectWrapper(const std::string& aObjectName,
-                          GameObject& aObject)
-    {
-      std::unique_ptr<GameObject> object;
-      object.reset(&aObject);
-      AddObject(std::move(object));
-    }
-};
+  obj(*tuple(aArgs));
+}
 
 /**
  * Begin Python module.
  */
 BOOST_PYTHON_MODULE(core)
 {
-  def("createEnvironment", &Environment::GetInstance,
+  def("setFunc", &setFunc);
+  def("callFunc", &callFunc);
+
+  // Expose the Environment class.
+  def("get_or_create_environment", &Environment::GetInstance,
     return_value_policy<reference_existing_object>());
 
   class_<Environment, boost::noncopyable>("Environment", no_init)
     .def("initialize", &Environment::Initialize)
-    .def("loadScene", &Environment::LoadScene)
+    .def("load_scene", &Environment::LoadScene)
     .def("run", &Environment::Run);
 
+  // Expose the Component class.
   class_<ComponentWrapper, boost::noncopyable>("Component")
     .def("update", pure_virtual(&Component::Update));
 
+  // Expose the GameObject class.
   class_<GameObjectWrapper, boost::noncopyable>("GameObject")
-    .def("addChild", &GameObjectWrapper::AddChildWrapper)
-    .def("addComponent", &GameObjectWrapper::AddComponentWrapper);
+    .def("add_child", &GameObjectWrapper::AddChild_)
+    .def("add_component", &GameObjectWrapper::AddComponent_);
 
-  class_<SceneWrapper, boost::noncopyable>("Scene", init<std::string>())
-    .def("addObject", &SceneWrapper::AddObjectWrapper);
+  // Expose the Scene class.
+  class_<SceneWrapper, boost::noncopyable>("Scene")
+    .def("add_object", &SceneWrapper::AddObject_);
 }

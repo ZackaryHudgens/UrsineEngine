@@ -4,8 +4,7 @@
 
 using core::Scene;
 
-Scene::Scene(const std::string& aName)
-  : mName(aName)
+Scene::Scene()
 {
 }
 

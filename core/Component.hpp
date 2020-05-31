@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "Observer.hpp"
+
 namespace core
 {
   class GameObject;
@@ -15,15 +17,15 @@ namespace core
    * Each different type of Component will need to implement their own
    * Update() logic.
    */
-  class Component
+  class Component : public Observer
   {
     public:
       Component();
 
       virtual void Update() = 0;
 
-      virtual void Load() { std::cout << "Loading" << std::endl; }
-      virtual void Unload() { std::cout << "Unloading" << std::endl; }
+      virtual void Load() {}
+      virtual void Unload() {}
 
       void SetParent(GameObject* aParent) { mParent = aParent; }
       GameObject* GetParent() const       { return mParent; }

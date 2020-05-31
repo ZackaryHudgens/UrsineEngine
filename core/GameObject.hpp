@@ -6,6 +6,7 @@
 
 #include "Component.hpp"
 #include "GraphicalComponent.hpp"
+#include "Observer.hpp"
 #include "Vector2D.hpp"
 
 using math::Vector2D;
@@ -21,7 +22,7 @@ namespace core
    * so the Render() function doesn't have to iterate over
    * Components that aren't renderable.
    */
-  class GameObject
+  class GameObject : public Observer
   {
     public:
       GameObject();

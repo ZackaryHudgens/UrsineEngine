@@ -1,4 +1,6 @@
-add_library(core SHARED Core.cpp)
+file(GLOB CORE_PYTHON_SOURCES *.cpp)
+
+add_library(core SHARED ${CORE_PYTHON_SOURCES})
 target_link_libraries(core PUBLIC
                       ${PYTHON_LIBRARIES}
                       ${Boost_LIBRARIES}

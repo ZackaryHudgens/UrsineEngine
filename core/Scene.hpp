@@ -15,9 +15,7 @@ namespace core
   class Scene
   {
     public:
-      Scene(const std::string& aName);
-
-      std::string GetName() { return mName; }
+      Scene();
 
       void Load();
       void Unload();
@@ -28,7 +26,6 @@ namespace core
       void Render();
 
     private:
-      std::string mName;
       std::vector<std::unique_ptr<GameObject>> mObjects;
   };
 }
