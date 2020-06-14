@@ -63,7 +63,7 @@ namespace core
         auto funcList = mFunctionMap.find(&aObserver);
         if(funcList != mFunctionMap.end())
         {
-          funcList.second.emplace_back(aFunction);
+          funcList->second.emplace_back(aFunction);
         }
         else
         {

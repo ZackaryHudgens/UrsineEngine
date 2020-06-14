@@ -5,3 +5,4 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(math)
 add_subdirectory(core)
+add_subdirectory(extensions)

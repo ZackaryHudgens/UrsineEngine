@@ -8,7 +8,7 @@
 using core::Component;
 using core::GameObject;
 
-namespace coreWrappers
+namespace pyExt
 {
   /**
    * A wrapper for the GameObject class. Allows Python to add

@@ -7,7 +7,7 @@
 
 using core::Component;
 
-namespace coreWrappers
+namespace pyExt
 {
   /**
   * A wrapper for the Component class. Allows Python script to

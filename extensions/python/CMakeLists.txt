@@ -1,3 +1,9 @@
+find_package(PythonLibs 3 REQUIRED)
+
+# CMake complains about not finding this, but it still works.
+# On newer versions of CMake (>= 3.12) this is fixed.
+find_package(Boost COMPONENTS python3 REQUIRED)
+
 file(GLOB CORE_PYTHON_SOURCES *.cpp)
 
 add_library(core SHARED ${CORE_PYTHON_SOURCES})

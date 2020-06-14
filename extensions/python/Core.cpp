@@ -1,23 +1,25 @@
 #include <boost/python.hpp>
 
-#include "Environment.hpp"
+using namespace boost::python;
+
+/*#include "Environment.hpp"
 
 #include "ComponentWrapper.hpp"
 #include "GameObjectWrapper.hpp"
+#include "PyExtension.hpp"
 #include "SceneWrapper.hpp"
 
-using namespace boost::python;
+using pyExt::ComponentWrapper;
+using pyExt::GameObjectWrapper;
+using pyExt::PyExtension;
+using pyExt::SceneWrapper;
 
-using coreWrappers::ComponentWrapper;
-using coreWrappers::GameObjectWrapper;
-using coreWrappers::SceneWrapper;
-
-using core::Environment;
+using core::Environment;*/
 
 // TESTING
 object obj;
 
-void setFunc(object aFunc)
+void setFunc(const object aFunc)
 {
   obj = aFunc;
 }
@@ -27,16 +29,22 @@ void callFunc(list aArgs)
   obj(*tuple(aArgs));
 }
 
-/**
- * Begin Python module.
- */
+/*namespace
+{
+  Environment& GetOrCreateEnvironment()
+  {
+    Environment::GetInstance().RegisterExtension<PyExtension>();
+    return env;
+  }
+}*/
+
 BOOST_PYTHON_MODULE(core)
 {
   def("setFunc", &setFunc);
   def("callFunc", &callFunc);
 
   // Expose the Environment class.
-  def("get_or_create_environment", &Environment::GetInstance,
+  /*def("get_or_create_environment", &GetOrCreateEnvironment,
     return_value_policy<reference_existing_object>());
 
   class_<Environment, boost::noncopyable>("Environment", no_init)
@@ -55,5 +63,5 @@ BOOST_PYTHON_MODULE(core)
 
   // Expose the Scene class.
   class_<SceneWrapper, boost::noncopyable>("Scene")
-    .def("add_object", &SceneWrapper::AddObject_);
+    .def("add_object", &SceneWrapper::AddObject_);*/
 }

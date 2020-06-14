@@ -1,6 +1,6 @@
 #include "ComponentWrapper.hpp"
 
-using coreWrappers::ComponentWrapper;
+using pyExt::ComponentWrapper;
 
 ComponentWrapper::ComponentWrapper()
   : Component()

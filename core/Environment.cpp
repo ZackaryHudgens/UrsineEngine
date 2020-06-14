@@ -1,8 +1,10 @@
 #include "Environment.hpp"
 
+#include <cassert>
 #include <iostream>
 
 using core::Environment;
+using core::Extension;
 using core::Scene;
 
 std::unique_ptr<Environment> Environment::mInstance = nullptr;
@@ -69,6 +71,12 @@ void Environment::Run()
     {
       glfwPollEvents();
 
+      // Update each extension.
+      for(auto& ext : mExtensions)
+      {
+        ext->Update();
+      }
+
       double elapsedTime = glfwGetTime() - previousTime;
       previousTime = glfwGetTime();
       updateLag += elapsedTime;
@@ -104,6 +112,15 @@ void Environment::LoadScene(Scene& aScene)
 
   mCurrentScene = &aScene;
   mCurrentScene->Load();
+}
+
+template <typename EXTENSION>
+void Environment::RegisterExtension()
+{
+  bool isBase = std::is_base_of<Extension, EXTENSION>();
+  assert(isBase);
+
+  mExtensions.emplace_back(std::move(std::make_unique<EXTENSION>()));
 }
 
 void Environment::Update()
