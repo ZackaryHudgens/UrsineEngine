@@ -30,8 +30,7 @@ namespace core
 
       void LoadScene(Scene& aScene);
 
-      template <typename EXTENSION>
-      void RegisterExtension();
+      void RegisterExtension(std::unique_ptr<Extension> aExtension);
 
     protected:
       Environment();

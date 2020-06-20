@@ -11,7 +11,7 @@ target_link_libraries(UrsineCore PUBLIC
                       ${GLEW_LIBRARIES}
                       #UrsineUtil
                       UrsineMath)
-target_include_directories(UrsineCore PUBLIC
+target_include_directories(UrsineCore PUBLIC .
                            ${GLEW_INCLUDE_DIRS}
                            "${PROJECT_SOURCE_DIR}/math"
                            "${PROJECT_SOURCE_DIR}/core/util")

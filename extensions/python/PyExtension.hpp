@@ -6,7 +6,7 @@
 #include "Extension.hpp"
 #include "Signal.hpp"
 
-using core::ExtensionT;
+using core::Extension;
 using core::Observer;
 using core::SignalT;
 
@@ -20,20 +20,21 @@ namespace pyExt
    * An extension class which creates a Python library, allowing the
    * UrsineEngine to be invoked and ran via Python script.
    */
-  class PyExtension : public ExtensionT<PyExtension>
+  class PyExtension : public Extension
   {
     public:
       PyExtension();
 
       void Update() override;
 
-      static void CreateSignal(const std::string& aName);
-      static void Connect(const std::string& aName,
-                          Observer& aObserver,
-                          boost::python::object& aFunc);
+      void CreateSignal(const std::string& aName);
+
+      void Connect(const std::string& aName,
+                   Observer& aObserver,
+                   boost::python::object& aFunc);
 
     private:
-      static std::map<std::string, pySignal> mSignalMap;
+      std::map<std::string, pySignal> mSignalMap;
   };
 }
 

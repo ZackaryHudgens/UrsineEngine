@@ -2,19 +2,20 @@
 
 using namespace boost::python;
 
-/*#include "Environment.hpp"
+#include "Environment.hpp"
 
 #include "ComponentWrapper.hpp"
 #include "GameObjectWrapper.hpp"
 #include "PyExtension.hpp"
 #include "SceneWrapper.hpp"
+#include "Signal.hpp"
 
 using pyExt::ComponentWrapper;
 using pyExt::GameObjectWrapper;
 using pyExt::PyExtension;
 using pyExt::SceneWrapper;
 
-using core::Environment;*/
+using core::Environment;
 
 // TESTING
 object obj;
@@ -44,8 +45,8 @@ BOOST_PYTHON_MODULE(core)
   def("callFunc", &callFunc);
 
   // Expose the Environment class.
-  /*def("get_or_create_environment", &GetOrCreateEnvironment,
-    return_value_policy<reference_existing_object>());
+  //def("get_or_create_environment", &GetOrCreateEnvironment,
+  //  return_value_policy<reference_existing_object>());
 
   class_<Environment, boost::noncopyable>("Environment", no_init)
     .def("initialize", &Environment::Initialize)
@@ -63,5 +64,5 @@ BOOST_PYTHON_MODULE(core)
 
   // Expose the Scene class.
   class_<SceneWrapper, boost::noncopyable>("Scene")
-    .def("add_object", &SceneWrapper::AddObject_);*/
+    .def("add_object", &SceneWrapper::AddObject_);
 }

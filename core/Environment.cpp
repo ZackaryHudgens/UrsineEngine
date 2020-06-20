@@ -71,12 +71,6 @@ void Environment::Run()
     {
       glfwPollEvents();
 
-      // Update each extension.
-      for(auto& ext : mExtensions)
-      {
-        ext->Update();
-      }
-
       double elapsedTime = glfwGetTime() - previousTime;
       previousTime = glfwGetTime();
       updateLag += elapsedTime;
@@ -85,6 +79,13 @@ void Environment::Run()
       while(updateLag >= 0.15)
       {
         Update();
+
+        // Update each extension.
+        for(auto& ext : mExtensions)
+        {
+          ext->Update();
+        }
+
         updateLag -= 0.15;
 
         ++updateCounter;
@@ -114,13 +115,9 @@ void Environment::LoadScene(Scene& aScene)
   mCurrentScene->Load();
 }
 
-template <typename EXTENSION>
-void Environment::RegisterExtension()
+void Environment::RegisterExtension(std::unique_ptr<Extension> aExtension)
 {
-  bool isBase = std::is_base_of<Extension, EXTENSION>();
-  assert(isBase);
-
-  mExtensions.emplace_back(std::move(std::make_unique<EXTENSION>()));
+  mExtensions.emplace_back(std::move(aExtension));
 }
 
 void Environment::Update()

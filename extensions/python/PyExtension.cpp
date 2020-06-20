@@ -1,10 +1,9 @@
 #include "PyExtension.hpp"
 
-using pyExt::pySignal;
 using pyExt::PyExtension;
 
 PyExtension::PyExtension()
-  : ExtensionT<PyExtension>()
+  : Extension()
 {
 }
 
@@ -22,8 +21,8 @@ void PyExtension::CreateSignal(const std::string& aName)
 }
 
 void PyExtension::Connect(const std::string& aName,
-                          Observer& aObserver,
-                          boost::python::object& aFunc)
+                                 Observer& aObserver,
+                                 boost::python::object& aFunc)
 {
   auto funcWrapper = [aFunc](boost::python::list& aArgs)
   {
