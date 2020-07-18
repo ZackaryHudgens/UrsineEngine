@@ -28,9 +28,11 @@ namespace pyExt
       void Update() override;
 
       void CreateSignal(const std::string& aName);
+      void NotifySignal(const std::string& aName,
+                        boost::python::list& aArgs);
 
-      void Connect(const std::string& aName,
-                   Observer& aObserver,
+      void Connect(Observer& aObserver,
+                   const std::string& aName,
                    boost::python::object& aFunc);
 
     private:

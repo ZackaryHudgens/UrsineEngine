@@ -1,6 +1,7 @@
 #ifndef ENVIRONMENT_HPP
 #define ENVIRONMENT_HPP
 
+#include <map>
 #include <memory>
 
 #include <GL/glew.h>
@@ -25,12 +26,14 @@ namespace core
 
       static Environment& GetInstance();
 
-      bool Initialize(const char* aTitle, int aWidth, int aHeight);
+      bool CreateWindow(const char* aTitle, int aWidth, int aHeight);
       void Run();
 
       void LoadScene(Scene& aScene);
 
-      void RegisterExtension(std::unique_ptr<Extension> aExtension);
+      bool RegisterExtension(const std::string& aName,
+                                    std::unique_ptr<Extension> aExtension);
+      Extension* GetExtension(const std::string& aName);
 
     protected:
       Environment();
@@ -42,7 +45,7 @@ namespace core
       GLFWwindow* mWindow;
 
       static std::unique_ptr<Environment> mInstance;
-      std::vector<std::unique_ptr<Extension>> mExtensions;
+      std::map<std::string, std::unique_ptr<Extension>> mExtensionMap;
       Scene* mCurrentScene;
 
       bool mInitialized;

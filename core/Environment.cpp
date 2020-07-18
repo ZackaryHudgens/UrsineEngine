@@ -33,7 +33,7 @@ Environment& Environment::GetInstance()
   return *mInstance.get();
 }
 
-bool Environment::Initialize(const char* aTitle, int aWidth, int aHeight)
+bool Environment::CreateWindow(const char* aTitle, int aWidth, int aHeight)
 {
   bool init = false;
   if(glfwInit())
@@ -81,9 +81,9 @@ void Environment::Run()
         Update();
 
         // Update each extension.
-        for(auto& ext : mExtensions)
+        for(auto& ext : mExtensionMap)
         {
-          ext->Update();
+          ext.second->Update();
         }
 
         updateLag -= 0.15;
@@ -115,9 +115,30 @@ void Environment::LoadScene(Scene& aScene)
   mCurrentScene->Load();
 }
 
-void Environment::RegisterExtension(std::unique_ptr<Extension> aExtension)
+bool Environment::RegisterExtension(const std::string& aName,
+                                    std::unique_ptr<Extension> aExtension)
 {
-  mExtensions.emplace_back(std::move(aExtension));
+  bool success = false;
+  if(mExtensionMap.find(aName) == mExtensionMap.end())
+  {
+    mExtensionMap.emplace(aName, std::move(aExtension));
+    success = true;
+  }
+
+  return success;
+}
+
+Extension* Environment::GetExtension(const std::string& aName)
+{
+  Extension* ret = nullptr;
+
+  auto foundExt = mExtensionMap.find(aName);
+  if(foundExt != mExtensionMap.end())
+  {
+    ret = foundExt->second.get();
+  }
+
+  return ret;
 }
 
 void Environment::Update()
@@ -130,6 +151,7 @@ void Environment::Update()
 
 void Environment::Render()
 {
+  // Render the current scene.
   if(mCurrentScene != nullptr)
   {
     mCurrentScene->Render();

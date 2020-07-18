@@ -15,3 +15,5 @@ target_include_directories(UrsineCore PUBLIC .
                            ${GLEW_INCLUDE_DIRS}
                            "${PROJECT_SOURCE_DIR}/math"
                            "${PROJECT_SOURCE_DIR}/core/util")
+
+install(TARGETS UrsineCore LIBRARY DESTINATION "${URSINE_INSTALL_DIR}")

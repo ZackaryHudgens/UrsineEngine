@@ -20,9 +20,19 @@ void PyExtension::CreateSignal(const std::string& aName)
   }
 }
 
-void PyExtension::Connect(const std::string& aName,
-                                 Observer& aObserver,
-                                 boost::python::object& aFunc)
+void PyExtension::NotifySignal(const std::string& aName,
+                               boost::python::list& aArgs)
+{
+  auto sig = mSignalMap.find(aName);
+  if(sig != mSignalMap.end())
+  {
+    sig->second.Notify(aArgs);
+  }
+}
+
+void PyExtension::Connect(Observer& aObserver,
+                          const std::string& aName,
+                          boost::python::object& aFunc)
 {
   auto funcWrapper = [aFunc](boost::python::list& aArgs)
   {
@@ -33,5 +43,10 @@ void PyExtension::Connect(const std::string& aName,
   if(sig != mSignalMap.end())
   {
     sig->second.Connect(aObserver, funcWrapper);
+  }
+  else
+  {
+    CreateSignal(aName);
+    Connect(aObserver, aName, aFunc);
   }
 }

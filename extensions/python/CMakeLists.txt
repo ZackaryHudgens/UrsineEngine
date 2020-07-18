@@ -4,7 +4,7 @@ find_package(PythonLibs 3 REQUIRED)
 # On newer versions of CMake (>= 3.12) this is fixed.
 find_package(Boost COMPONENTS python3 REQUIRED)
 
-file(GLOB CORE_PYTHON_SOURCES *.cpp *.hpp)
+file(GLOB CORE_PYTHON_SOURCES *.cpp)
 
 add_library(core SHARED ${CORE_PYTHON_SOURCES})
 target_link_libraries(core PUBLIC
@@ -19,3 +19,9 @@ target_include_directories(core PUBLIC .
 # Remove the "lib" prefix.
 set_target_properties(core PROPERTIES
                       PREFIX "")
+
+# Install as a python module.
+install(TARGETS core LIBRARY DESTINATION "${URSINE_INSTALL_DIR}/python3.6/site-packages/UrsineEngine")
+
+# Add __init__.py so the module is recognized.
+file(WRITE "__init__.py" "${URSINE_INSTALL_DIR}/python3.6/site-packages/UrsineEngine")
