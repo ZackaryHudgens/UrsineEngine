@@ -32,5 +32,3 @@ env = core.get_or_create_environment()
 env.create_window("test", 500, 500)
 env.load_scene(mainScene)
 env.run()
-
-env.load_scene(mainScene)
