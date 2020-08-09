@@ -18,6 +18,7 @@ Vector2D::Vector2D(double aX, double aY)
 {
 }
 
+
 void Vector2D::operator=(const Vector2D& aVector)
 {
   x = aVector.x;
@@ -46,26 +47,42 @@ Vector2D Vector2D::operator-(const Vector2D& aVector)
 
 void Vector2D::operator+=(const Vector2D& aVector)
 {
-  x += aVector.x;
-  y += aVector.y;
+  *this = *this + aVector;
 }
 
 void Vector2D::operator-=(const Vector2D& aVector)
 {
-  x -= aVector.x;
-  y -= aVector.y;
+  *this = *this - aVector;
 }
 
-Vector2D Vector2D::operator*(const Vector2D& aVector)
+double Vector2D::Length() const
 {
-  x *= aVector.x;
-  y *= aVector.y;
-  return *this;
+  return sqrt((x * x) + (y * y));
 }
 
-Vector2D Vector2D::operator*(double aFactor)
+Vector2D Vector2D::Normalize() const
 {
-  x *= aFactor;
-  y *= aFactor;
-  return *this;
+  return Vector2D(x / Length(), y / Length());
+}
+
+double Vector2D::AngleWith(const Vector2D& aVector) const
+{
+  Vector2D a = Normalize();
+  Vector2D b = aVector.Normalize();
+
+  // As a reminder: this function returns the angle between
+  // these two vectors. This is done by taking the arccos of
+  // the dot product. The dot product itself is given by summing
+  // up the products of each component.
+  return acos((a.x * b.x) + (a.y * b.y));
+}
+
+bool Vector2D::IsOrthogonalTo(const Vector2D& aVector) const
+{
+  return fabs(90 - AngleWith(aVector)) < ALLOWABLE_ERROR;
+}
+
+bool Vector2D::IsParallelTo(const Vector2D& aVector) const
+{
+  return fabs(180 - AngleWith(aVector)) < ALLOWABLE_ERROR;
 }

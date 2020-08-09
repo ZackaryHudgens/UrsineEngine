@@ -1,2 +1,0 @@
-- create/rework Vector and Matrix classes
-- create MeshComponent and ModelComponent classes
