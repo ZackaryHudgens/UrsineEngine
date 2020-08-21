@@ -151,14 +151,14 @@ void Environment::Update()
 
 void Environment::Render()
 {
+  // Clear the window.
+  glClear(GL_COLOR_BUFFER_BIT);
+
   // Render the current scene.
   if(mCurrentScene != nullptr)
   {
     mCurrentScene->Render();
   }
-
-  // Clear the window.
-  glClear(GL_COLOR_BUFFER_BIT);
 
   // Swap the front/back buffers.
   glfwSwapBuffers(mWindow);

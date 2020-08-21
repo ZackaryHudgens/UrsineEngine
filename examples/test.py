@@ -2,6 +2,9 @@ from UrsineEngine import core
 
 core.initialize() # TODO: handle this automatically?
 
+env = core.get_or_create_environment()
+env.create_window("test", 500, 500)
+
 class HealthComponent(core.Component):
     def __init__(self):
         core.Component.__init__(self) # TODO: handle this automatically?
@@ -24,11 +27,11 @@ class PlayerObject(core.GameObject):
         self.add_component(HealthComponent())
 
 player = PlayerObject()
+temp = core.ShaderComponent("test.vert", "test.frag"); # TODO: adding this in construction deletes the ShaderComponent?
+player.add_component(temp);
 
 mainScene = core.Scene()
 mainScene.add_object(player)
 
-env = core.get_or_create_environment()
-env.create_window("test", 500, 500)
 env.load_scene(mainScene)
 env.run()

@@ -19,8 +19,13 @@ namespace core
     public:
       ShaderComponent(const std::string& aVertexPath,
                       const std::string& aFragmentPath);
+      ~ShaderComponent() { std::cout << "uh" << std::endl; }
 
+      void Update() override {}
       void Render() const override;
+
+      void SetUniform(const std::string& aName,
+                      const std::vector<double>& aValueList);
 
     private:
       void LoadShaderAsString(std::string& aString,

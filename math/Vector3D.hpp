@@ -1,6 +1,8 @@
 #ifndef VECTOR3D
 #define VECTOR3D
 
+#include <iostream>
+
 namespace math
 {
   /**
@@ -21,10 +23,17 @@ namespace math
       void operator+=(const Vector3D& aVector);
       void operator-=(const Vector3D& aVector);
 
+      friend std::ostream& operator<<(std::ostream& aStream,
+                                      const Vector3D aVector)
+      {
+        aStream << "[" << aVector.x << ", " << aVector.y << aVector.z << "]";
+        return aStream;
+      }
+
       /*
-       * Returns the length of this vector.
+       * Returns the magnitude of this vector.
        */
-      double Length() const;
+      double Magnitude() const;
 
       /**
        * Returns the unit vector for this vector.

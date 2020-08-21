@@ -55,14 +55,14 @@ void Vector2D::operator-=(const Vector2D& aVector)
   *this = *this - aVector;
 }
 
-double Vector2D::Length() const
+double Vector2D::Magnitude() const
 {
   return sqrt((x * x) + (y * y));
 }
 
 Vector2D Vector2D::Normalize() const
 {
-  return Vector2D(x / Length(), y / Length());
+  return Vector2D(x / Magnitude(), y / Magnitude());
 }
 
 double Vector2D::AngleWith(const Vector2D& aVector) const

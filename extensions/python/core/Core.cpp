@@ -4,6 +4,7 @@
 
 #include "Environment.hpp"
 #include "Observer.hpp"
+#include "ShaderComponent.hpp"
 
 #include "ComponentWrapper.hpp"
 #include "GameObjectWrapper.hpp"
@@ -14,6 +15,7 @@ using namespace boost::python;
 
 using core::Environment;
 using core::Observer;
+using core::ShaderComponent;
 
 using pyExt::ComponentWrapper;
 using pyExt::GameObjectWrapper;
@@ -84,6 +86,11 @@ BOOST_PYTHON_MODULE(core)
     .def("update", pure_virtual(&Component::Update))
     .def("load", &ComponentWrapper::Load)
     .def("unload", &ComponentWrapper::Unload);
+
+  class_<ShaderComponent,
+         bases<Component>,
+         boost::noncopyable>("ShaderComponent",
+                             init<std::string, std::string>());
 
   // Expose the GameObject class.
   class_<GameObjectWrapper, bases<Observer>, boost::noncopyable>("GameObject")

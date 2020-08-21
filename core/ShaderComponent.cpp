@@ -32,7 +32,80 @@ ShaderComponent::ShaderComponent(const std::string& aVertexPath,
 
 void ShaderComponent::Render() const
 {
+/*GLuint VertexArrayID;
+glGenVertexArrays(1, &VertexArrayID);
+glBindVertexArray(VertexArrayID);
+
+// An array of 3 vectors which represents 3 vertices
+static const GLfloat g_vertex_buffer_data[] = {
+   -1.0f, -1.0f, 0.0f,
+   1.0f, -1.0f, 0.0f,
+   0.0f,  1.0f, 0.0f,
+};
+
+// This will identify our vertex buffer
+GLuint vertexbuffer;
+// Generate 1 buffer, put the resulting identifier in vertexbuffer
+glGenBuffers(1, &vertexbuffer);
+// The following commands will talk about our 'vertexbuffer' buffer
+glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+// Give our vertices to OpenGL.
+glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+
+// 1st attribute buffer : vertices
+glEnableVertexAttribArray(0);
+glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+glVertexAttribPointer(
+   0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+   3,                  // size
+   GL_FLOAT,           // type
+   GL_FALSE,           // normalized?
+   0,                  // stride
+   (void*)0            // array buffer offset
+);*
+
+// Draw the triangle !
+//glUseProgram(mProgramId);
+//glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
+//glDisableVertexAttribArray(0);*/
+
   glUseProgram(mProgramId);
+}
+
+void ShaderComponent::SetUniform(const std::string& aName,
+                                 const std::vector<double>& aValueList)
+{
+  if(aValueList.size() == 1)
+  {
+    glUniform1d(glGetUniformLocation(mProgramId, aName.c_str()),
+                aValueList[0]);
+  }
+  else if(aValueList.size() == 2)
+  {
+    glUniform2d(glGetUniformLocation(mProgramId, aName.c_str()),
+                aValueList[0],
+                aValueList[1]);
+  }
+  else if(aValueList.size() == 3)
+  {
+    glUniform3d(glGetUniformLocation(mProgramId, aName.c_str()),
+                aValueList[0],
+                aValueList[1],
+                aValueList[2]);
+  }
+  else if(aValueList.size() == 4)
+  {
+    glUniform4d(glGetUniformLocation(mProgramId, aName.c_str()),
+                aValueList[0],
+                aValueList[1],
+                aValueList[2],
+                aValueList[3]);
+  }
+  else
+  {
+    std::cout << "Uniforms of size " << aValueList.size() <<
+    " are not supported!" << std::endl;
+  }
 }
 
 void ShaderComponent::LoadShaderAsString(std::string& aString,

@@ -60,14 +60,14 @@ void Vector3D::operator-=(const Vector3D& aVector)
   *this = *this - aVector;
 }
 
-double Vector3D::Length() const
+double Vector3D::Magnitude() const
 {
   return sqrt((x * x) + (y * y) + (z * z));
 }
 
 Vector3D Vector3D::Normalize() const
 {
-  return Vector3D(x / Length(), y / Length(), z / Length());
+  return Vector3D(x / Magnitude(), y / Magnitude(), z / Magnitude());
 }
 
 double Vector3D::AngleWith(const Vector3D& aVector) const
