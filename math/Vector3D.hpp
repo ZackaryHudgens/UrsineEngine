@@ -16,7 +16,8 @@ namespace math
       Vector3D(double aX, double aY, double aZ);
 
       void operator=(const Vector3D& aVector);
-      bool operator==(const Vector3D& aVector);
+      bool operator==(const Vector3D& aVector) const;
+      bool operator!=(const Vector3D& aVector) const;
 
       Vector3D operator+(const Vector3D& aVector);
       Vector3D operator-(const Vector3D& aVector);
@@ -26,9 +27,40 @@ namespace math
       friend std::ostream& operator<<(std::ostream& aStream,
                                       const Vector3D aVector)
       {
-        aStream << "[" << aVector.x << ", " << aVector.y << aVector.z << "]";
+        aStream << "[" << aVector.x() << ", " <<
+                aVector.y() << ", " << aVector.z() << "]";
         return aStream;
       }
+
+      /**
+       * Returns the x-component of this vector.
+       */
+      double x() const { return mPoints[0]; }
+
+      /**
+       * Returns the y-component of this vector.
+       */
+      double y() const { return mPoints[1]; }
+
+      /**
+       * Returns the z-component of thix vector.
+       */
+      double z() const { return mPoints[2]; }
+
+      /**
+       * Sets the x-component of this vector.
+       */
+      void x(double aVal) { mPoints[0] = aVal; }
+
+      /**
+       * Sets the y-component of this vector.
+       */
+      void y(double aVal) { mPoints[1] = aVal; }
+
+      /**
+       * Sets the z-component of this vector.
+       */
+      void z(double aVal) { mPoints[2] = aVal; }
 
       /*
        * Returns the magnitude of this vector.
@@ -41,7 +73,7 @@ namespace math
       Vector3D Normalize() const;
 
       /**
-       * Returns the angle between this vector and the given vector.
+       * Returns the angle between this vector and the given vector in degrees.
        *
        * @param aVector The vector to compare with.
        */
@@ -68,9 +100,8 @@ namespace math
        */
       Vector3D CrossProduct(const Vector3D& aVector) const;
 
-      double x;
-      double y;
-      double z;
+    private:
+      double mPoints[3];
   };
 }
 

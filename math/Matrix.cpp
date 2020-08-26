@@ -2,7 +2,11 @@
 
 #include <iostream>
 
+#include "MathUtils.hpp"
+
 using math::Matrix;
+using math::Vector2D;
+using math::Vector3D;
 
 Matrix::Matrix(int aRowCount, int aColumnCount)
   : mRows(aRowCount)
@@ -26,9 +30,29 @@ void Matrix::operator=(const Matrix& aMatrix)
 
 bool Matrix::operator==(const Matrix& aMatrix) const
 {
-  return (mRows == aMatrix.mRows) &&
-         (mColumns == aMatrix.mColumns) &&
-         (mValues == aMatrix.mValues);
+  bool equalValues = true;
+  if(mRows == aMatrix.mRows && mColumns == aMatrix.mColumns)
+  {
+    for(int i = 0; i < mValues.size(); ++i)
+    {
+      if(!math::AlmostEqual(mValues.at(i), aMatrix.mValues.at(i)))
+      {
+        equalValues = false;
+        break;
+      }
+    }
+  }
+  else
+  {
+    equalValues = false;
+  }
+
+  return equalValues;
+}
+
+bool Matrix::operator!=(const Matrix& aMatrix) const
+{
+  return !(*this == aMatrix);
 }
 
 Matrix Matrix::operator+(const Matrix& aMatrix)
@@ -117,6 +141,39 @@ Matrix Matrix::operator*(const Matrix& aMatrix)
   }
 
   return mat;
+}
+
+Vector2D Matrix::operator*(const Vector2D& aVector)
+{
+  // Create an Mx1 matrix from this vector.
+  Matrix trans(mRows, 1);
+  trans.SetValue(1, 1, aVector.x());
+  trans.SetValue(2, 1, aVector.y());
+
+  // Transform the vector in matrix form.
+  trans *= *this;
+
+  // Convert the matrix back to a vector, then return it.
+  Vector2D vec(trans.GetValue(1, 1), trans.GetValue(2, 1));
+  return vec;
+}
+
+Vector3D Matrix::operator*(const Vector3D& aVector)
+{
+  // Create an Mx1 matrix from this vector.
+  Matrix trans(mRows, 1);
+  trans.SetValue(1, 1, aVector.x());
+  trans.SetValue(2, 1, aVector.y());
+  trans.SetValue(3, 1, aVector.z());
+
+  // Transform the vector in matrix form.
+  trans *= *this;
+
+  // Convert the matrix back to a vector, then return it.
+  Vector3D vec(trans.GetValue(1, 1),
+               trans.GetValue(2, 1),
+               trans.GetValue(3, 1));
+  return vec;
 }
 
 void Matrix::operator+=(const Matrix& aMatrix)

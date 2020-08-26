@@ -5,6 +5,9 @@
 #include <exception>
 #include <vector>
 
+#include "Vector2D.hpp"
+#include "Vector3D.hpp"
+
 namespace math
 {
   /**
@@ -32,11 +35,16 @@ namespace math
 
       void operator=(const Matrix& aMatrix);
       bool operator==(const Matrix& aMatrix) const;
+      bool operator!=(const Matrix& aMatrix) const;
 
       Matrix operator+(const Matrix& aMatrix);
       Matrix operator-(const Matrix& aMatrix);
       Matrix operator*(double aScalar);
       Matrix operator*(const Matrix& aMatrix);
+
+      Vector2D operator*(const Vector2D& aVector);
+      Vector3D operator*(const Vector3D& aVector);
+
       void operator+=(const Matrix& aMatrix);
       void operator-=(const Matrix& aMatrix);
       void operator*=(double aScalar);

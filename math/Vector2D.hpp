@@ -18,7 +18,8 @@ namespace math
       Vector2D(double aX, double aY);
 
       void operator=(const Vector2D& aVector);
-      bool operator==(const Vector2D& aVector);
+      bool operator==(const Vector2D& aVector) const;
+      bool operator!=(const Vector2D& aVector) const;
 
       Vector2D operator+(const Vector2D& aVector);
       Vector2D operator-(const Vector2D& aVector);
@@ -28,9 +29,29 @@ namespace math
       friend std::ostream& operator<<(std::ostream& aStream,
                                       const Vector2D aVector)
       {
-        aStream << "[" << aVector.x << ", " << aVector.y << "]";
+        aStream << "[" << aVector.x() << ", " << aVector.y() << "]";
         return aStream;
       }
+
+      /**
+       * Returns the x-coordinate of this vector.
+       */
+      double x() const { return mPoints[0]; }
+
+      /**
+       * Returns the y-coordinate of this vector.
+       */
+      double y() const { return mPoints[1]; }
+
+      /**
+       * Sets the x-component of this vector.
+       */
+      void x(double aVal) { mPoints[0] = aVal; }
+
+      /**
+       * Sets the y-component of this vector.
+       */
+      void y(double aVal) { mPoints[1] = aVal; }
 
       /*
        * Returns the magnitude of this vector.
@@ -43,7 +64,7 @@ namespace math
       Vector2D Normalize() const;
 
       /**
-       * Returns the angle between this vector and the given vector.
+       * Returns the angle between this vector and the given vector in degrees.
        *
        * @param aVector The vector to compare with.
        */
@@ -63,8 +84,8 @@ namespace math
        */
       bool IsParallelTo(const Vector2D& aVector) const;
 
-      double x;
-      double y;
+    private:
+      double mPoints[2];
   };
 }
 

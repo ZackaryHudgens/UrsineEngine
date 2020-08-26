@@ -1,4 +1,3 @@
-#include <iostream>
 #include <catch2/catch.hpp>
 
 #include "Matrix.hpp"
@@ -52,6 +51,10 @@ TEST_CASE("Matrix Equality")
   b.SetValue(1, 1, 5);
 
   REQUIRE(a == b);
+
+  a.SetValue(3, 3, 0.009);
+
+  REQUIRE(a != b);
 }
 
 TEST_CASE("Identity Matrix")
