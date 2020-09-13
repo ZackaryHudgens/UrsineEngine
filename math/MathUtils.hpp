@@ -3,20 +3,46 @@
 
 #include <cmath>
 
-#include "Matrix.hpp"
+#include "Matrix4D.hpp"
 #include "Vector2D.hpp"
 #include "Vector3D.hpp"
 
 namespace math
 {
   /**
-   * Matrix/Vector Transformation mathods.
+   * Matrix Transformation mathods.
    */
 
-  // TODO: CreateTransformationMatrix()
-  // should return a transformation matrix that then gets passed
-  // to the shader, then used in the shader to multiply the vector
-  // instead of applying it to the vector in C++
+  /**
+   * Creates a transformation matrix by applying the given scalar vector.
+   *
+   * @param aMatrix The transformation matrix.
+   * @param aVector The value(s) to scale by for each axis.
+   */
+  void ScaleMatrix(Matrix4D& aMatrix, const Vector2D& aVector);
+  void ScaleMatrix(Matrix4D& aMatrix, const Vector3D& aVector);
+
+  /**
+   * Creates a transformation matrix by applying the given translation.
+   *
+   * @param aMatrix The transformation matrix.
+   * @param aVector The translation vector.
+   */
+  void TranslateMatrix(Matrix4D& aMatrix, const Vector2D& aVector);
+  void TranslateMatrix(Matrix4D& aMatrix, const Vector3D& aVector);
+
+  /**
+   * Creates a transformation matrix by rotating it by the given angle
+   * in degrees around the given axis.
+   *
+   * @param aMatrix The transformation matrix.
+   * @param aVector The axis to rotate around.
+   * @param aAngle The amount to rotate in degrees.
+   */
+  void RotateMatrix(Matrix4D& aMatrix, const Vector2D& aVector, double aAngle);
+  void RotateMatrix(Matrix4D& aMatrix, const Vector3D& aVector, double aAngle);
+
+  // TODO: Quaternions?
 
   /**
    * Conversion methods.

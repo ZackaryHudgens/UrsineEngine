@@ -72,6 +72,11 @@ TEST_CASE("Vector2D Angle Calculation")
 
   REQUIRE(a.AngleWith(b) == 90);
 
+  b.x(0);
+  b.y(-5);
+
+  REQUIRE(a.AngleWith(b) == 180);
+
   Vector2D c(33.6, 72.4);
   Vector2D d(89.8, 10.7);
 

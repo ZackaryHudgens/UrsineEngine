@@ -20,13 +20,6 @@ Vector3D::Vector3D(double aX, double aY, double aZ)
   mPoints[2] = aZ;
 }
 
-void Vector3D::operator=(const Vector3D& aVector)
-{
-  mPoints[0] = aVector.x();
-  mPoints[1] = aVector.y();
-  mPoints[2] = aVector.z();
-}
-
 bool Vector3D::operator==(const Vector3D& aVector) const
 {
   return(math::AlmostEqual(mPoints[0], aVector.x()) &&
@@ -39,30 +32,76 @@ bool Vector3D::operator!=(const Vector3D& aVector) const
   return !(*this == aVector);
 }
 
-Vector3D Vector3D::operator+(const Vector3D& aVector)
+Vector3D Vector3D::operator+(const double& aScalar) const
 {
-  mPoints[0] += aVector.x();
-  mPoints[1] += aVector.y();
-  mPoints[2] += aVector.z();
+  Vector3D r(x() + aScalar, y() + aScalar, z() + aScalar);
+  return r;
+}
+
+Vector3D Vector3D::operator-(const double& aScalar) const
+{
+  Vector3D r(x() - aScalar, y() - aScalar, z() - aScalar);
+  return r;
+}
+
+Vector3D Vector3D::operator*(const double& aScalar) const
+{
+  Vector3D r(x() * aScalar, y() * aScalar, z() * aScalar);
+  return r;
+}
+
+Vector3D Vector3D::operator/(const double& aScalar) const
+{
+  Vector3D r(x() / aScalar, y() / aScalar, z() / aScalar);
+  return r;
+}
+
+Vector3D& Vector3D::operator+=(const double& aScalar)
+{
+  *this = *this + aScalar;
   return *this;
 }
 
-Vector3D Vector3D::operator-(const Vector3D& aVector)
+Vector3D& Vector3D::operator-=(const double& aScalar)
 {
-  mPoints[0] -= aVector.x();
-  mPoints[1] -= aVector.y();
-  mPoints[2] -= aVector.z();
+  *this = *this - aScalar;
   return *this;
 }
 
-void Vector3D::operator+=(const Vector3D& aVector)
+Vector3D& Vector3D::operator*=(const double& aScalar)
+{
+  *this = *this * aScalar;
+  return *this;
+}
+
+Vector3D& Vector3D::operator/=(const double& aScalar)
+{
+  *this = *this / aScalar;
+  return *this;
+}
+
+Vector3D Vector3D::operator+(const Vector3D& aVector) const
+{
+  Vector3D r(x() + aVector.x(), y() + aVector.y(), z() + aVector.z());
+  return r;
+}
+
+Vector3D Vector3D::operator-(const Vector3D& aVector) const
+{
+  Vector3D r(x() - aVector.x(), y() - aVector.y(), z() - aVector.z());
+  return r;
+}
+
+Vector3D& Vector3D::operator+=(const Vector3D& aVector)
 {
   *this = *this + aVector;
+  return *this;
 }
 
-void Vector3D::operator-=(const Vector3D& aVector)
+Vector3D& Vector3D::operator-=(const Vector3D& aVector)
 {
   *this = *this - aVector;
+  return *this;
 }
 
 double Vector3D::Magnitude() const
@@ -79,18 +118,17 @@ Vector3D Vector3D::Normalize() const
                   mPoints[2] / Magnitude());
 }
 
-double Vector3D::AngleWith(const Vector3D& aVector) const
+double Vector3D::DotProduct(const Vector3D& aVector) const
 {
   Vector3D a = Normalize();
   Vector3D b = aVector.Normalize();
 
-  // As a reminder: this function returns the angle between
-  // these two vectors. This is done by taking the arccos of
-  // the dot product. The dot product itself is given by summing
-  // up the products of each component.
-  return math::RadToDeg(acos((a.x() * b.x()) +
-                             (a.y() * b.y()) +
-                             (a.z() * b.z())));
+  return (a.x() * b.x()) + (a.y() * b.y()) + (a.z() * b.z());
+}
+
+double Vector3D::AngleWith(const Vector3D& aVector) const
+{
+  return math::RadToDeg(acos(DotProduct(aVector)));
 }
 
 bool Vector3D::IsOrthogonalTo(const Vector3D& aVector) const

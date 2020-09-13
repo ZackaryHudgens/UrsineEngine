@@ -18,13 +18,6 @@ Vector2D::Vector2D(double aX, double aY)
   mPoints[1] = aY;
 }
 
-
-void Vector2D::operator=(const Vector2D& aVector)
-{
-  mPoints[0] = aVector.x();
-  mPoints[1] = aVector.y();
-}
-
 bool Vector2D::operator==(const Vector2D& aVector) const
 {
   return(math::AlmostEqual(mPoints[0], aVector.x()) &&
@@ -36,28 +29,76 @@ bool Vector2D::operator!=(const Vector2D& aVector) const
   return !(*this == aVector);
 }
 
-Vector2D Vector2D::operator+(const Vector2D& aVector)
+Vector2D Vector2D::operator+(const double& aScalar) const
 {
-  mPoints[0] += aVector.x();
-  mPoints[1] += aVector.y();
+  Vector2D r(x() + aScalar, y() + aScalar);
+  return r;
+}
+
+Vector2D Vector2D::operator-(const double& aScalar) const
+{
+  Vector2D r(x() - aScalar, y() - aScalar);
+  return r;
+}
+
+Vector2D Vector2D::operator*(const double& aScalar) const
+{
+  Vector2D r(x() * aScalar, y() * aScalar);
+  return r;
+}
+
+Vector2D Vector2D::operator/(const double& aScalar) const
+{
+  Vector2D r(x() / aScalar, y() / aScalar);
+  return r;
+}
+
+Vector2D& Vector2D::operator+=(const double& aScalar)
+{
+  *this = *this + aScalar;
   return *this;
 }
 
-Vector2D Vector2D::operator-(const Vector2D& aVector)
+Vector2D& Vector2D::operator-=(const double& aScalar)
 {
-  mPoints[0] -= aVector.x();
-  mPoints[1] -= aVector.y();
+  *this = *this - aScalar;
   return *this;
 }
 
-void Vector2D::operator+=(const Vector2D& aVector)
+Vector2D& Vector2D::operator*=(const double& aScalar)
+{
+  *this = *this * aScalar;
+  return *this;
+}
+
+Vector2D& Vector2D::operator/=(const double& aScalar)
+{
+  *this = *this / aScalar;
+  return *this;
+}
+
+Vector2D Vector2D::operator+(const Vector2D& aVector) const
+{
+  Vector2D r(x() + aVector.x(), y() + aVector.y());
+  return r;
+}
+
+Vector2D Vector2D::operator-(const Vector2D& aVector) const
+{
+  Vector2D r(x() - aVector.x(), y() - aVector.y());
+  return r;
+}
+
+Vector2D& Vector2D::operator+=(const Vector2D& aVector)
 {
   *this = *this + aVector;
+  return *this;
 }
 
-void Vector2D::operator-=(const Vector2D& aVector)
+Vector2D& Vector2D::operator-=(const Vector2D& aVector)
 {
   *this = *this - aVector;
+  return *this;
 }
 
 double Vector2D::Magnitude() const
@@ -70,16 +111,17 @@ Vector2D Vector2D::Normalize() const
   return Vector2D(mPoints[0] / Magnitude(), mPoints[1] / Magnitude());
 }
 
-double Vector2D::AngleWith(const Vector2D& aVector) const
+double Vector2D::DotProduct(const Vector2D& aVector) const
 {
   Vector2D a = Normalize();
   Vector2D b = aVector.Normalize();
 
-  // As a reminder: this function returns the angle between
-  // these two vectors. This is done by taking the arccos of
-  // the dot product. The dot product itself is given by summing
-  // up the products of each component.
-  return math::RadToDeg(acos((a.x() * b.x()) + (a.y() * b.y())));
+  return ((a.x() * b.x()) + (a.y() * b.y()));
+}
+
+double Vector2D::AngleWith(const Vector2D& aVector) const
+{
+  return math::RadToDeg(acos(DotProduct(aVector)));
 }
 
 bool Vector2D::IsOrthogonalTo(const Vector2D& aVector) const

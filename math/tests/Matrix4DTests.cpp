@@ -1,12 +1,16 @@
 #include <catch2/catch.hpp>
 
-#include "Matrix.hpp"
+#include "Matrix4D.hpp"
+#include "Vector2D.hpp"
+#include "Vector3D.hpp"
 
-using math::Matrix;
+using math::Matrix4D;
+using math::Vector2D;
+using math::Vector3D;
 
 TEST_CASE("Value Accessor")
 {
-  Matrix a(4, 4);
+  Matrix4D a(0);
 
   a.SetIdentity();
 
@@ -30,7 +34,7 @@ TEST_CASE("Value Accessor")
 
 TEST_CASE("Value Mutator")
 {
-  Matrix a(4, 4);
+  Matrix4D a(0);
 
   a.SetValue(1, 1, 50);
   a.SetValue(2, 1, 7);
@@ -45,7 +49,7 @@ TEST_CASE("Value Mutator")
 
 TEST_CASE("Matrix Equality")
 {
-  Matrix a(4, 4), b(4, 4);
+  Matrix4D a(0), b(0);
 
   a.SetValue(1, 1, 5);
   b.SetValue(1, 1, 5);
@@ -59,7 +63,7 @@ TEST_CASE("Matrix Equality")
 
 TEST_CASE("Identity Matrix")
 {
-  Matrix a(4, 4), b(4, 4);
+  Matrix4D a(0), b(0);
 
   a.SetValue(1, 1, 1);
   a.SetValue(2, 2, 1);
@@ -73,7 +77,7 @@ TEST_CASE("Identity Matrix")
 
 TEST_CASE("Matrix Assignment")
 {
-  Matrix a(4, 4), b(4, 4);
+  Matrix4D a(0), b(0);
 
   a.SetValue(2, 3, 16);
   a.SetValue(4, 2, 9);
@@ -85,7 +89,7 @@ TEST_CASE("Matrix Assignment")
 
 TEST_CASE("Matrix Addition")
 {
-  Matrix a(4, 4), b(4, 4);
+  Matrix4D a(0), b(0);
 
   a.SetValue(1, 4, 7);
   a.SetValue(2, 3, 17);
@@ -95,7 +99,7 @@ TEST_CASE("Matrix Addition")
   b.SetValue(2, 3, 6);
   b.SetValue(3, 1, 7);
 
-  Matrix c(4, 4);
+  Matrix4D c(0);
 
   c.SetValue(1, 4, 15);
   c.SetValue(2, 3, 23);
@@ -109,7 +113,7 @@ TEST_CASE("Matrix Addition")
 
 TEST_CASE("Matrix Subtraction")
 {
-  Matrix a(4, 4), b(4, 4);
+  Matrix4D a(0), b(0);
 
   a.SetValue(1, 4, 7);
   a.SetValue(2, 3, 17);
@@ -119,7 +123,7 @@ TEST_CASE("Matrix Subtraction")
   b.SetValue(2, 3, 6);
   b.SetValue(3, 1, 7);
 
-  Matrix c(4, 4);
+  Matrix4D c(0);
 
   c.SetValue(1, 4, -1);
   c.SetValue(2, 3, 11);
@@ -133,7 +137,7 @@ TEST_CASE("Matrix Subtraction")
 
 TEST_CASE("Matrix Scaling")
 {
-  Matrix a(4, 4), b(4, 4);
+  Matrix4D a(0), b(0);
 
   a.SetValue(1, 2, 4);
   a.SetValue(2, 4, 10);
@@ -148,7 +152,7 @@ TEST_CASE("Matrix Scaling")
 
 TEST_CASE("Matrix Multiplication")
 {
-  Matrix a(2, 3), b(3, 2);
+  Matrix4D a(0), b(0);
 
   a.SetValue(1, 3, 5);
   a.SetValue(2, 2, 20);
@@ -158,7 +162,7 @@ TEST_CASE("Matrix Multiplication")
   b.SetValue(2, 2, 4);
   b.SetValue(3, 1, 6);
 
-  Matrix c(2, 2);
+  Matrix4D c(0);
 
   c.SetValue(1, 1, 30);
   c.SetValue(2, 1, 18);
@@ -167,4 +171,24 @@ TEST_CASE("Matrix Multiplication")
   a *= b;
 
   REQUIRE(a == c);
+}
+
+TEST_CASE("Matrix-Vector Multiplication")
+{
+  Matrix4D a(0);
+
+  a.SetValue(1, 2, 5);
+  a.SetValue(2, 2, 3);
+  a.SetValue(3, 4, 7);
+
+  Vector2D b(3, 4), c(20, 12);
+
+  REQUIRE(c == (a * b));
+
+  a.SetValue(3, 3, 7);
+  a.SetValue(3, 4, 0);
+
+  Vector3D d(5, 3, 8), e(15, 9, 56);
+
+  REQUIRE(e == (a * d));
 }

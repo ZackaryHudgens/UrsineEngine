@@ -17,15 +17,29 @@ namespace math
       Vector2D();
       Vector2D(double aX, double aY);
 
-      void operator=(const Vector2D& aVector);
+      // Comparison operators
       bool operator==(const Vector2D& aVector) const;
       bool operator!=(const Vector2D& aVector) const;
 
-      Vector2D operator+(const Vector2D& aVector);
-      Vector2D operator-(const Vector2D& aVector);
-      void operator+=(const Vector2D& aVector);
-      void operator-=(const Vector2D& aVector);
+      // Scalar operations
+      Vector2D operator+(const double& aScalar) const;
+      Vector2D operator-(const double& aScalar) const;
+      Vector2D operator*(const double& aScalar) const;
+      Vector2D operator/(const double& aScalar) const;
 
+      Vector2D& operator+=(const double& aScalar);
+      Vector2D& operator-=(const double& aScalar);
+      Vector2D& operator*=(const double& aScalar);
+      Vector2D& operator/=(const double& aScalar);
+
+      // Vector operations
+      Vector2D operator+(const Vector2D& aVector) const;
+      Vector2D operator-(const Vector2D& aVector) const;
+
+      Vector2D& operator+=(const Vector2D& aVector);
+      Vector2D& operator-=(const Vector2D& aVector);
+
+      // Stream output operator
       friend std::ostream& operator<<(std::ostream& aStream,
                                       const Vector2D aVector)
       {
@@ -62,6 +76,13 @@ namespace math
        * Returns the unit vector for this vector.
        */
       Vector2D Normalize() const;
+
+      /**
+       * Returns the dot product of this vector and a given vector.
+       *
+       * @param aVector The vector to compare with.
+       */
+      double DotProduct(const Vector2D& aVector) const;
 
       /**
        * Returns the angle between this vector and the given vector in degrees.

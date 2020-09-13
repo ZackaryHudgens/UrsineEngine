@@ -15,14 +15,27 @@ namespace math
       Vector3D();
       Vector3D(double aX, double aY, double aZ);
 
-      void operator=(const Vector3D& aVector);
+      // Comparison operators
       bool operator==(const Vector3D& aVector) const;
       bool operator!=(const Vector3D& aVector) const;
 
-      Vector3D operator+(const Vector3D& aVector);
-      Vector3D operator-(const Vector3D& aVector);
-      void operator+=(const Vector3D& aVector);
-      void operator-=(const Vector3D& aVector);
+      // Scalar operations
+      Vector3D operator+(const double& aScalar) const;
+      Vector3D operator-(const double& aScalar) const;
+      Vector3D operator*(const double& aScalar) const;
+      Vector3D operator/(const double& aScalar) const;
+
+      Vector3D& operator+=(const double& aScalar);
+      Vector3D& operator-=(const double& aScalar);
+      Vector3D& operator*=(const double& aScalar);
+      Vector3D& operator/=(const double& aScalar);
+
+      // Vector operations
+      Vector3D operator+(const Vector3D& aVector) const;
+      Vector3D operator-(const Vector3D& aVector) const;
+
+      Vector3D& operator+=(const Vector3D& aVector);
+      Vector3D& operator-=(const Vector3D& aVector);
 
       friend std::ostream& operator<<(std::ostream& aStream,
                                       const Vector3D aVector)
@@ -71,6 +84,13 @@ namespace math
        * Returns the unit vector for this vector.
        */
       Vector3D Normalize() const;
+
+      /**
+       * Returns the dot product of this vector and a given vector.
+       *
+       * @param aVector The vector to compare with.
+       */
+      double DotProduct(const Vector3D& aVector) const;
 
       /**
        * Returns the angle between this vector and the given vector in degrees.
