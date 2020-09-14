@@ -39,10 +39,7 @@ namespace math
    * @param aVector The axis to rotate around.
    * @param aAngle The amount to rotate in degrees.
    */
-  void RotateMatrix(Matrix4D& aMatrix, const Vector2D& aVector, double aAngle);
   void RotateMatrix(Matrix4D& aMatrix, const Vector3D& aVector, double aAngle);
-
-  // TODO: Quaternions?
 
   /**
    * Conversion methods.
