@@ -3,8 +3,9 @@
 #include <cassert>
 #include <iostream>
 
+#include <ilu.h>
+
 using core::Environment;
-using core::Extension;
 using core::Scene;
 
 std::unique_ptr<Environment> Environment::mInstance = nullptr;
@@ -36,6 +37,8 @@ Environment& Environment::GetInstance()
 bool Environment::CreateWindow(const char* aTitle, int aWidth, int aHeight)
 {
   bool init = false;
+
+  // Initialize GLFW
   if(glfwInit())
   {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
@@ -49,9 +52,28 @@ bool Environment::CreateWindow(const char* aTitle, int aWidth, int aHeight)
     else
     {
       glfwMakeContextCurrent(mWindow);
-      if(glewInit() == GLEW_OK)
+
+      // Initialize GLEW.
+      GLenum glewError = glewInit();
+      if(glewError != GLEW_OK)
       {
-        init = true;
+        std::cout << "Error initializing GLEW! "
+                  << glewGetErrorString(glewError) << std::endl;
+      }
+      else
+      {
+        // Initialize DevIL.
+        ilInit();
+        ILenum devilError = ilGetError();
+        if(devilError != IL_NO_ERROR)
+        {
+          std::cout << "Error initializing DevIL! "
+                    << iluErrorString(devilError) << std::endl;
+        }
+        else
+        {
+          init = true;
+        }
       }
     }
   }
@@ -80,12 +102,6 @@ void Environment::Run()
       {
         Update();
 
-        // Update each extension.
-        for(auto& ext : mExtensionMap)
-        {
-          ext.second->Update();
-        }
-
         updateLag -= 0.15;
 
         ++updateCounter;
@@ -113,32 +129,6 @@ void Environment::LoadScene(Scene& aScene)
 
   mCurrentScene = &aScene;
   mCurrentScene->Load();
-}
-
-bool Environment::RegisterExtension(const std::string& aName,
-                                    std::unique_ptr<Extension> aExtension)
-{
-  bool success = false;
-  if(mExtensionMap.find(aName) == mExtensionMap.end())
-  {
-    mExtensionMap.emplace(aName, std::move(aExtension));
-    success = true;
-  }
-
-  return success;
-}
-
-Extension* Environment::GetExtension(const std::string& aName)
-{
-  Extension* ret = nullptr;
-
-  auto foundExt = mExtensionMap.find(aName);
-  if(foundExt != mExtensionMap.end())
-  {
-    ret = foundExt->second.get();
-  }
-
-  return ret;
 }
 
 void Environment::Update()

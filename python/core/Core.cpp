@@ -3,66 +3,48 @@
 #include <boost/python.hpp>
 
 #include "Environment.hpp"
+#include "MeshComponent.hpp"
+#include "ModelComponent.hpp"
 #include "Observer.hpp"
-#include "ShaderComponent.hpp"
+#include "Shader.hpp"
 
 #include "ComponentWrapper.hpp"
 #include "GameObjectWrapper.hpp"
-#include "PyExtension.hpp"
+#include "GraphicalComponentWrapper.hpp"
+#include "Messenger.hpp"
 #include "SceneWrapper.hpp"
 
 using namespace boost::python;
 
 using core::Environment;
+using core::MeshComponent;
+using core::ModelComponent;
 using core::Observer;
-using core::ShaderComponent;
+using core::Shader;
 
-using pyExt::ComponentWrapper;
-using pyExt::GameObjectWrapper;
-using pyExt::PyExtension;
-using pyExt::SceneWrapper;
+using py::ComponentWrapper;
+using py::GameObjectWrapper;
+using py::GraphicalComponentWrapper;
+using py::Messenger;
+using py::SceneWrapper;
 
 namespace
 {
-  void RegisterPythonExtension()
-  {
-    bool success = env.RegisterExtension("pyExt",
-                                         std::make_unique<PyExtension>());
-    assert(success);
-  }
-
-  PyExtension* GetPythonExtension()
-  {
-    auto* ext = env.GetExtension("pyExt");
-    PyExtension* pyExt = dynamic_cast<PyExtension*>(ext);
-
-    return pyExt;
-  }
+  Messenger messengerInstance;
 
   void Connect(Observer& aObserver, const std::string& aName, object& aFunc)
   {
-    auto* ext = GetPythonExtension();
-    if(ext != nullptr)
-    {
-      ext->Connect(aObserver, aName, aFunc);
-    }
+    messengerInstance.Connect(aObserver, aName, aFunc);
   }
 
   void Notify(const std::string& aName, list& aArgs)
   {
-    auto* ext = GetPythonExtension();
-    if(ext != nullptr)
-    {
-      ext->NotifySignal(aName, aArgs);
-    }
+    messengerInstance.NotifySignal(aName, aArgs);
   }
 }
 
 BOOST_PYTHON_MODULE(core)
 {
-  // Needs to be called before anything else in Python.
-  def("initialize", &RegisterPythonExtension);
-
   // Returns the environment instance.
   def("get_or_create_environment", &Environment::GetInstance,
     return_value_policy<reference_existing_object>());
@@ -87,10 +69,15 @@ BOOST_PYTHON_MODULE(core)
     .def("load", &ComponentWrapper::Load)
     .def("unload", &ComponentWrapper::Unload);
 
-  class_<ShaderComponent,
-         bases<Component>,
-         boost::noncopyable>("ShaderComponent",
-                             init<std::string, std::string>());
+  // Expose the Shader class, for use with GraphicalComponents.
+  class_<Shader>("Shader", init<std::string, std::string>());
+
+  // Expose the GraphicalComponent class.
+  class_<GraphicalComponentWrapper,
+         bases<ComponentWrapper>,
+         boost::noncopyable>("GraphicalComponent")
+    .def("set_shader", &GraphicalComponentWrapper::SetShader_)
+    .def("disable_shader", &GraphicalComponentWrapper::DisableShader_);
 
   // Expose the GameObject class.
   class_<GameObjectWrapper, bases<Observer>, boost::noncopyable>("GameObject")
@@ -100,4 +87,13 @@ BOOST_PYTHON_MODULE(core)
   // Expose the Scene class.
   class_<SceneWrapper, boost::noncopyable>("Scene")
     .def("add_object", &SceneWrapper::AddObject_);
+
+  // Lastly, expose a few common, predefined component classes:
+  // MeshComponent
+  class_<MeshComponent,
+         bases<GraphicalComponentWrapper>,
+         boost::noncopyable>("MeshComponent", no_init);
+
+  // ModelComponent
+  class_<ModelComponent,
 }

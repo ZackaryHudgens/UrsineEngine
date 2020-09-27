@@ -1,17 +1,12 @@
-#include "PyExtension.hpp"
+#include "Messenger.hpp"
 
-using pyExt::PyExtension;
+using py::Messenger;;
 
-PyExtension::PyExtension()
-  : Extension()
+Messenger::Messenger()
 {
 }
 
-void PyExtension::Update()
-{
-}
-
-void PyExtension::CreateSignal(const std::string& aName)
+void Messenger::CreateSignal(const std::string& aName)
 {
   auto sig = mSignalMap.find(aName);
   if(sig == mSignalMap.end())
@@ -20,8 +15,8 @@ void PyExtension::CreateSignal(const std::string& aName)
   }
 }
 
-void PyExtension::NotifySignal(const std::string& aName,
-                               boost::python::list& aArgs)
+void Messenger::NotifySignal(const std::string& aName,
+                             boost::python::list& aArgs)
 {
   auto sig = mSignalMap.find(aName);
   if(sig != mSignalMap.end())
@@ -30,9 +25,9 @@ void PyExtension::NotifySignal(const std::string& aName,
   }
 }
 
-void PyExtension::Connect(Observer& aObserver,
-                          const std::string& aName,
-                          boost::python::object& aFunc)
+void Messenger::Connect(Observer& aObserver,
+                        const std::string& aName,
+                        boost::python::object& aFunc)
 {
   auto funcWrapper = [aFunc](boost::python::list& aArgs)
   {

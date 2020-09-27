@@ -1,7 +1,5 @@
 from UrsineEngine import core
 
-core.initialize() # TODO: handle this automatically?
-
 env = core.get_or_create_environment()
 env.create_window("test", 500, 500)
 

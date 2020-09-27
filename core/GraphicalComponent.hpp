@@ -3,6 +3,8 @@
 
 #include "Component.hpp"
 
+#include "Shader.hpp"
+
 namespace core
 {
   /**
@@ -15,6 +17,12 @@ namespace core
       GraphicalComponent();
 
       virtual void Render() const = 0;
+
+      virtual void SetShader(Shader* aShader) { mShader = aShader; }
+      Shader* GetShader() const               { return mShader; }
+
+    private:
+      Shader* mShader;
   };
 }
 

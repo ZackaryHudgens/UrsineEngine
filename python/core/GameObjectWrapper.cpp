@@ -1,6 +1,6 @@
 #include "GameObjectWrapper.hpp"
 
-using pyExt::GameObjectWrapper;
+using py::GameObjectWrapper;
 
 GameObjectWrapper::GameObjectWrapper()
   : GameObject()

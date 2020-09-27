@@ -1,31 +1,26 @@
-#ifndef SHADERCOMPONENT_HPP
-#define SHADERCOMPONENT_HPP
+#ifndef SHADER_HPP
+#define SHADER_HPP
 
 #include <string>
+#include <vector>
 
 #include <GL/glew.h>
-
-#include "GraphicalComponent.hpp"
-
-using core::GraphicalComponent;
 
 namespace core
 {
   /**
-   * A wrapper class that makes loading/applying GLSL shaders easier.
+   * A class that encapsulates a GLSL vertex/fragment shader pair.
    */
-  class ShaderComponent : public GraphicalComponent
+  class Shader
   {
     public:
-      ShaderComponent(const std::string& aVertexPath,
-                      const std::string& aFragmentPath);
-      ~ShaderComponent() { std::cout << "uh" << std::endl; }
+      Shader(const std::string& aVertexPath,
+             const std::string& aFragmentPath);
 
-      void Update() override {}
-      void Render() const override;
+      void Activate() const;
 
       void SetUniform(const std::string& aName,
-                      const std::vector<double>& aValueList);
+                      const std::vector<double>& aValueList) const;
 
     private:
       void LoadShaderAsString(std::string& aString,

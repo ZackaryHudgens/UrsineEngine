@@ -1,13 +1,13 @@
-#include "ShaderComponent.hpp"
+#include "Shader.hpp"
 
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-using core::ShaderComponent;
+using core::Shader;
 
-ShaderComponent::ShaderComponent(const std::string& aVertexPath,
-                                 const std::string& aFragmentPath)
+Shader::Shader(const std::string& aVertexPath,
+               const std::string& aFragmentPath)
   : mProgramId(0)
 {
   // First, load the shader source into strings.
@@ -30,50 +30,13 @@ ShaderComponent::ShaderComponent(const std::string& aVertexPath,
   glDeleteShader(fragmentID);
 }
 
-void ShaderComponent::Render() const
+void Shader::Activate() const
 {
-/*GLuint VertexArrayID;
-glGenVertexArrays(1, &VertexArrayID);
-glBindVertexArray(VertexArrayID);
-
-// An array of 3 vectors which represents 3 vertices
-static const GLfloat g_vertex_buffer_data[] = {
-   -1.0f, -1.0f, 0.0f,
-   1.0f, -1.0f, 0.0f,
-   0.0f,  1.0f, 0.0f,
-};
-
-// This will identify our vertex buffer
-GLuint vertexbuffer;
-// Generate 1 buffer, put the resulting identifier in vertexbuffer
-glGenBuffers(1, &vertexbuffer);
-// The following commands will talk about our 'vertexbuffer' buffer
-glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-// Give our vertices to OpenGL.
-glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-
-// 1st attribute buffer : vertices
-glEnableVertexAttribArray(0);
-glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-glVertexAttribPointer(
-   0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-   3,                  // size
-   GL_FLOAT,           // type
-   GL_FALSE,           // normalized?
-   0,                  // stride
-   (void*)0            // array buffer offset
-);*
-
-// Draw the triangle !
-//glUseProgram(mProgramId);
-//glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
-//glDisableVertexAttribArray(0);*/
-
   glUseProgram(mProgramId);
 }
 
-void ShaderComponent::SetUniform(const std::string& aName,
-                                 const std::vector<double>& aValueList)
+void Shader::SetUniform(const std::string& aName,
+                        const std::vector<double>& aValueList) const
 {
   if(aValueList.size() == 1)
   {
@@ -108,8 +71,8 @@ void ShaderComponent::SetUniform(const std::string& aName,
   }
 }
 
-void ShaderComponent::LoadShaderAsString(std::string& aString,
-                                         const std::string& aShaderPath)
+void Shader::LoadShaderAsString(std::string& aString,
+                                const std::string& aShaderPath)
 {
   std::ifstream shaderFile;
   std::stringstream shaderStream;
@@ -130,9 +93,9 @@ void ShaderComponent::LoadShaderAsString(std::string& aString,
   }
 }
 
-void ShaderComponent::CompileShader(unsigned int& aShaderID,
-                                    const std::string& aShaderSource,
-                                    GLenum aShaderType)
+void Shader::CompileShader(unsigned int& aShaderID,
+                           const std::string& aShaderSource,
+                           GLenum aShaderType)
 {
   const char* shaderCode = aShaderSource.c_str();
 
@@ -153,8 +116,8 @@ void ShaderComponent::CompileShader(unsigned int& aShaderID,
   }
 }
 
-void ShaderComponent::CreateProgram(unsigned int aVertexID,
-                                    unsigned int aFragmentID)
+void Shader::CreateProgram(unsigned int aVertexID,
+                           unsigned int aFragmentID)
 {
   mProgramId = glCreateProgram();
   glAttachShader(mProgramId, aVertexID);

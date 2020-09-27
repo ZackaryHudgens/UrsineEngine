@@ -4,5 +4,6 @@ using core::GraphicalComponent;
 
 GraphicalComponent::GraphicalComponent()
   : Component()
+  , mShader(nullptr)
 {
 }

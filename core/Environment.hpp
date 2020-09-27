@@ -7,7 +7,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "Extension.hpp"
 #include "Scene.hpp"
 
 /**
@@ -31,10 +30,6 @@ namespace core
 
       void LoadScene(Scene& aScene);
 
-      bool RegisterExtension(const std::string& aName,
-                                    std::unique_ptr<Extension> aExtension);
-      Extension* GetExtension(const std::string& aName);
-
     protected:
       Environment();
 
@@ -45,7 +40,6 @@ namespace core
       GLFWwindow* mWindow;
 
       static std::unique_ptr<Environment> mInstance;
-      std::map<std::string, std::unique_ptr<Extension>> mExtensionMap;
       Scene* mCurrentScene;
 
       bool mInitialized;

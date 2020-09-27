@@ -8,7 +8,6 @@ using core::GraphicalComponent;
  * Constructor for the base GameObject class.
  */
 GameObject::GameObject()
-  : mLocation(0.0, 0.0)
 {
 }
 

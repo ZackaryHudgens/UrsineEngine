@@ -1,6 +1,6 @@
 #include "SceneWrapper.hpp"
 
-using pyExt::SceneWrapper;
+using py::SceneWrapper;
 
 SceneWrapper::SceneWrapper()
   : Scene()

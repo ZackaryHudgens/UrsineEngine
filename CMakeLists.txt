@@ -6,6 +6,5 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(URSINE_INSTALL_DIR "~/.local/lib")
 
-add_subdirectory(math)
 add_subdirectory(core)
-add_subdirectory(extensions)
+add_subdirectory(python)  #TODO: make this optional

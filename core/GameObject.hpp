@@ -7,9 +7,6 @@
 #include "Component.hpp"
 #include "GraphicalComponent.hpp"
 #include "Observer.hpp"
-#include "Vector2D.hpp"
-
-using math::Vector2D;
 
 namespace core
 {
@@ -35,14 +32,10 @@ namespace core
       void AddChild(std::unique_ptr<GameObject> aObject);
       void AddComponent(std::unique_ptr<Component> aComponent);
 
-      Vector2D GetLocation() const { return mLocation; }
-
     private:
       std::vector<std::unique_ptr<GameObject>> mChildren;
       std::vector<std::unique_ptr<Component>> mComponents;
       std::vector<std::unique_ptr<GraphicalComponent>> mGraphicalComponents;
-
-      Vector2D mLocation;
   };
 }
 

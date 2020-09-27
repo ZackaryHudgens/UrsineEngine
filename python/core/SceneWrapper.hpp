@@ -8,7 +8,7 @@
 using core::GameObject;
 using core::Scene;
 
-namespace pyExt
+namespace py
 {
   /**
    * A wrapper for the Scene class. Allows Python to add objects
