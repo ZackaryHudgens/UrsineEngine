@@ -7,4 +7,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(URSINE_INSTALL_DIR "~/.local/lib")
 
 add_subdirectory(core)
-add_subdirectory(python)  #TODO: make this optional
+
+# Optionally build the Python3 extension.
+option(BUILD_PYTHON "Build the Python 3 extension." ON)
+
+if(BUILD_PYTHON)
+  add_subdirectory(python)
+endif()

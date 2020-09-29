@@ -18,7 +18,8 @@ namespace core
 
       virtual void Render() const = 0;
 
-      virtual void SetShader(Shader* aShader) { mShader = aShader; }
+      virtual void SetShader(Shader& aShader) { mShader = &aShader; }
+      virtual void DisableShader()            { mShader = nullptr; }
       Shader* GetShader() const               { return mShader; }
 
     private:

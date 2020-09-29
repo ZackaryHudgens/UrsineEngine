@@ -13,21 +13,23 @@ namespace core
   class ModelComponent : public GraphicalComponent
   {
     public:
-      ModelComponent(const std::string& aFilePath);
+      ModelComponent();
 
       void Update() override {}
       void Render() const override;
 
-      void SetShader(Shader* aShader) override;
+      void SetShader(Shader& aShader) override;
+      void DisableShader() override;
+
+      void LoadModel(const std::string& aFilePath);
 
     private:
-      void Load(const std::string& aFilePath);
       unsigned int LoadTextureFromFile(const std::string& aFilePath);
       void ProcessNode(aiNode* aNode, const aiScene* aScene);
       MeshComponent ProcessMesh(aiMesh* aMesh, const aiScene* aScene);
-      std::vector<MeshTexture> LoadMaterialTextures(aiMaterial* aMat,
-                                                    aiTextureType aType,
-                                                    const std::string& aName);
+      TextureList LoadMaterialTextures(aiMaterial* aMat,
+                                       aiTextureType aType,
+                                       const std::string& aName);
 
       std::string mDirectory;
       MeshList mMeshes;

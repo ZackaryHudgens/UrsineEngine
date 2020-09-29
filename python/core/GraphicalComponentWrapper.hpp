@@ -18,13 +18,13 @@ namespace py
    * a common interface for other GraphicalComponents.
    */
   class GraphicalComponentWrapper : public GraphicalComponent
-                                  , wrapper<GraphicalComponent>
+                                  , public wrapper<GraphicalComponent>
   {
     public:
       GraphicalComponentWrapper();
 
-      void SetShader_(Shader& aShader);
-      void DisableShader_();
+      void Update() override;
+      void Render() const override;
   };
 }
 

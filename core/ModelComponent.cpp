@@ -10,10 +10,9 @@ using core::MeshVertex;
 using core::ModelComponent;
 using core::TextureList;
 
-ModelComponent::ModelComponent(const std::string& aFilePath)
+ModelComponent::ModelComponent()
   : GraphicalComponent()
 {
-  Load(aFilePath);
 }
 
 void ModelComponent::Render() const
@@ -24,7 +23,7 @@ void ModelComponent::Render() const
   }
 }
 
-void ModelComponent::SetShader(Shader* aShader)
+void ModelComponent::SetShader(Shader& aShader)
 {
   for(auto& mesh : mMeshes)
   {
@@ -34,7 +33,17 @@ void ModelComponent::SetShader(Shader* aShader)
   GraphicalComponent::SetShader(aShader);
 }
 
-void ModelComponent::Load(const std::string& aFilePath)
+void ModelComponent::DisableShader()
+{
+  for(auto& mesh : mMeshes)
+  {
+    mesh.DisableShader();
+  }
+
+  GraphicalComponent::DisableShader();
+}
+
+void ModelComponent::LoadModel(const std::string& aFilePath)
 {
   Assimp::Importer importer;
   unsigned int postProcessFlags = aiProcess_Triangulate | aiProcess_FlipUVs;

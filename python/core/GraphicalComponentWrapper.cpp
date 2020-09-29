@@ -7,12 +7,18 @@ GraphicalComponentWrapper::GraphicalComponentWrapper()
 {
 }
 
-void GraphicalComponentWrapper::SetShader_(Shader& aShader)
+/**
+ * Calls the Python-overridden "update" method.
+ */
+void GraphicalComponentWrapper::Update()
 {
-  SetShader(&aShader);
+  get_override("update")();
 }
 
-void GraphicalComponentWrapper::DisableShader_()
+/**
+ * Calls the Python-overridden "render" method.
+ */
+void GraphicalComponentWrapper::Render() const
 {
-  SetShader(nullptr);
+  get_override("render")();
 }
