@@ -4,13 +4,11 @@ project(UrsineEngine VERSION 0.0.1
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Set extension options.
+# Optionally build the Python3 extension.
+option(BUILD_PYTHON_EXTENSION "Build the Python 3 extension." ON)
+
 set(URSINE_INSTALL_DIR "~/.local/lib")
 
-add_subdirectory(core)
-
-# Optionally build the Python3 extension.
-option(BUILD_PYTHON "Build the Python 3 extension." ON)
-
-if(BUILD_PYTHON)
-  add_subdirectory(python)
-endif()
+add_subdirectory(source)
+add_subdirectory(extensions)
