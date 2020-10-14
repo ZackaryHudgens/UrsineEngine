@@ -14,7 +14,7 @@ target_link_libraries(UrsineCore PUBLIC
                       ${ASSIMP_LIBRARIES}
                       ${GLM_LIBRARIES})
 
-target_include_directories(UrsineCore PUBLIC .
+target_include_directories(UrsineCore PUBLIC
                            ${GLEW_INCLUDE_DIRS}
                            ${IL_INCLUDE_DIR}
                            ${ASSIMP_IMCLUDE_DIRS}

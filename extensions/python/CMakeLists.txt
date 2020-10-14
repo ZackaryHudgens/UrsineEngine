@@ -1,4 +1,3 @@
-find_package(PythonInterp 3 REQUIRED)
 find_package(PythonLibs 3 REQUIRED)
 
 # CMake complains about not finding this, but it still works.
@@ -6,7 +5,6 @@ find_package(PythonLibs 3 REQUIRED)
 find_package(Boost COMPONENTS python3 REQUIRED)
 
 message(STATUS "PYTHON_LIBRARIES = ${PYTHON_LIBRARIES}")
-message(STATUS "PYTHON_EXECUTABLE = ${PYTHON_EXECUTABLE}")
 message(STATUS "PYTHON_INCLUDE_DIRS = ${PYTHON_INCLUDE_DIRS}")
 message(STATUS "Boost_LIBRARIES = ${Boost_LIBRARIES}")
 

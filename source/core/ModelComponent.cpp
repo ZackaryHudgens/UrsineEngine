@@ -50,24 +50,25 @@ void ModelComponent::LoadModel(const std::string& aFilePath)
   const aiScene* scene = importer.ReadFile(aFilePath, postProcessFlags);
 
   if(scene == nullptr ||
-     scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE ||
-     scene->mRootNode == nullptr)
+     scene->mRootNode == nullptr ||
+     scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE)
   {
     std::cout << "Error loading model! " <<
                  importer.GetErrorString() << std::endl;
   }
   else
   {
-    mDirectory = aFilePath.substr(0, aFilePath.find_last_of('/'));
     ProcessNode(scene->mRootNode, scene);
   }
 }
 
 unsigned int ModelComponent::LoadTextureFromFile(const std::string& aFilePath)
 {
-  unsigned int textureID;
-  ilGenImages(1, &textureID);
-  ilBindImage(textureID);
+  ILuint imageID;          // Used for loading images with DevIL
+  unsigned int textureID;  // Used for OpenGL texture binding
+
+  ilGenImages(1, &imageID);
+  ilBindImage(imageID);
 
   // Attempt to load the image.
   ILboolean success = ilLoadImage(aFilePath.c_str());
@@ -79,8 +80,10 @@ unsigned int ModelComponent::LoadTextureFromFile(const std::string& aFilePath)
     {
       // Generate an OpenGL texture.
       unsigned char* data = ilGetData();
-      int w, h;
+      int w = ilGetInteger(IL_IMAGE_WIDTH);
+      int h = ilGetInteger(IL_IMAGE_HEIGHT);
 
+      glGenTextures(1, &textureID);
       glBindTexture(GL_TEXTURE_2D, textureID);
       glTexImage2D(GL_TEXTURE_2D,
                    0,
@@ -92,11 +95,18 @@ unsigned int ModelComponent::LoadTextureFromFile(const std::string& aFilePath)
                    GL_UNSIGNED_BYTE,
                    data);
       glGenerateMipmap(GL_TEXTURE_2D);
+
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+      ilDeleteImages(1, &imageID);
     }
     else
     {
       std::cout << "Error converting image! " << ilGetError() << std::endl;
-      ilDeleteImages(1, &textureID);
+      ilDeleteImages(1, &imageID);
     }
   }
   else
@@ -185,18 +195,14 @@ MeshComponent ModelComponent::ProcessMesh(aiMesh* aMesh, const aiScene* aScene)
     aiTextureType type = aiTextureType_DIFFUSE;
     std::string typeString = "texture_diffuse";
 
-    std::vector<MeshTexture> diffuseMaps = LoadMaterialTextures(mat,
-                                                                type,
-                                                                typeString);
+    TextureList diffuseMaps = LoadMaterialTextures(mat, type, typeString);
     textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
     // Load specular textures.
     type = aiTextureType_SPECULAR;
     typeString = "texture_specular";
 
-    std::vector<MeshTexture> specularMaps = LoadMaterialTextures(mat,
-                                                                 type,
-                                                                 typeString);
+    TextureList specularMaps = LoadMaterialTextures(mat, type, typeString);
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
   }
 
@@ -204,8 +210,8 @@ MeshComponent ModelComponent::ProcessMesh(aiMesh* aMesh, const aiScene* aScene)
 }
 
 TextureList ModelComponent::LoadMaterialTextures(aiMaterial* aMat,
-                                              aiTextureType aType,
-                                              const std::string& aName)
+                                                 aiTextureType aType,
+                                                 const std::string& aName)
 {
   TextureList textures;
   for(unsigned int i = 0; i < aMat->GetTextureCount(aType); ++i)
@@ -213,11 +219,27 @@ TextureList ModelComponent::LoadMaterialTextures(aiMaterial* aMat,
     aiString str;
     aMat->GetTexture(aType, i, &str);
 
-    MeshTexture texture;
-    ilGenImages(1, &texture.mId);
-    texture.mType = aName;
-    texture.mPath = str.C_Str();
-    textures.emplace_back(texture);
+    // Skip loading already loaded textures.
+    bool skip = false;
+    for(const auto& t : mLoadedTextures)
+    {
+      if(t.mPath == str.C_Str())
+      {
+        textures.emplace_back(t);
+        skip = true;
+        break;
+      }
+    }
+
+    if(!skip)
+    {
+      MeshTexture texture;
+      texture.mId = LoadTextureFromFile(str.C_Str());
+      texture.mType = aName;
+      texture.mPath = str.C_Str();
+      textures.emplace_back(texture);
+      mLoadedTextures.emplace_back(texture);
+    }
   }
 
   return textures;

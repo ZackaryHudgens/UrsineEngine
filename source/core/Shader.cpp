@@ -35,40 +35,19 @@ void Shader::Activate() const
   glUseProgram(mProgramId);
 }
 
-void Shader::SetUniform(const std::string& aName,
-                        const std::vector<double>& aValueList) const
+void Shader::SetBool(const std::string& aName, bool aValue) const
 {
-  if(aValueList.size() == 1)
-  {
-    glUniform1d(glGetUniformLocation(mProgramId, aName.c_str()),
-                aValueList[0]);
-  }
-  else if(aValueList.size() == 2)
-  {
-    glUniform2d(glGetUniformLocation(mProgramId, aName.c_str()),
-                aValueList[0],
-                aValueList[1]);
-  }
-  else if(aValueList.size() == 3)
-  {
-    glUniform3d(glGetUniformLocation(mProgramId, aName.c_str()),
-                aValueList[0],
-                aValueList[1],
-                aValueList[2]);
-  }
-  else if(aValueList.size() == 4)
-  {
-    glUniform4d(glGetUniformLocation(mProgramId, aName.c_str()),
-                aValueList[0],
-                aValueList[1],
-                aValueList[2],
-                aValueList[3]);
-  }
-  else
-  {
-    std::cout << "Uniforms of size " << aValueList.size() <<
-    " are not supported!" << std::endl;
-  }
+  glUniform1i(glGetUniformLocation(mProgramId, aName.c_str()), (int)aValue);
+}
+
+void Shader::SetInt(const std::string& aName, int aValue) const
+{
+  glUniform1i(glGetUniformLocation(mProgramId, aName.c_str()), aValue);
+}
+
+void Shader::SetFloat(const std::string& aName, float aValue) const
+{
+  glUniform1f(glGetUniformLocation(mProgramId, aName.c_str()), aValue);
 }
 
 void Shader::LoadShaderAsString(std::string& aString,

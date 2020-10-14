@@ -6,15 +6,15 @@
 #include "Observer.hpp"
 #include "Shader.hpp"
 
-/*#include "ComponentWrapper.hpp"
-#include "GameObjectWrapper.hpp"
-#include "GraphicalComponentWrapper.hpp"
-#include "Messenger.hpp"
-#include "SceneWrapper.hpp"*/
+#include "wrappers/PyComponentWrapper.hpp"
+#include "wrappers/PyGameObjectWrapper.hpp"
+#include "wrappers/PyGraphicalComponentWrapper.hpp"
+#include "wrappers/PySceneWrapper.hpp"
+#include "PyMessenger.hpp"
 
 using namespace boost::python;
 
-/*using core::Environment;
+using core::Environment;
 using core::MeshComponent;
 using core::ModelComponent;
 using core::Observer;
@@ -24,9 +24,9 @@ using py::ComponentWrapper;
 using py::GameObjectWrapper;
 using py::GraphicalComponentWrapper;
 using py::Messenger;
-using py::SceneWrapper;*/
+using py::SceneWrapper;
 
-/*namespace
+namespace
 {
   Messenger messengerInstance;
 
@@ -39,67 +39,63 @@ using py::SceneWrapper;*/
   {
     messengerInstance.NotifySignal(aName, aArgs);
   }
-}*/
-
-void test() {}
+}
 
 BOOST_PYTHON_MODULE(core)
 {
-  def("test", test);
   // Returns the environment instance.
-  //def("get_or_create_environment", &Environment::GetInstance,
-  //  return_value_policy<reference_existing_object>());
+  def("get_or_create_environment", &Environment::GetInstance,
+    return_value_policy<reference_existing_object>());
 
   // Allows the notification of signals via Python.
-  //def("notify", &Notify);
+  def("notify", &Notify);
 
   // Expose the Environment class.
-  //class_<Environment, boost::noncopyable>("Environment", no_init)
-  //  .def("create_window", &Environment::CreateWindow)
-  //  .def("load_scene", &Environment::LoadScene)
-  //  .def("run", &Environment::Run);
+  class_<Environment, boost::noncopyable>("Environment", no_init)
+    .def("create_window", &Environment::CreateWindow)
+    .def("load_scene", &Environment::LoadScene)
+    .def("run", &Environment::Run);
 
   // Expose the base Observer class.
   // This is necessary for Components and GameObjects to utilize signals.
-  //class_<Observer, boost::noncopyable>("Observer")
-  //  .def("connect", &Connect);
+  class_<Observer, boost::noncopyable>("Observer")
+    .def("connect", &Connect);
 
   // Expose the Component class.
-  //class_<ComponentWrapper, bases<Observer>, boost::noncopyable>("Component")
-  //  .def("update", pure_virtual(&Component::Update))
-  //  .def("load", &ComponentWrapper::Load)
-  //  .def("unload", &ComponentWrapper::Unload);
+  class_<ComponentWrapper, bases<Observer>, boost::noncopyable>("Component")
+    .def("update", pure_virtual(&Component::Update))
+    .def("load", &ComponentWrapper::Load)
+    .def("unload", &ComponentWrapper::Unload);
 
   // Expose the Shader class, for use with GraphicalComponents.
-  //class_<Shader>("Shader", init<std::string, std::string>());
-
-  // Expose the GraphicalComponent class.
-  //class_<GraphicalComponentWrapper,
-  //       bases<Observer>,
-  //       boost::noncopyable>("GraphicalComponent")
-  //  .def("update", pure_virtual(&GraphicalComponent::Update))
-  //  .def("render", pure_virtual(&GraphicalComponent::Render))
-  //  .def("set_shader", &GraphicalComponent::SetShader)
-  //  .def("disable_shader", &GraphicalComponent::DisableShader);
+  class_<Shader>("Shader", init<std::string, std::string>());
 
   // Expose the GameObject class.
-  //class_<GameObjectWrapper, bases<Observer>, boost::noncopyable>("GameObject")
-  //  .def("add_child", &GameObjectWrapper::AddChild_)
-  //  .def("add_component", &GameObjectWrapper::AddComponent_);
+  class_<GameObjectWrapper, bases<Observer>, boost::noncopyable>("GameObject")
+    .def("add_child", &GameObjectWrapper::AddChild_)
+    .def("add_component", &GameObjectWrapper::AddComponent_);
 
   // Expose the Scene class.
-  //class_<SceneWrapper, boost::noncopyable>("Scene")
-  //  .def("add_object", &SceneWrapper::AddObject_);
+  class_<SceneWrapper, boost::noncopyable>("Scene")
+    .def("add_object", &SceneWrapper::AddObject_);
 
-  // Lastly, expose a few common, predefined component classes:
+  // Finally, expose a handful of useful predefined components.
   // MeshComponent
-  //class_<MeshComponent,
-  //       bases<GraphicalComponentWrapper>,
-  //       boost::noncopyable>("MeshComponent", no_init);
+  class_<MeshComponent,
+         bases<Component>,
+         boost::noncopyable>("MeshComponent", no_init)
+    .def("update", &MeshComponent::Update)
+    .def("render", &MeshComponent::Render)
+    .def("set_shader", &MeshComponent::SetShader)
+    .def("disable_shader", &MeshComponent::DisableShader);
 
   // ModelComponent
-  //class_<ModelComponent,
-  //       bases<ComponentWrapper>,
-  //       boost::noncopyable>("ModelComponent")
-  //  .def("set_shader", &ModelComponent::SetShader);
+  class_<ModelComponent,
+         bases<Component>,
+         boost::noncopyable>("ModelComponent")
+    .def("update", &ModelComponent::Update)
+    .def("render", &ModelComponent::Render)
+    .def("set_shader", &ModelComponent::SetShader)
+    .def("disable_shader", &ModelComponent::DisableShader)
+    .def("load_model", &ModelComponent::LoadModel);
 }

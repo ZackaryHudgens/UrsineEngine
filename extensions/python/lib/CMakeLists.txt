@@ -1,13 +1,14 @@
 file(GLOB PYTHON_EXT_SOURCES *.?pp wrappers/*.?pp)
 
-add_library(core SHARED ${PYTHON_EXT_SOURCES})
+add_library(core MODULE ${PYTHON_EXT_SOURCES})
 target_link_libraries(core PUBLIC
                       ${PYTHON_LIBRARIES}
                       ${Boost_LIBRARIES}
                       UrsineCore)
 target_include_directories(core PUBLIC .
                            ${PYTHON_INCLUDE_DIR}
-                           ${Boost_INCLUDE_DIRS})
+                           ${Boost_INCLUDE_DIRS}
+                           "${CMAKE_SOURCE_DIR}/source/core")
 
 # Remove the "lib" prefix.
 set_target_properties(core PROPERTIES

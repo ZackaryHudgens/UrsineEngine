@@ -31,7 +31,7 @@ namespace core
                                        aiTextureType aType,
                                        const std::string& aName);
 
-      std::string mDirectory;
+      std::vector<MeshTexture> mLoadedTextures;
       MeshList mMeshes;
   };
 }

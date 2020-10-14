@@ -17,14 +17,22 @@ MeshComponent::MeshComponent(const std::vector<MeshVertex>& aVertices,
 
 void MeshComponent::Render() const
 {
+  if(glGetError() == GL_NO_ERROR)
+  {
+    std::cout << "no error here!" << std::endl;
+  }
+
   // Temporary? Used to count the number of diffuse/specular
   // textures provided with this mesh.
   if(GetShader() != nullptr)
   {
-    unsigned int diffuse, specular = 1;
+    GetShader()->Activate();
+
+    unsigned int diffuse = 1, specular = 1;
     for(unsigned int i = 0; i < mTextures.size(); ++i)
     {
       glActiveTexture(GL_TEXTURE0 + i);
+
       std::string number;
       std::string name = mTextures[i].mType;
       if(name == "texture_diffuse")
@@ -36,9 +44,7 @@ void MeshComponent::Render() const
         number = std::to_string(specular++);
       }
 
-      std::vector<double> values;
-      values.emplace_back(i);
-      GetShader()->SetUniform("material." + name + number, values);
+      GetShader()->SetInt(name + number, i);
       glBindTexture(GL_TEXTURE_2D, mTextures[i].mId);
     }
   }

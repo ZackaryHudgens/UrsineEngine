@@ -3,6 +3,7 @@
 #include <cassert>
 #include <iostream>
 
+#include <il.h>
 #include <ilu.h>
 
 using core::Environment;
@@ -67,8 +68,8 @@ bool Environment::CreateWindow(const char* aTitle, int aWidth, int aHeight)
         ILenum devilError = ilGetError();
         if(devilError != IL_NO_ERROR)
         {
-          std::cout << "Error initializing DevIL! "
-                    << iluErrorString(devilError) << std::endl;
+          // TODO: iluErrorString() causes a segfault; why?
+          std::cout << "Error initializing DevIL!" << std::endl;
         }
         else
         {
