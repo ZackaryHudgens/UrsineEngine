@@ -17,11 +17,6 @@ MeshComponent::MeshComponent(const std::vector<MeshVertex>& aVertices,
 
 void MeshComponent::Render() const
 {
-  if(glGetError() == GL_NO_ERROR)
-  {
-    std::cout << "no error here!" << std::endl;
-  }
-
   // Temporary? Used to count the number of diffuse/specular
   // textures provided with this mesh.
   if(GetShader() != nullptr)
@@ -97,7 +92,7 @@ void MeshComponent::Initialize()
                         GL_FLOAT,
                         GL_FALSE,
                         sizeof(MeshVertex),
-                        (void*)(offsetof(MeshVertex, mPosition)));
+                        (void*)(offsetof(MeshVertex, mNormal)));
 
   // Set the texture coordinate attributes.
   glEnableVertexAttribArray(2);
