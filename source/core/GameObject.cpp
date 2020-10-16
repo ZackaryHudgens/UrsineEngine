@@ -8,6 +8,8 @@ using core::GraphicalComponent;
  * Constructor for the base GameObject class.
  */
 GameObject::GameObject()
+  : mTransform(1.0f)
+  , mPosition(0.0f, 0.0f, 0.0f, 1.0f)
 {
 }
 

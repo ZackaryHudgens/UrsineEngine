@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 
+#include <glm/glm.hpp>
+
 #include "Component.hpp"
 #include "GraphicalComponent.hpp"
 #include "Observer.hpp"
@@ -32,10 +34,16 @@ namespace core
       void AddChild(std::unique_ptr<GameObject> aObject);
       void AddComponent(std::unique_ptr<Component> aComponent);
 
+      glm::mat4 GetTransform() const { return mTransform; }
+      glm::vec4 GetPosition() const  { return mPosition; }
+
     private:
       std::vector<std::unique_ptr<GameObject>> mChildren;
       std::vector<std::unique_ptr<Component>> mComponents;
       std::vector<std::unique_ptr<GraphicalComponent>> mGraphicalComponents;
+
+      glm::mat4 mTransform;
+      glm::vec4 mPosition;
   };
 }
 

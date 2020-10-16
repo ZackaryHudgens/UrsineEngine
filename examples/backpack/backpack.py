@@ -1,7 +1,7 @@
 from UrsineEngine import core
 
 env = core.get_or_create_environment()
-env.create_window("test", 500, 500)
+env.create_window("test", 800, 600)
 
 class HealthComponent(core.Component):
     def __init__(self):

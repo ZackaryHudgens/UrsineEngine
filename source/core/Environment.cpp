@@ -73,9 +73,10 @@ bool Environment::CreateWindow(const char* aTitle, int aWidth, int aHeight)
         }
         else
         {
-          glEnable(GL_TEXTURE_2D);
-          glClearColor(0.631, 0.709, 0.424, 1.0);
           init = true;
+
+          // Initialize various OpenGL flags.
+          glEnable(GL_DEPTH_TEST);
         }
       }
     }
@@ -145,7 +146,7 @@ void Environment::Update()
 void Environment::Render()
 {
   // Clear the window.
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // Render the current scene.
   if(mCurrentScene != nullptr)

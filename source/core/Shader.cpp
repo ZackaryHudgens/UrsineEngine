@@ -4,6 +4,8 @@
 #include <iostream>
 #include <sstream>
 
+#include <glm/gtc/type_ptr.hpp>
+
 using core::Shader;
 
 Shader::Shader(const std::string& aVertexPath,
@@ -48,6 +50,12 @@ void Shader::SetInt(const std::string& aName, int aValue) const
 void Shader::SetFloat(const std::string& aName, float aValue) const
 {
   glUniform1f(glGetUniformLocation(mProgramId, aName.c_str()), aValue);
+}
+
+void Shader::SetMat4(const std::string& aName, const glm::mat4& aMat) const
+{
+  int loc = glGetUniformLocation(mProgramId, aName.c_str());
+  glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(aMat));
 }
 
 void Shader::LoadShaderAsString(std::string& aString,

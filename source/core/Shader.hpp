@@ -6,6 +6,8 @@
 
 #include <GL/glew.h>
 
+#include <glm/glm.hpp>
+
 namespace core
 {
   /**
@@ -22,6 +24,7 @@ namespace core
       void SetBool(const std::string& aName, bool aValue) const;
       void SetInt(const std::string& aName, int aValue) const;
       void SetFloat(const std::string& aName, float aValue) const;
+      void SetMat4(const std::string& aName, const glm::mat4& aMat) const;
 
     private:
       void LoadShaderAsString(std::string& aString,
