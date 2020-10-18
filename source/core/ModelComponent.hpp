@@ -18,6 +18,8 @@ namespace core
       void Update() override {}
       void Render() const override;
 
+      void SetParent(GameObject* aParent) override;
+
       void SetShader(Shader& aShader) override;
       void DisableShader() override;
 
@@ -31,7 +33,7 @@ namespace core
                                        aiTextureType aType,
                                        const std::string& aName);
 
-      std::vector<MeshTexture> mLoadedTextures;
+      TextureList mLoadedTextures;
       MeshList mMeshes;
   };
 }

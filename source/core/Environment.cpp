@@ -77,6 +77,10 @@ bool Environment::CreateWindow(const char* aTitle, int aWidth, int aHeight)
 
           // Initialize various OpenGL flags.
           glEnable(GL_DEPTH_TEST);
+
+          // Initialize various DevIL flags.
+          ilEnable(IL_ORIGIN_SET);
+          ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
         }
       }
     }

@@ -23,6 +23,16 @@ void ModelComponent::Render() const
   }
 }
 
+void ModelComponent::SetParent(GameObject* aParent)
+{
+  for(auto& mesh : mMeshes)
+  {
+    mesh.SetParent(aParent);
+  }
+
+  GraphicalComponent::SetParent(aParent);
+}
+
 void ModelComponent::SetShader(Shader& aShader)
 {
   for(auto& mesh : mMeshes)
@@ -206,7 +216,10 @@ MeshComponent ModelComponent::ProcessMesh(aiMesh* aMesh, const aiScene* aScene)
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
   }
 
-  return MeshComponent(vertices, indices, textures);
+  MeshComponent mesh(vertices, indices, textures);
+  mesh.SetParent(GetParent());
+
+  return mesh;
 }
 
 TextureList ModelComponent::LoadMaterialTextures(aiMaterial* aMat,

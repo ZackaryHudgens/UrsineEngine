@@ -29,11 +29,13 @@ void MeshComponent::Render() const
     GetShader()->Activate();
 
     // Transform this mesh based on the GameObject's transform matrix.
-    glm::mat4 model(1.0f);
-    GetShader()->SetMat4("transform", glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f)));
+    glm::mat4 model = GetParent()->GetTransform();
+    glm::vec3 axis(0.5f, 1.0f, 0.0f);
+    GetShader()->SetMat4("transform", glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), axis));
+    //GetShader()->SetMat4("transform", GetParent()->GetTransform());
 
     //TODO: temporary; this should go somewhere else
-    GetShader()->SetMat4("view", glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f)));
+    GetShader()->SetMat4("view", glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f)));
     GetShader()->SetMat4("projection", glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f));
 
     unsigned int diffuse = 1, specular = 1;

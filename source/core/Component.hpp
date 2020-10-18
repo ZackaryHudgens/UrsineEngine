@@ -27,8 +27,8 @@ namespace core
       virtual void Load() {}
       virtual void Unload() {}
 
-      void SetParent(GameObject* aParent) { mParent = aParent; }
-      GameObject* GetParent() const       { return mParent; }
+      virtual void SetParent(GameObject* aParent) { mParent = aParent; }
+      GameObject* GetParent() const               { return mParent; }
 
     private:
       GameObject* mParent;

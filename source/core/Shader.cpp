@@ -39,23 +39,58 @@ void Shader::Activate() const
 
 void Shader::SetBool(const std::string& aName, bool aValue) const
 {
-  glUniform1i(glGetUniformLocation(mProgramId, aName.c_str()), (int)aValue);
+  int loc = glGetUniformLocation(mProgramId, aName.c_str());
+  if(loc != -1)
+  {
+    glUniform1i(loc, (int)aValue);
+  }
+  else
+  {
+    std::cout << "Uniform " << aName << " does not exist "
+              << "or is reserved!" << std::endl;
+  }
 }
 
 void Shader::SetInt(const std::string& aName, int aValue) const
 {
-  glUniform1i(glGetUniformLocation(mProgramId, aName.c_str()), aValue);
+  int loc = glGetUniformLocation(mProgramId, aName.c_str());
+  if(loc != -1)
+  {
+    glUniform1i(loc, aValue);
+  }
+  else
+  {
+    std::cout << "Uniform " << aName << " does not exist "
+              << "or is reserved!" << std::endl;
+  }
 }
 
 void Shader::SetFloat(const std::string& aName, float aValue) const
 {
-  glUniform1f(glGetUniformLocation(mProgramId, aName.c_str()), aValue);
+  int loc = glGetUniformLocation(mProgramId, aName.c_str());
+  if(loc != -1)
+  {
+    glUniform1f(loc, aValue);
+  }
+  else
+  {
+    std::cout << "Uniform " << aName << " does not exist "
+              << "or is reserved!" << std::endl;
+  }
 }
 
 void Shader::SetMat4(const std::string& aName, const glm::mat4& aMat) const
 {
   int loc = glGetUniformLocation(mProgramId, aName.c_str());
-  glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(aMat));
+  if(loc != -1)
+  {
+    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(aMat));
+  }
+  else
+  {
+    std::cout << "Uniform " << aName << " does not exist "
+              << "or is reserved!" << std::endl;
+  }
 }
 
 void Shader::LoadShaderAsString(std::string& aString,

@@ -1,7 +1,7 @@
 from UrsineEngine import core
 
 env = core.get_or_create_environment()
-env.create_window("test", 800, 600)
+env.create_window("backpack model test", 800, 600)
 
 class HealthComponent(core.Component):
     def __init__(self):
@@ -14,10 +14,12 @@ class HealthComponent(core.Component):
         self.health -= 1
 
     def update(self):
-        print(self.health)
+        pass
+        #print(self.health)
 
     def load(self):
-        print("loading health component")
+        pass
+        #print("loading health component")
 
 class PlayerObject(core.GameObject):
     def __init__(self):
