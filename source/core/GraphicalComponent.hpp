@@ -1,12 +1,15 @@
 #ifndef GRAPHICALCOMPONENT_HPP
 #define GRAPHICALCOMPONENT_HPP
 
-#include "Component.hpp"
+#include <memory>
 
+#include "Component.hpp"
 #include "Shader.hpp"
 
 namespace core
 {
+  typedef std::vector<Shader> ShaderList;
+
   /**
    * A GraphicalComponent is a Component that also requires
    * a Render() function to be defined.
@@ -16,14 +19,16 @@ namespace core
     public:
       GraphicalComponent();
 
-      virtual void Render() const = 0;
+      void Render() const;
 
-      virtual void SetShader(Shader& aShader) { mShader = &aShader; }
-      virtual void DisableShader()            { mShader = nullptr; }
-      Shader* GetShader() const               { return mShader; }
+      void CreateAndAddShader(const std::string& aVertexPath,
+                              const std::string& aFragmentPath);
+      const ShaderList& GetShaders() const { return mShaders; }
 
     private:
-      Shader* mShader;
+      virtual void PrivateRender() const = 0;
+
+      ShaderList mShaders;
   };
 }
 

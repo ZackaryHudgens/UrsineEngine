@@ -1,5 +1,7 @@
 #include "ModelComponent.hpp"
 
+#include <iostream>
+
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
 #include <il.h>
@@ -13,44 +15,6 @@ using core::TextureList;
 ModelComponent::ModelComponent()
   : GraphicalComponent()
 {
-}
-
-void ModelComponent::Render() const
-{
-  for(const auto& mesh : mMeshes)
-  {
-    mesh.Render();
-  }
-}
-
-void ModelComponent::SetParent(GameObject* aParent)
-{
-  for(auto& mesh : mMeshes)
-  {
-    mesh.SetParent(aParent);
-  }
-
-  GraphicalComponent::SetParent(aParent);
-}
-
-void ModelComponent::SetShader(Shader& aShader)
-{
-  for(auto& mesh : mMeshes)
-  {
-    mesh.SetShader(aShader);
-  }
-
-  GraphicalComponent::SetShader(aShader);
-}
-
-void ModelComponent::DisableShader()
-{
-  for(auto& mesh : mMeshes)
-  {
-    mesh.DisableShader();
-  }
-
-  GraphicalComponent::DisableShader();
 }
 
 void ModelComponent::LoadModel(const std::string& aFilePath)
@@ -133,7 +97,7 @@ void ModelComponent::ProcessNode(aiNode* aNode, const aiScene* aScene)
   for(unsigned int i = 0; i < aNode->mNumMeshes; ++i)
   {
     aiMesh* mesh = aScene->mMeshes[aNode->mMeshes[i]];
-    mMeshes.emplace_back(ProcessMesh(mesh, aScene));
+    AddChild(ProcessMesh(mesh, aScene));
   }
 
   // Process each of this node's children.
@@ -143,7 +107,8 @@ void ModelComponent::ProcessNode(aiNode* aNode, const aiScene* aScene)
   }
 }
 
-MeshComponent ModelComponent::ProcessMesh(aiMesh* aMesh, const aiScene* aScene)
+std::unique_ptr<MeshComponent> ModelComponent::ProcessMesh(aiMesh* aMesh,
+                                                           const aiScene* aScene)
 {
   std::vector<MeshVertex> vertices;
   std::vector<MeshTexture> textures;
@@ -216,10 +181,7 @@ MeshComponent ModelComponent::ProcessMesh(aiMesh* aMesh, const aiScene* aScene)
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
   }
 
-  MeshComponent mesh(vertices, indices, textures);
-  mesh.SetParent(GetParent());
-
-  return mesh;
+  return std::make_unique<MeshComponent>(vertices, indices, textures);
 }
 
 TextureList ModelComponent::LoadMaterialTextures(aiMaterial* aMat,

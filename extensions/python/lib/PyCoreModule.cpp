@@ -8,7 +8,6 @@
 
 #include "wrappers/PyComponentWrapper.hpp"
 #include "wrappers/PyGameObjectWrapper.hpp"
-#include "wrappers/PyGraphicalComponentWrapper.hpp"
 #include "wrappers/PySceneWrapper.hpp"
 #include "PyMessenger.hpp"
 
@@ -22,7 +21,6 @@ using core::Shader;
 
 using py::ComponentWrapper;
 using py::GameObjectWrapper;
-using py::GraphicalComponentWrapper;
 using py::Messenger;
 using py::SceneWrapper;
 
@@ -67,9 +65,6 @@ BOOST_PYTHON_MODULE(core)
     .def("load", &ComponentWrapper::Load)
     .def("unload", &ComponentWrapper::Unload);
 
-  // Expose the Shader class, for use with GraphicalComponents.
-  class_<Shader>("Shader", init<std::string, std::string>());
-
   // Expose the GameObject class.
   class_<GameObjectWrapper, bases<Observer>, boost::noncopyable>("GameObject")
     .def("add_child", &GameObjectWrapper::AddChild_)
@@ -86,8 +81,7 @@ BOOST_PYTHON_MODULE(core)
          boost::noncopyable>("MeshComponent", no_init)
     .def("update", &MeshComponent::Update)
     .def("render", &MeshComponent::Render)
-    .def("set_shader", &MeshComponent::SetShader)
-    .def("disable_shader", &MeshComponent::DisableShader);
+    .def("create_and_add_shader", &MeshComponent::CreateAndAddShader);
 
   // ModelComponent
   class_<ModelComponent,
@@ -95,7 +89,6 @@ BOOST_PYTHON_MODULE(core)
          boost::noncopyable>("ModelComponent")
     .def("update", &ModelComponent::Update)
     .def("render", &ModelComponent::Render)
-    .def("set_shader", &ModelComponent::SetShader)
-    .def("disable_shader", &ModelComponent::DisableShader)
+    .def("create_and_add_shader", &ModelComponent::CreateAndAddShader)
     .def("load_model", &ModelComponent::LoadModel);
 }

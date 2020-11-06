@@ -12,6 +12,12 @@
 
 namespace core
 {
+  class GameObject;
+
+  typedef std::vector<std::unique_ptr<GameObject>> ObjectList;
+  typedef std::vector<std::unique_ptr<Component>> ComponentList;
+  typedef std::vector<std::unique_ptr<GraphicalComponent>> GraphicalComponentList;
+
   /**
    * A GameObject is essentially just a sack of components.
    * The components themselves are what determine the behavior
@@ -38,9 +44,9 @@ namespace core
       glm::vec4 GetPosition() const  { return mPosition; }
 
     private:
-      std::vector<std::unique_ptr<GameObject>> mChildren;
-      std::vector<std::unique_ptr<Component>> mComponents;
-      std::vector<std::unique_ptr<GraphicalComponent>> mGraphicalComponents;
+      ObjectList mChildren;
+      ComponentList mComponents;
+      GraphicalComponentList mGraphicalComponents;
 
       glm::mat4 mTransform;
       glm::vec4 mPosition;

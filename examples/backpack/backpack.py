@@ -27,10 +27,11 @@ class PlayerObject(core.GameObject):
         self.add_component(HealthComponent())
 
 player = PlayerObject()
+
 model = core.ModelComponent()
-shader = core.Shader("backpack.vert", "backpack.frag")
 model.load_model("backpack.obj")
-model.set_shader(shader)
+model.create_and_add_shader("backpack.vert", "backpack.frag")
+
 player.add_component(model)
 
 mainScene = core.Scene()

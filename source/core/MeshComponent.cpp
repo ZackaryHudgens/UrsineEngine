@@ -7,9 +7,9 @@
 
 using core::MeshComponent;
 
-MeshComponent::MeshComponent(const std::vector<MeshVertex>& aVertices,
-                             const std::vector<unsigned int> aIndices,
-                             const std::vector<MeshTexture> aTextures)
+MeshComponent::MeshComponent(const VertexList& aVertices,
+                             const IndexList& aIndices,
+                             const TextureList& aTextures)
   : mVAO(0)
   , mVBO(0)
   , mEBO(0)
@@ -18,53 +18,6 @@ MeshComponent::MeshComponent(const std::vector<MeshVertex>& aVertices,
   , mTextures(aTextures)
 {
   Initialize();
-}
-
-void MeshComponent::Render() const
-{
-  // Temporary? Used to count the number of diffuse/specular
-  // textures provided with this mesh.
-  if(GetShader() != nullptr)
-  {
-    GetShader()->Activate();
-
-    // Transform this mesh based on the GameObject's transform matrix.
-    glm::mat4 model = GetParent()->GetTransform();
-    glm::vec3 axis(0.5f, 1.0f, 0.0f);
-    GetShader()->SetMat4("transform", glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), axis));
-    //GetShader()->SetMat4("transform", GetParent()->GetTransform());
-
-    //TODO: temporary; this should go somewhere else
-    GetShader()->SetMat4("view", glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f)));
-    GetShader()->SetMat4("projection", glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f));
-
-    unsigned int diffuse = 1, specular = 1;
-    for(unsigned int i = 0; i < mTextures.size(); ++i)
-    {
-      glActiveTexture(GL_TEXTURE0 + i);
-
-      std::string number;
-      std::string name = mTextures[i].mType;
-      if(name == "texture_diffuse")
-      {
-        number = std::to_string(diffuse++);
-      }
-      else if(name == "texture_specular")
-      {
-        number = std::to_string(specular++);
-      }
-
-      GetShader()->SetInt(name + number, i);
-      glBindTexture(GL_TEXTURE_2D, mTextures[i].mId);
-    }
-  }
-
-  glActiveTexture(GL_TEXTURE0);
-
-  // Draw the mesh.
-  glBindVertexArray(mVAO);
-  glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
-  glBindVertexArray(0);
 }
 
 void MeshComponent::Initialize()
@@ -120,4 +73,49 @@ void MeshComponent::Initialize()
 
   // Unbind the vertex array.
   glBindVertexArray(0);
+}
+
+void MeshComponent::PrivateRender() const
+{
+  for(const auto& shader : GetShaders())
+  {
+    shader.Activate();
+
+    // Transform this mesh based on the GameObject's transform matrix.
+    glm::mat4 model = GetParent()->GetTransform();
+    glm::vec3 axis(0.5f, 1.0f, 0.0f);
+    shader.SetMat4("transform", glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), axis));
+    //shader.SetMat4("transform", GetParent()->GetTransform());
+
+    //TODO: temporary; this should go somewhere else
+    shader.SetMat4("view", glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f)));
+    shader.SetMat4("projection", glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f));
+
+    unsigned int diffuse = 1, specular = 1;
+    for(unsigned int i = 0; i < mTextures.size(); ++i)
+    {
+      glActiveTexture(GL_TEXTURE0 + i);
+
+      std::string number;
+      std::string name = mTextures[i].mType;
+      if(name == "texture_diffuse")
+      {
+        number = std::to_string(diffuse++);
+      }
+      else if(name == "texture_specular")
+      {
+        number = std::to_string(specular++);
+      }
+
+      shader.SetInt(name + number, i);
+      glBindTexture(GL_TEXTURE_2D, mTextures[i].mId);
+
+      glActiveTexture(GL_TEXTURE0);
+
+      // Draw the mesh.
+      glBindVertexArray(mVAO);
+      glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
+      glBindVertexArray(0);
+    }
+  }
 }

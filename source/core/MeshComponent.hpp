@@ -24,24 +24,29 @@ namespace core
     std::string mPath;
   };
 
+  typedef std::vector<MeshVertex> VertexList;
+  typedef std::vector<unsigned int> IndexList;
+  typedef std::vector<MeshTexture> TextureList;
+
   class MeshComponent : public GraphicalComponent
   {
     public:
-      MeshComponent(const std::vector<MeshVertex>& aVertices,
-                    const std::vector<unsigned int> aIndices,
-                    const std::vector<MeshTexture> aTextures);
+      MeshComponent(const VertexList& aVertices,
+                    const IndexList& aIndices,
+                    const TextureList& aTextures);
 
       void Update() override {}
-      void Render() const override;
 
     private:
       void Initialize();
 
+      void PrivateRender() const override;
+
       unsigned int mVAO, mVBO, mEBO;
 
-      std::vector<MeshVertex>   mVertices;
-      std::vector<unsigned int> mIndices;
-      std::vector<MeshTexture>  mTextures;
+      VertexList mVertices;
+      IndexList mIndices;
+      TextureList mTextures;
   };
 }
 

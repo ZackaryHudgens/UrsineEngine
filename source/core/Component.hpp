@@ -1,13 +1,16 @@
 #ifndef COMPONENT_HPP
 #define COMPONENT_HPP
 
-#include <iostream>
+#include <memory>
 
 #include "Observer.hpp"
 
 namespace core
 {
+  class Component;
   class GameObject;
+
+  typedef std::vector<std::unique_ptr<Component>> ComponentList;
 
   /**
    * A Component is an interface for any sort of behavior
@@ -27,10 +30,15 @@ namespace core
       virtual void Load() {}
       virtual void Unload() {}
 
-      virtual void SetParent(GameObject* aParent) { mParent = aParent; }
-      GameObject* GetParent() const               { return mParent; }
+      void AddChild(std::unique_ptr<Component> aChild);
+      const ComponentList& GetChildren() const { return mChildren; }
+
+      void SetParent(GameObject* aParent);
+      GameObject* GetParent() const { return mParent; }
 
     private:
+      ComponentList mChildren;
+
       GameObject* mParent;
   };
 }
