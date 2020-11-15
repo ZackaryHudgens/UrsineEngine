@@ -11,7 +11,7 @@
 namespace core
 {
   /**
-   * A class that encapsulates a GLSL vertex/fragment shader pair.
+   * A class that encapsulates a GLSL shader.
    */
   class Shader
   {

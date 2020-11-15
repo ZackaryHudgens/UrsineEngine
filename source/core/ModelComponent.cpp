@@ -110,9 +110,9 @@ void ModelComponent::ProcessNode(aiNode* aNode, const aiScene* aScene)
 std::unique_ptr<MeshComponent> ModelComponent::ProcessMesh(aiMesh* aMesh,
                                                            const aiScene* aScene)
 {
-  std::vector<MeshVertex> vertices;
-  std::vector<MeshTexture> textures;
-  std::vector<unsigned int> indices;
+  VertexList vertices;
+  TextureList textures;
+  IndexList indices;
 
   for(unsigned int i = 0; i < aMesh->mNumVertices; i++)
   {

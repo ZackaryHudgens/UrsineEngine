@@ -7,8 +7,6 @@
 
 namespace core
 {
-  typedef std::vector<MeshTexture> TextureList;
-
   class ModelComponent : public GraphicalComponent
   {
     public:
