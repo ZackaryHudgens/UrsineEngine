@@ -1,4 +1,5 @@
-file(GLOB PYTHON_EXT_SOURCES *.?pp wrappers/*.?pp)
+file(GLOB PYTHON_EXT_SOURCES *.?pp
+                             wrappers/*.?pp)
 
 add_library(core MODULE ${PYTHON_EXT_SOURCES})
 target_link_libraries(core PUBLIC
@@ -15,4 +16,4 @@ set_target_properties(core PROPERTIES
                       PREFIX "")
 
 # Install as a python module.
-install(TARGETS core LIBRARY DESTINATION "${URSINE_INSTALL_DIR}/python3.6/site-packages/UrsineEngine")
+install(TARGETS core LIBRARY DESTINATION "${URSINE_INSTALL_DIR}/python/site-packages/UrsineEngine")

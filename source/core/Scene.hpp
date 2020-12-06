@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+#include "Camera.hpp"
 #include "GameObject.hpp"
 
 namespace core
@@ -25,8 +26,11 @@ namespace core
       void Update();
       void Render();
 
+      Camera* GetCamera() { return mMainCamera.get(); }
+
     private:
       std::vector<std::unique_ptr<GameObject>> mObjects;
+      std::unique_ptr<Camera> mMainCamera;
   };
 }
 
