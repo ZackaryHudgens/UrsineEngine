@@ -2,9 +2,11 @@
 
 #include "Scene.hpp"
 
+using core::Camera;
 using core::Scene;
 
 Scene::Scene()
+  : mMainCamera(std::make_unique<Camera>())
 {
 }
 

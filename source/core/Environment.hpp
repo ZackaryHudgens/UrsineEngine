@@ -25,10 +25,13 @@ namespace core
 
       static Environment& GetInstance();
 
-      bool CreateWindow(const char* aTitle, int aWidth, int aHeight);
       void Run();
 
+      bool CreateWindow(const char* aTitle, int aWidth, int aHeight);
+      GLFWwindow* GetWindow() const { return mWindow; }
+
       void LoadScene(Scene& aScene);
+      Scene* GetCurrentScene() { return mCurrentScene; }
 
     protected:
       Environment();

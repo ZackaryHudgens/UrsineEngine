@@ -21,17 +21,17 @@ void GraphicalComponent::Render() const
   }
 }
 
-void GraphicalComponent::CreateAndAddShader(const std::string& aVertexPath,
-                                            const std::string& aFragmentPath)
+void GraphicalComponent::AddShader(const char* aVertexSource,
+                                   const char* aFragmentSource)
 {
-  mShaders.emplace_back(Shader(aVertexPath, aFragmentPath));
+  mShaders.emplace_back(Shader(aVertexSource, aFragmentSource));
 
   for(auto& child : GetChildren())
   {
     GraphicalComponent* gc = dynamic_cast<GraphicalComponent*>(child.get());
     if(gc != nullptr)
     {
-      gc->CreateAndAddShader(aVertexPath, aFragmentPath);
+      gc->AddShader(aVertexSource, aFragmentSource);
     }
   }
 }

@@ -80,8 +80,7 @@ BOOST_PYTHON_MODULE(core)
          bases<Component>,
          boost::noncopyable>("MeshComponent", no_init)
     .def("update", &MeshComponent::Update)
-    .def("render", &MeshComponent::Render)
-    .def("create_and_add_shader", &MeshComponent::CreateAndAddShader);
+    .def("render", &MeshComponent::Render);
 
   // ModelComponent
   class_<ModelComponent,
@@ -89,6 +88,5 @@ BOOST_PYTHON_MODULE(core)
          boost::noncopyable>("ModelComponent")
     .def("update", &ModelComponent::Update)
     .def("render", &ModelComponent::Render)
-    .def("create_and_add_shader", &ModelComponent::CreateAndAddShader)
     .def("load_model", &ModelComponent::LoadModel);
 }

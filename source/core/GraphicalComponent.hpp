@@ -12,7 +12,7 @@ namespace core
 
   /**
    * A GraphicalComponent is a Component that also requires
-   * a Render() function to be defined.
+   * a PrivateRender() function to be defined.
    */
   class GraphicalComponent : public Component
   {
@@ -21,8 +21,7 @@ namespace core
 
       void Render() const;
 
-      void CreateAndAddShader(const std::string& aVertexPath,
-                              const std::string& aFragmentPath);
+      void AddShader(const char* aVertexSource, const char* aFragmentSource);
       const ShaderList& GetShaders() const { return mShaders; }
 
     private:

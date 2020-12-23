@@ -42,8 +42,8 @@ bool Environment::CreateWindow(const char* aTitle, int aWidth, int aHeight)
   // Initialize GLFW
   if(glfwInit())
   {
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
     mWindow = glfwCreateWindow(aWidth, aHeight, aTitle, nullptr, nullptr);
     if(mWindow == nullptr)

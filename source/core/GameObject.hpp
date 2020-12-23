@@ -43,6 +43,10 @@ namespace core
       glm::mat4 GetTransform() const { return mTransform; }
       glm::vec4 GetPosition() const  { return mPosition; }
 
+      virtual void Scale(double aScalar);
+      virtual void Translate(const glm::vec3& aVector);
+      virtual void Rotate(double aDegrees, const glm::vec3& aAxis);
+
     private:
       ObjectList mChildren;
       ComponentList mComponents;

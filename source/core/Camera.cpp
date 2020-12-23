@@ -3,6 +3,7 @@
 #include <glm/ext/matrix_transform.hpp>
 
 using core::Camera;
+using core::GameObject;
 
 Camera::Camera()
   : GameObject()
@@ -20,8 +21,27 @@ glm::mat4 Camera::GetViewMatrix() const
 
 void Camera::LookAt(const GameObject& aObject)
 {
+  LookAt(aObject.GetPosition());
 }
 
 void Camera::LookAt(const glm::vec4& aPosition)
+{
+  mTarget = glm::vec3(aPosition.x, aPosition.y, aPosition.z);
+  UpdateVectors();
+}
+
+void Camera::Translate(const glm::vec3& aVector)
+{
+  GameObject::Translate(aVector);
+  UpdateVectors();
+}
+
+void Camera::Rotate(double aDegrees, const glm::vec3& aAxis)
+{
+  GameObject::Rotate(aDegrees, aAxis);
+  UpdateVectors();
+}
+
+void Camera::UpdateVectors()
 {
 }

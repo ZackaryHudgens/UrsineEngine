@@ -17,5 +17,4 @@ void main()
 
   // Sets the position of each vertex in world space.
   gl_Position = projection * view * transform * vec4(aPos, 1.0);
-  //gl_Position = vec4(aPos, 1.0);
 }

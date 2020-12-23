@@ -4,7 +4,12 @@
 
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
+
+#include <cmrc/cmrc.hpp>
+
 #include <il.h>
+
+CMRC_DECLARE(ShaderLib);
 
 using core::MeshComponent;
 using core::MeshTexture;
@@ -15,6 +20,11 @@ using core::TextureList;
 ModelComponent::ModelComponent()
   : GraphicalComponent()
 {
+  // Add the base model shader.
+  auto fs = cmrc::ShaderLib::get_filesystem();
+  auto vertexFile = fs.open("shaders/ModelBase.vert");
+  auto fragmentFile = fs.open("shaders/ModelBase.frag");
+  AddShader(vertexFile.begin(), fragmentFile.begin());
 }
 
 void ModelComponent::LoadModel(const std::string& aFilePath)

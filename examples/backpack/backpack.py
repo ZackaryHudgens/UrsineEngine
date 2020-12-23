@@ -30,8 +30,6 @@ player = PlayerObject()
 
 model = core.ModelComponent()
 model.load_model("backpack.obj")
-model.create_and_add_shader("backpack.vert", "purple.frag")
-model.create_and_add_shader("backpack.vert", "backpack.frag")
 
 player.add_component(model)
 

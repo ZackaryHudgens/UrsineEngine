@@ -5,9 +5,15 @@ find_package(assimp REQUIRED)
 find_package(glm REQUIRED)
 
 file(GLOB CORE_SOURCES *.?pp)
+#file(GLOB SHADERS shaders/*.vert shaders/*.frag)
+
+# Create a library containing the shader resources.
+cmrc_add_resource_library(ShaderLib shaders/ModelBase.frag
+                                    shaders/ModelBase.vert)
 
 add_library(UrsineCore SHARED ${CORE_SOURCES})
 target_link_libraries(UrsineCore PUBLIC
+                      ShaderLib
                       glfw
                       ${GLEW_LIBRARIES}
                       ${IL_LIBRARIES}

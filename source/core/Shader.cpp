@@ -8,15 +8,12 @@
 
 using core::Shader;
 
-Shader::Shader(const std::string& aVertexPath,
-               const std::string& aFragmentPath)
+Shader::Shader(const char* aVertexSource,
+               const char* aFragmentSource)
   : mProgramId(0)
 {
-  // First, load the shader source into strings.
-  std::string vertexCodeString;
-  std::string fragmentCodeString;
-  LoadShaderAsString(vertexCodeString, aVertexPath);
-  LoadShaderAsString(fragmentCodeString, aFragmentPath);
+  std::string vertexCodeString = aVertexSource;
+  std::string fragmentCodeString = aFragmentSource;
 
   // Next, compile the shaders.
   unsigned int vertexID, fragmentID;
@@ -90,28 +87,6 @@ void Shader::SetMat4(const std::string& aName, const glm::mat4& aMat) const
   {
     std::cout << "Uniform " << aName << " does not exist "
               << "or is reserved!" << std::endl;
-  }
-}
-
-void Shader::LoadShaderAsString(std::string& aString,
-                                const std::string& aShaderPath)
-{
-  std::ifstream shaderFile;
-  std::stringstream shaderStream;
-
-  // Try to open the given file.
-  try
-  {
-    // Read in the shader source code.
-    shaderFile.open(aShaderPath.c_str());
-    shaderStream << shaderFile.rdbuf();
-    shaderFile.close();
-
-    aString = shaderStream.str();
-  }
-  catch(std::ifstream::failure e)
-  {
-    std::cout << "Error loading shader!\n" << e.what() << std::endl;
   }
 }
 

@@ -134,3 +134,32 @@ void GameObject::AddComponent(std::unique_ptr<Component> aComponent)
     mComponents.emplace_back(std::move(aComponent));
   }
 }
+
+/**
+ * Scales the GameObject's transform by the given amount.
+ *
+ * @param aScalar The amount to scale by.
+ */
+void GameObject::Scale(double aScalar)
+{
+}
+
+/**
+ * Translates this GameObject's transform in the given direction.
+ *
+ * @param aVector The vector to translate by.
+ */
+void GameObject::Translate(const glm::vec3& aVector)
+{
+}
+
+/**
+ * Rotates this GameObject's transform by the given amount around
+ * the given axis.
+ *
+ * @param aDegrees The amount to rotate by in degrees.
+ * @param aAxis The axis around which to rotate.
+ */
+void GameObject::Rotate(double aDegrees, const glm::vec3& aAxis)
+{
+}

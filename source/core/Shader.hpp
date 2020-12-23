@@ -16,8 +16,8 @@ namespace core
   class Shader
   {
     public:
-      Shader(const std::string& aVertexPath,
-             const std::string& aFragmentPath);
+      Shader(const char* aVertexSource,
+             const char* aFragmentSource);
 
       void Activate() const;
 
@@ -27,8 +27,6 @@ namespace core
       void SetMat4(const std::string& aName, const glm::mat4& aMat) const;
 
     private:
-      void LoadShaderAsString(std::string& aString,
-                              const std::string& aShaderPath);
       void CompileShader(unsigned int& aShaderID,
                          const std::string& aShaderSource,
                          GLenum aShaderType);
