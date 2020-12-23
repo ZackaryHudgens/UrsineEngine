@@ -44,4 +44,5 @@ void Camera::Rotate(double aDegrees, const glm::vec3& aAxis)
 
 void Camera::UpdateVectors()
 {
+
 }
