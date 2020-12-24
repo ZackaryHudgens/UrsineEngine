@@ -22,7 +22,7 @@ void ComponentWrapper::Update()
  */
 void ComponentWrapper::Load()
 {
-  boost::python::override loadFunc = get_override("load");
+  bp::override loadFunc = get_override("load");
   if(loadFunc)
   {
     loadFunc();
@@ -40,7 +40,7 @@ void ComponentWrapper::Load()
  */
 void ComponentWrapper::Unload()
 {
-  boost::python::override unloadFunc = get_override("unload");
+  bp::override unloadFunc = get_override("unload");
   if(unloadFunc)
   {
     unloadFunc();

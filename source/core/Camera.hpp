@@ -20,6 +20,15 @@ namespace core
     public:
       Camera();
 
+      void SetFOV(double aFOV) { mFOV = aFOV; }
+      double GetFOV() const    { return mFOV; }
+
+      void SetNearPlane(double aNearPlane) { mNearPlane = aNearPlane; }
+      double GetNearPlane() const          { return mNearPlane; }
+
+      void SetFarPlane(double aFarPlane) { mFarPlane = aFarPlane; }
+      double GetFarPlane() const         { return mFarPlane; }
+
       glm::mat4 GetViewMatrix() const;
 
       void LookAt(const GameObject& aObject);
@@ -30,6 +39,10 @@ namespace core
 
     private:
       void UpdateVectors();
+
+      double mFOV;
+      double mNearPlane;
+      double mFarPlane;
 
       glm::vec3 mTarget;
 

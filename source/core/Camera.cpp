@@ -7,6 +7,9 @@ using core::GameObject;
 
 Camera::Camera()
   : GameObject()
+  , mFOV(45.0f)
+  , mNearPlane(0.1f)
+  , mFarPlane(100.0f)
   , mTarget(0.0f, 0.0f, 0.0f)
   , mRightVector(1.0f, 0.0f, 0.0f)
   , mUpVector(0.0f, 1.0f, 0.0f)

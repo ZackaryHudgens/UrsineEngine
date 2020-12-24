@@ -5,6 +5,8 @@
 
 #include "Scene.hpp"
 
+namespace bp = boost::python;
+
 using core::GameObject;
 using core::Scene;
 
@@ -15,7 +17,7 @@ namespace py
    * without the use of smart pointers.
    */
   class SceneWrapper : public Scene
-                     , public boost::python::wrapper<Scene>
+                     , public bp::wrapper<Scene>
   {
     public:
       SceneWrapper();

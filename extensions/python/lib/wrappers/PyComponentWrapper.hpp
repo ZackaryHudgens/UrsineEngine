@@ -5,6 +5,8 @@
 
 #include "Component.hpp"
 
+namespace bp = boost::python;
+
 using core::Component;
 
 namespace py
@@ -15,7 +17,7 @@ namespace py
   * Load() and Unload() functions.
   */
   class ComponentWrapper : public Component
-                         , public boost::python::wrapper<Component> 
+                         , public bp::wrapper<Component> 
   {
     public:
       ComponentWrapper();

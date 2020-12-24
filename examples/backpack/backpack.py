@@ -3,38 +3,25 @@ from UrsineEngine import core
 env = core.get_or_create_environment()
 env.create_window("backpack model test", 800, 600)
 
-class HealthComponent(core.Component):
+class TranslateComponent(core.Component):
     def __init__(self):
-        core.Component.__init__(self) # TODO: handle this automatically?
-        self.health = 5
-        self.connect("player_hit", self.handle_player_hit)
-
-    def handle_player_hit(self):
-        print("ow!")
-        self.health -= 1
+        core.Component.__init__(self)
 
     def update(self):
-        pass
-        #print(self.health)
+        self.get_parent().translate([0.0, 0.0, -0.1])
 
-    def load(self):
-        pass
-        #print("loading health component")
-
-class PlayerObject(core.GameObject):
+class Backpack(core.GameObject):
     def __init__(self):
         core.GameObject.__init__(self)
-        self.add_component(HealthComponent())
+        #self.add_component(TranslateComponent())
 
-player = PlayerObject()
-
-model = core.ModelComponent()
-model.load_model("backpack.obj")
-
-player.add_component(model)
+backpack = Backpack()
+backpack_model = core.ModelComponent()
+backpack_model.load_model("backpack.obj")
+backpack.add_component(backpack_model)
 
 mainScene = core.Scene()
-mainScene.add_object(player)
+mainScene.add_object(backpack)
 
 env.load_scene(mainScene)
 env.run()

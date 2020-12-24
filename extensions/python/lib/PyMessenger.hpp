@@ -5,6 +5,8 @@
 
 #include "Signal.hpp"
 
+namespace bp = boost::python;
+
 using core::Observer;
 using core::SignalT;
 
@@ -12,7 +14,7 @@ namespace py
 {
   // A specialized Signal that takes a list of python objects
   // as an argument.
-  typedef SignalT<boost::python::list&> pySignal;
+  typedef SignalT<bp::list&> pySignal;
 
   /**
    * A class that handles the creation and notification of python Signals.
@@ -24,11 +26,11 @@ namespace py
 
       void CreateSignal(const std::string& aName);
       void NotifySignal(const std::string& aName,
-                        boost::python::list& aArgs);
+                        bp::list& aArgs);
 
       void Connect(Observer& aObserver,
                    const std::string& aName,
-                   boost::python::object& aFunc);
+                   bp::object& aFunc);
 
     private:
       std::map<std::string, pySignal> mSignalMap;

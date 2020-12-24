@@ -1,5 +1,7 @@
 #include "GameObject.hpp"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 using core::Component;
 using core::GameObject;
 using core::GraphicalComponent;
@@ -138,10 +140,11 @@ void GameObject::AddComponent(std::unique_ptr<Component> aComponent)
 /**
  * Scales the GameObject's transform by the given amount.
  *
- * @param aScalar The amount to scale by.
+ * @param aScalar The amount to scale by on each axis.
  */
-void GameObject::Scale(double aScalar)
+void GameObject::Scale(const glm::vec3& aScalar)
 {
+  mTransform = glm::scale(mTransform, aScalar);
 }
 
 /**
@@ -151,6 +154,7 @@ void GameObject::Scale(double aScalar)
  */
 void GameObject::Translate(const glm::vec3& aVector)
 {
+  mTransform = glm::translate(mTransform, aVector);
 }
 
 /**
@@ -162,4 +166,5 @@ void GameObject::Translate(const glm::vec3& aVector)
  */
 void GameObject::Rotate(double aDegrees, const glm::vec3& aAxis)
 {
+  mTransform = glm::rotate(mTransform, (float)glm::radians(aDegrees), aAxis);
 }

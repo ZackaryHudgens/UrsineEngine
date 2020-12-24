@@ -16,7 +16,7 @@ void Messenger::CreateSignal(const std::string& aName)
 }
 
 void Messenger::NotifySignal(const std::string& aName,
-                             boost::python::list& aArgs)
+                             bp::list& aArgs)
 {
   auto sig = mSignalMap.find(aName);
   if(sig != mSignalMap.end())
@@ -27,11 +27,11 @@ void Messenger::NotifySignal(const std::string& aName,
 
 void Messenger::Connect(Observer& aObserver,
                         const std::string& aName,
-                        boost::python::object& aFunc)
+                        bp::object& aFunc)
 {
-  auto funcWrapper = [aFunc](boost::python::list& aArgs)
+  auto funcWrapper = [aFunc](bp::list& aArgs)
   {
-    aFunc(*boost::python::tuple(aArgs));
+    aFunc(*bp::tuple(aArgs));
   };
 
   auto sig = mSignalMap.find(aName);

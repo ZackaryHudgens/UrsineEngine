@@ -7,6 +7,7 @@
 #include "Environment.hpp"
 #include "GameObject.hpp"
 
+using core::Camera;
 using core::MeshComponent;
 
 MeshComponent::MeshComponent(const VertexList& aVertices,
@@ -83,12 +84,22 @@ void MeshComponent::PrivateRender() const
   {
     shader.Activate();
 
-    // Transform this mesh based on the GameObject's transform matrix.
-    shader.SetMat4("transform", GetParent()->GetTransform());
-    shader.SetMat4("view", env.GetCurrentScene()->GetCamera()->GetViewMatrix());
+    Camera* cam = env.GetCurrentScene()->GetCamera();
 
-    //TODO: temporary; this should go somewhere else
-    shader.SetMat4("projection", glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f));
+    int w, h;
+    glfwGetWindowSize(env.GetWindow(), &w, &h);
+    double aspectRatio = (double)w / (double)h;
+
+    // Transform this mesh based on the GameObject's transform matrix
+    // and the scene's Camera.
+    //
+    // TODO: handle multiple cameras?
+    shader.SetMat4("transform", GetParent()->GetTransform());
+    shader.SetMat4("view", cam->GetViewMatrix());
+    shader.SetMat4("projection", glm::perspective(glm::radians(cam->GetFOV()),
+                                                  aspectRatio,
+                                                  cam->GetNearPlane(),
+                                                  cam->GetFarPlane()));
 
     unsigned int diffuse = 1, specular = 1;
     for(unsigned int i = 0; i < mTextures.size(); ++i)
