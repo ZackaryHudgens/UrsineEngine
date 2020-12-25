@@ -30,7 +30,7 @@ namespace core
       virtual void Load() {}
       virtual void Unload() {}
 
-      void AddChild(std::unique_ptr<Component> aChild);
+      virtual void AddChild(std::unique_ptr<Component> aChild);
       const ComponentList& GetChildren() const { return mChildren; }
 
       void SetParent(GameObject* aParent);

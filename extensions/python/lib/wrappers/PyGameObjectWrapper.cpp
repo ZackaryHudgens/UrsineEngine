@@ -69,11 +69,13 @@ void GameObjectWrapper::Translate_(const bp::list& aArgs)
 {
   try
   {
-    double& x = bp::extract<double&>(aArgs[0]);
+    /*double& x = bp::extract<double&>(aArgs[0]);
     double& y = bp::extract<double&>(aArgs[1]);
     double& z = bp::extract<double&>(aArgs[2]);
 
-    GameObject::Translate(glm::vec3(x, y, z));
+    GameObject::Translate(glm::vec3(x, y, z));*/
+
+    GameObject::Translate(glm::vec3(0.0f, 0.0f, -0.1f));
   }
   catch(const std::exception& e)
   {

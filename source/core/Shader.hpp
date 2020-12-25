@@ -19,6 +19,9 @@ namespace core
       Shader(const char* aVertexSource,
              const char* aFragmentSource);
 
+      const std::string& GetVertexSource() const   { return mVertexSource; }
+      const std::string& GetFragmentSource() const { return mFragmentSource; }
+
       void Activate() const;
 
       void SetBool(const std::string& aName, bool aValue) const;
@@ -32,6 +35,9 @@ namespace core
                          GLenum aShaderType);
       void CreateProgram(unsigned int aVertexID,
                          unsigned int aFragmentID);
+
+      std::string mVertexSource;
+      std::string mFragmentSource;
 
       unsigned int mProgramId;
   };

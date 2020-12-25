@@ -1,6 +1,8 @@
 #include "Camera.hpp"
-#include "GameObject.hpp"
+
 #include <glm/ext/matrix_transform.hpp>
+
+#include "GameObject.hpp"
 
 using core::Camera;
 using core::GameObject;

@@ -7,6 +7,21 @@ GraphicalComponent::GraphicalComponent()
 {
 }
 
+void GraphicalComponent::AddChild(std::unique_ptr<Component> aChild)
+{
+  auto* gc = dynamic_cast<GraphicalComponent*>(aChild.get());
+  if(gc != nullptr)
+  {
+    for(const auto& shader : mShaders)
+    {
+      gc->AddShader(shader.GetVertexSource().c_str(),
+                    shader.GetFragmentSource().c_str());
+    }
+  }
+
+  Component::AddChild(std::move(aChild));
+}
+
 void GraphicalComponent::Render() const
 {
   PrivateRender();

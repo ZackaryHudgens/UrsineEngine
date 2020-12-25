@@ -48,4 +48,3 @@ void Scene::Render()
     object->Render();
   }
 }
-

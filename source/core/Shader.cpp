@@ -11,15 +11,14 @@ using core::Shader;
 Shader::Shader(const char* aVertexSource,
                const char* aFragmentSource)
   : mProgramId(0)
+  , mVertexSource(aVertexSource)
+  , mFragmentSource(aFragmentSource)
 {
-  std::string vertexCodeString = aVertexSource;
-  std::string fragmentCodeString = aFragmentSource;
-
   // Next, compile the shaders.
   unsigned int vertexID, fragmentID;
 
-  CompileShader(vertexID, vertexCodeString, GL_VERTEX_SHADER);
-  CompileShader(fragmentID, fragmentCodeString, GL_FRAGMENT_SHADER);
+  CompileShader(vertexID, mVertexSource, GL_VERTEX_SHADER);
+  CompileShader(fragmentID, mFragmentSource, GL_FRAGMENT_SHADER);
 
   // Finally, create and link the shader program.
   CreateProgram(vertexID, fragmentID);
