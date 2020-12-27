@@ -64,7 +64,7 @@ BOOST_PYTHON_MODULE(core)
     .def("update", bp::pure_virtual(&Component::Update))
     .def("load", &ComponentWrapper::Load)
     .def("unload", &ComponentWrapper::Unload)
-    .def("get_parent", &Component::GetParent, bp::return_internal_reference<>());
+    .def("get_parent", &ComponentWrapper::GetParent, bp::return_internal_reference<>());
 
   // Expose the GameObject class.
   bp::class_<GameObjectWrapper, bp::bases<Observer>, boost::noncopyable>("GameObject")

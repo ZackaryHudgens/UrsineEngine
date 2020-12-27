@@ -8,6 +8,7 @@ class TranslateComponent(core.Component):
         core.Component.__init__(self)
 
     def update(self):
+        print("translating...")
         self.get_parent().translate([0.0, 0.0, -0.1])
 
 class Backpack(core.GameObject):
@@ -19,6 +20,9 @@ backpack = Backpack()
 backpack_model = core.ModelComponent()
 backpack_model.load_model("backpack.obj")
 backpack.add_component(backpack_model)
+
+translate = TranslateComponent()
+backpack.add_component(translate)
 
 mainScene = core.Scene()
 mainScene.add_object(backpack)

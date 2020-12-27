@@ -94,22 +94,12 @@ void MeshComponent::PrivateRender() const
     // and the scene's Camera.
     //
     // TODO: handle multiple cameras?
-    /*shader.SetMat4("transform", GetParent()->GetTransform());
+    shader.SetMat4("model", GetParent()->GetTransform());
     shader.SetMat4("view", cam->GetViewMatrix());
     shader.SetMat4("projection", glm::perspective(glm::radians(cam->GetFOV()),
                                                   aspectRatio,
                                                   cam->GetNearPlane(),
-                                                  cam->GetFarPlane()));*/
-
-    // Transform this mesh based on the GameObject's transform matrix.
-    glm::mat4 model = GetParent()->GetTransform();
-    glm::vec3 axis(0.5f, 1.0f, 0.0f);
-    shader.SetMat4("transform", glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), axis));
-    //GetShader()->SetMat4("transform", GetParent()->GetTransform());
-
-    //TODO: temporary; this should go somewhere else
-    shader.SetMat4("view", glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f)));
-    shader.SetMat4("projection", glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f));
+                                                  cam->GetFarPlane()));
 
     unsigned int diffuse = 1, specular = 1;
     for(unsigned int i = 0; i < mTextures.size(); ++i)

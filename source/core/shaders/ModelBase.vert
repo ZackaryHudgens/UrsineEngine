@@ -6,7 +6,7 @@ layout (location = 2) in vec2 aTexCoords;
 
 out vec2 TexCoords;
 
-uniform mat4 transform;
+uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
@@ -16,5 +16,5 @@ void main()
   TexCoords = aTexCoords;
 
   // Sets the position of each vertex in world space.
-  gl_Position = projection * view * transform * vec4(aPos, 1.0);
+  gl_Position = projection * view * model * vec4(aPos, 1.0);
 }

@@ -20,7 +20,7 @@ Camera::Camera()
 
 glm::mat4 Camera::GetViewMatrix() const
 {
-  glm::vec3 position(GetPosition().x, GetPosition().y, GetPosition().z);
+  glm::vec3 position(GetPosition().x, GetPosition().y, 3.0f);
   return glm::lookAt(position, mTarget, mUpVector);
 }
 
