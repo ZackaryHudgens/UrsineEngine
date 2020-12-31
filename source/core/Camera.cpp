@@ -20,7 +20,7 @@ Camera::Camera()
 
 glm::mat4 Camera::GetViewMatrix() const
 {
-  glm::vec3 position(GetPosition().x, GetPosition().y, 3.0f);
+  glm::vec3 position(GetPosition().x, GetPosition().y, GetPosition().z);
   return glm::lookAt(position, mTarget, mUpVector);
 }
 
@@ -49,5 +49,4 @@ void Camera::Rotate(double aDegrees, const glm::vec3& aAxis)
 
 void Camera::UpdateVectors()
 {
-
 }
