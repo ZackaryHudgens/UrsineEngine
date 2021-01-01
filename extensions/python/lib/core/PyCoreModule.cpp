@@ -1,5 +1,6 @@
 #include <boost/python.hpp>
 
+#include "Camera.hpp"
 #include "Environment.hpp"
 #include "MeshComponent.hpp"
 #include "ModelComponent.hpp"
@@ -13,6 +14,7 @@
 
 namespace bp = boost::python;
 
+using core::Camera;
 using core::Environment;
 using core::MeshComponent;
 using core::ModelComponent;
@@ -73,6 +75,15 @@ BOOST_PYTHON_MODULE(core)
     .def("scale", &GameObjectWrapper::Scale_)
     .def("translate", &GameObjectWrapper::Translate_)
     .def("rotate", &GameObjectWrapper::Rotate_);
+
+  // Expose the Camera class.
+  bp::class_<Camera, bp::bases<GameObject>, boost::noncopyable>("Camera")
+    .def("set_fov", &Camera::SetFOV)
+    .def("get_fov", &Camera::GetFOV)
+    .def("set_near_plane", &Camera::SetNearPlane)
+    .def("get_near_plane", &Camera::GetNearPlane)
+    .def("set_far_plane", &Camera::SetFarPlane)
+    .def("get_far_plane", &Camera::GetFarPlane);
 
   // Expose the Scene class.
   bp::class_<SceneWrapper, boost::noncopyable>("Scene")

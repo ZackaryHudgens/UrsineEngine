@@ -29,9 +29,9 @@ void Camera::LookAt(const GameObject& aObject)
   LookAt(aObject.GetPosition());
 }
 
-void Camera::LookAt(const glm::vec4& aPosition)
+void Camera::LookAt(const glm::vec3& aPosition)
 {
-  mTarget = glm::vec3(aPosition.x, aPosition.y, aPosition.z);
+  mTarget = aPosition;
   UpdateVectors();
 }
 

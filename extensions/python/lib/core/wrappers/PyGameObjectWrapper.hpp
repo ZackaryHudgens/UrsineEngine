@@ -3,6 +3,8 @@
 
 #include <boost/python.hpp>
 
+#include "PyVectorWrapper.hpp"
+
 #include "GameObject.hpp"
 
 namespace bp = boost::python;
@@ -25,9 +27,9 @@ namespace py
       void AddChild_(GameObject& aObject);
       void AddComponent_(Component& aComponent);
 
-      void Scale_(const bp::list& aArgs);
-      void Translate_(const bp::list& aArgs);
-      void Rotate_(double aDegrees, const bp::list& aArgs);
+      void Scale_(const VectorWrapper& aVector);
+      void Translate_(const VectorWrapper& aVector);
+      void Rotate_(double aDegrees, const VectorWrapper& aVector);
   };
 }
 

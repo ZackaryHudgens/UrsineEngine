@@ -41,7 +41,7 @@ namespace core
       void AddComponent(std::unique_ptr<Component> aComponent);
 
       glm::mat4 GetTransform() const { return mTransform; }
-      glm::vec4 GetPosition() const  { return mPosition; }
+      glm::vec3 GetPosition() const  { return mPosition; }
 
       virtual void Scale(const glm::vec3& aScalar);
       virtual void Translate(const glm::vec3& aVector);
@@ -53,7 +53,7 @@ namespace core
       GraphicalComponentList mGraphicalComponents;
 
       glm::mat4 mTransform;
-      glm::vec4 mPosition;
+      glm::vec3 mPosition;
   };
 }
 

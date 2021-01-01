@@ -11,7 +11,7 @@ using core::GraphicalComponent;
  */
 GameObject::GameObject()
   : mTransform(1.0f)
-  , mPosition(0.0f, 0.0f, 0.0f, 1.0f)
+  , mPosition(0.0f, 0.0f, 0.0f)
 {
 }
 
@@ -154,6 +154,7 @@ void GameObject::Scale(const glm::vec3& aScalar)
  */
 void GameObject::Translate(const glm::vec3& aVector)
 {
+  mPosition += aVector;
   mTransform = glm::translate(mTransform, aVector);
 }
 

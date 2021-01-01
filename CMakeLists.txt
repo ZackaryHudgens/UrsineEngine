@@ -16,3 +16,4 @@ include("CMakeRC.cmake")
 
 add_subdirectory(source)
 add_subdirectory(extensions)
+add_subdirectory(examples)

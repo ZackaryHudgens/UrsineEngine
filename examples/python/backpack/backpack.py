@@ -1,3 +1,4 @@
+from UrsineEngine import math
 from UrsineEngine import core
 
 env = core.get_or_create_environment()
@@ -9,7 +10,7 @@ class TranslateComponent(core.Component):
 
     def update(self):
         print("translating...")
-        self.get_parent().translate([0.0, 0.0, -0.1])
+        self.get_parent().translate(math.Vector(0.1, 0.0, -0.5))
 
 class Backpack(core.GameObject):
     def __init__(self):

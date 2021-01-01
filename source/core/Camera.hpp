@@ -32,7 +32,7 @@ namespace core
       glm::mat4 GetViewMatrix() const;
 
       void LookAt(const GameObject& aObject);
-      void LookAt(const glm::vec4& aPosition);
+      void LookAt(const glm::vec3& aPosition);
 
       void Translate(const glm::vec3& aVector) override;
       void Rotate(double aDegrees, const glm::vec3& aAxis) override;
