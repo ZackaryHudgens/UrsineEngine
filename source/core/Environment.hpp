@@ -8,6 +8,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Scene.hpp"
+#include "Signal.hpp"
 
 /**
  * Define "env" as a shorthand to get the Envrionment instance.
@@ -18,6 +19,10 @@
 
 namespace core
 {
+  /**
+   * A singleton class that handles creating a valid OpenGL context,
+   * a window, and manages scene updating, loading, and unloading.
+   */
   class Environment
   {
     public:

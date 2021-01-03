@@ -6,10 +6,62 @@
 #include <il.h>
 #include <ilu.h>
 
+#include "CoreObservers.hpp"
+
 using core::Environment;
 using core::Scene;
 
 std::unique_ptr<Environment> Environment::mInstance = nullptr;
+
+/**
+ * GLFW input callback functions.
+ */
+namespace inputCallbacks
+{
+  void GLFWKeyPressedCallback(GLFWwindow* aWindow,
+                              int aKey,
+                              int aScancode,
+                              int aAction,
+                              int aMods)
+  {
+    core::KeyPressed.Notify(aKey, aScancode, aAction, aMods);
+  }
+
+  void GLFWMouseMovedCallback(GLFWwindow* aWindow,
+                              double aXPosition,
+                              double aYPosition)
+  {
+    core::MouseMoved.Notify(aXPosition, aYPosition);
+  }
+
+  void GLFWMouseEnteredOrLeftCallback(GLFWwindow* aWindow,
+                                      int aEntered)
+  {
+    bool entered = false;
+
+    if(aEntered)
+    {
+      entered = true;
+    }
+
+    core::MouseEnteredOrLeft.Notify(entered);
+  }
+
+  void GLFWMouseButtonPressedCallback(GLFWwindow* aWindow,
+                                      int aButton,
+                                      int aAction,
+                                      int aMods)
+  {
+    core::MouseButtonPressed.Notify(aButton, aAction, aMods);
+  }
+
+  void GLFWMouseScrolledCallback(GLFWwindow* aWindow,
+                                 double aXOffset,
+                                 double aYOffset)
+  {
+    core::MouseScrolled.Notify(aXOffset, aYOffset);
+  }
+}
 
 Environment::Environment()
   : mWindow(nullptr)
@@ -74,6 +126,13 @@ bool Environment::CreateWindow(const char* aTitle, int aWidth, int aHeight)
         else
         {
           init = true;
+
+          // Connect GLFW callback functions.
+          glfwSetKeyCallback(mWindow, inputCallbacks::GLFWKeyPressedCallback);
+          glfwSetCursorPosCallback(mWindow, inputCallbacks::GLFWMouseMovedCallback);
+          glfwSetCursorEnterCallback(mWindow, inputCallbacks::GLFWMouseEnteredOrLeftCallback);
+          glfwSetMouseButtonCallback(mWindow, inputCallbacks::GLFWMouseButtonPressedCallback);
+          glfwSetScrollCallback(mWindow, inputCallbacks::GLFWMouseScrolledCallback);
 
           // Initialize various OpenGL flags.
           glEnable(GL_DEPTH_TEST);
