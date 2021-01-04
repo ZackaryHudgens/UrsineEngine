@@ -35,8 +35,6 @@ namespace core
                     const IndexList& aIndices,
                     const TextureList& aTextures);
 
-      void Update() override {}
-
     private:
       void Initialize();
 

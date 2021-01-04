@@ -16,17 +16,13 @@ namespace core
    * A Component is an interface for any sort of behavior
    * or logic that can be "attached" to a GameObject. Some examples
    * of this behavior include animations, sounds, and input.
-   *
-   * Each different type of Component will need to implement their own
-   * Update() logic.
    */
   class Component : public Observer
   {
     public:
       Component();
 
-      virtual void Update() = 0;
-
+      virtual void Update() {};
       virtual void Load() {}
       virtual void Unload() {}
 

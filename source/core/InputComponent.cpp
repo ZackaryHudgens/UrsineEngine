@@ -17,10 +17,17 @@ InputComponent::InputComponent()
   // Key Pressed callback
   core::KeyPressed.Connect(*this, [this](int aKey,
                                          int aScancode,
-                                         int aAction,
                                          int aMods)
   {
-    this->HandleKeyPress(aKey, aScancode, aAction, aMods);
+    this->HandleKeyPress(aKey, aScancode, aMods);
+  });
+
+  // Key Released callback
+  core::KeyReleased.Connect(*this, [this](int aKey,
+                                          int aScancode,
+                                          int aMods)
+  {
+    this->HandleKeyRelease(aKey, aScancode, aMods);
   });
 
   /**

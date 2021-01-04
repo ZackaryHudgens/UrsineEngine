@@ -24,7 +24,14 @@ namespace inputCallbacks
                               int aAction,
                               int aMods)
   {
-    core::KeyPressed.Notify(aKey, aScancode, aAction, aMods);
+    if(aAction == GLFW_PRESS)
+    {
+      core::KeyPressed.Notify(aKey, aScancode, aMods);
+    }
+    else if(aAction == GLFW_RELEASE)
+    {
+      core::KeyReleased.Notify(aKey, aScancode, aMods);
+    }
   }
 
   void GLFWMouseMovedCallback(GLFWwindow* aWindow,

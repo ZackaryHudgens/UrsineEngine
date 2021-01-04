@@ -11,8 +11,9 @@ namespace core
   typedef std::vector<Shader> ShaderList;
 
   /**
-   * A GraphicalComponent is a Component that also requires
-   * a PrivateRender() function to be defined.
+   * A GraphicalComponent is a Component that also contains a Render()
+   * function. Inheriting classes should override the PrivateRender() function
+   * to define how to draw them.
    */
   class GraphicalComponent : public Component
   {
@@ -27,7 +28,7 @@ namespace core
       const ShaderList& GetShaders() const { return mShaders; }
 
     private:
-      virtual void PrivateRender() const = 0;
+      virtual void PrivateRender() const {};
 
       ShaderList mShaders;
   };

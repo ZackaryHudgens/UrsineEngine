@@ -11,11 +11,12 @@ namespace signals
   /**
    * Input Signals
    */
-  typedef core::SignalT<int, int, int, int> KeyPressedSignal;
-  typedef core::SignalT<double, double>     MouseMovedSignal;
-  typedef core::SignalT<bool>               MouseEnteredOrLeftSignal;
-  typedef core::SignalT<int, int, int>      MouseButtonPressedSignal;
-  typedef core::SignalT<double, double>     MouseScrolledSignal;
+  typedef core::SignalT<int, int, int>  KeyPressedSignal;
+  typedef core::SignalT<int, int, int>  KeyReleasedSignal;
+  typedef core::SignalT<double, double> MouseMovedSignal;
+  typedef core::SignalT<bool>           MouseEnteredOrLeftSignal;
+  typedef core::SignalT<int, int, int>  MouseButtonPressedSignal;
+  typedef core::SignalT<double, double> MouseScrolledSignal;
 }
 
 /**
@@ -27,6 +28,7 @@ namespace core
    * Input Signals
    */
   signals::KeyPressedSignal         KeyPressed;
+  signals::KeyReleasedSignal        KeyReleased;
   signals::MouseMovedSignal         MouseMoved;
   signals::MouseEnteredOrLeftSignal MouseEnteredOrLeft;
   signals::MouseButtonPressedSignal MouseButtonPressed;

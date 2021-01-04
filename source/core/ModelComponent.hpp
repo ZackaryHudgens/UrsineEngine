@@ -12,13 +12,9 @@ namespace core
     public:
       ModelComponent();
 
-      void Update() override {}
-
       void LoadModel(const std::string& aFilePath);
 
     private:
-      void PrivateRender() const override {}
-
       unsigned int LoadTextureFromFile(const std::string& aFilePath);
       void ProcessNode(aiNode* aNode, const aiScene* aScene);
       std::unique_ptr<MeshComponent> ProcessMesh(aiMesh* aMesh,

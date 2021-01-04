@@ -22,8 +22,10 @@ namespace core
        */
       virtual void HandleKeyPress(int aKey,
                                   int aScancode,
-                                  int aAction,
                                   int aMods) {}
+      virtual void HandleKeyRelease(int aKey,
+                                    int aScancode,
+                                    int aMods) {}
 
       /**
        * Mouse callbacks.
