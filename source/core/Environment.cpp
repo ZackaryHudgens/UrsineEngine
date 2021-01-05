@@ -6,7 +6,7 @@
 #include <il.h>
 #include <ilu.h>
 
-#include "CoreObservers.hpp"
+#include "CoreSignals.hpp"
 
 using core::Environment;
 using core::Scene;

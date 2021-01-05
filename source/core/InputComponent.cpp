@@ -1,6 +1,6 @@
 #include "InputComponent.hpp"
 
-#include "CoreObservers.hpp"
+#include "CoreSignals.hpp"
 
 using core::InputComponent;
 
