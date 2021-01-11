@@ -1,4 +1,4 @@
 *.swp
 compile_commands.json
 build/
-resources/
+install/

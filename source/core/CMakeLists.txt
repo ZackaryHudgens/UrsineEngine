@@ -5,7 +5,11 @@ find_package(assimp REQUIRED)
 find_package(glm REQUIRED)
 
 file(GLOB CORE_SOURCES *.?pp)
+file(GLOB CORE_INCLUDES *.hpp)
 #file(GLOB SHADERS shaders/*.vert shaders/*.frag)
+
+message(STATUS "DevIL Libraries = ${IL_LIBRARIES}")
+message(STATUS "DevIL Include Directory = ${IL_INCLUDE_DIR}")
 
 # Create a library containing the shader resources.
 cmrc_add_resource_library(ShaderLib shaders/ModelBase.frag
@@ -26,4 +30,5 @@ target_include_directories(UrsineCore PUBLIC
                            ${ASSIMP_IMCLUDE_DIRS}
                            ${GLM_INCLUDE_DIRS})
 
-install(TARGETS UrsineCore LIBRARY DESTINATION "${URSINE_INSTALL_DIR}")
+install(TARGETS UrsineCore LIBRARY DESTINATION ${URSINE_LIB_DIR})
+install(FILES ${CORE_INCLUDES} DESTINATION ${URSINE_INCLUDE_DIR})

@@ -6,14 +6,18 @@ project(UrsineEngine VERSION 0.0.1
 # this file for syntax highlighting.
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Sets the install location for the UrsineEngine (and any extensions).
-set(URSINE_INSTALL_DIR "~/.local/lib")
+# Set the install locations for libraries and header files.
+set(URSINE_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/install/lib")
+set(URSINE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/install/include")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Include the resource compiler.
-include("CMakeRC.cmake")
+include("cmake/CMakeRC.cmake")
 
+# Add subdirectories to configure.
 add_subdirectory(source)
 add_subdirectory(extensions)
-add_subdirectory(examples)
+
+# Install the config.cmake file for find_package.
+install(FILES cmake/UrsineEngineConfig.cmake DESTINATION ${URSINE_LIB_DIR}/cmake/)
