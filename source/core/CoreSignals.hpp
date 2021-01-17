@@ -17,7 +17,7 @@ namespace core
    */
   enum class KeyCode
   {
-    eKEY_UNKNOWN = 1,
+    eKEY_UNKNOWN = -1,
     eKEY_SPACE = 32,
     eKEY_APOSTROPHE = 39,
     eKEY_COMMA = 44,
@@ -183,12 +183,12 @@ namespace core
   /**
    * Input Signals
    */
-  typedef core::SignalT<int, int, int>  KeyPressedSignal;
-  typedef core::SignalT<int, int, int>  KeyReleasedSignal;
-  typedef core::SignalT<double, double> MouseMovedSignal;
-  typedef core::SignalT<bool>           MouseEnteredOrLeftSignal;
-  typedef core::SignalT<int, int, int>  MouseButtonPressedSignal;
-  typedef core::SignalT<double, double> MouseScrolledSignal;
+  typedef core::SignalT<KeyCode, int>     KeyPressedSignal;
+  typedef core::SignalT<KeyCode, int>     KeyReleasedSignal;
+  typedef core::SignalT<double, double>   MouseMovedSignal;
+  typedef core::SignalT<bool>             MouseEnteredOrLeftSignal;
+  typedef core::SignalT<MouseButton, int> MouseButtonPressedSignal;
+  typedef core::SignalT<double, double>   MouseScrolledSignal;
 
   extern KeyPressedSignal         KeyPressed;
   extern KeyReleasedSignal        KeyReleased;

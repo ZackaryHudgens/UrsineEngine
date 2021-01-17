@@ -26,11 +26,11 @@ namespace inputCallbacks
   {
     if(aAction == GLFW_PRESS)
     {
-      core::KeyPressed.Notify(aKey, aScancode, aMods);
+      core::KeyPressed.Notify((core::KeyCode)aKey, aMods);
     }
     else if(aAction == GLFW_RELEASE)
     {
-      core::KeyReleased.Notify(aKey, aScancode, aMods);
+      core::KeyReleased.Notify((core::KeyCode)aKey, aMods);
     }
   }
 
@@ -59,7 +59,7 @@ namespace inputCallbacks
                                       int aAction,
                                       int aMods)
   {
-    core::MouseButtonPressed.Notify(aButton, aAction, aMods);
+    core::MouseButtonPressed.Notify((core::MouseButton)aButton, aMods);
   }
 
   void GLFWMouseScrolledCallback(GLFWwindow* aWindow,

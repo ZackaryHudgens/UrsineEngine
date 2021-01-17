@@ -2,6 +2,7 @@
 #define INPUTCOMPONENT_HPP
 
 #include "Component.hpp"
+#include "CoreSignals.hpp"
 
 namespace core
 {
@@ -20,11 +21,9 @@ namespace core
       /**
        * Keyboard callbacks.
        */
-      virtual void HandleKeyPress(int aKey,
-                                  int aScancode,
+      virtual void HandleKeyPress(const KeyCode& aCode,
                                   int aMods) {}
-      virtual void HandleKeyRelease(int aKey,
-                                    int aScancode,
+      virtual void HandleKeyRelease(const KeyCode& aCode,
                                     int aMods) {}
 
       /**
@@ -33,8 +32,7 @@ namespace core
       virtual void HandleMouseMoved(double aXPosition,
                                     double aYPosition) {}
       virtual void HandleMouseEnteredOrLeft(bool aEntered) {}
-      virtual void HandleMouseButtonPress(int aButton,
-                                          int aAction,
+      virtual void HandleMouseButtonPress(const MouseButton& aButton,
                                           int aMods) {}
       virtual void HandleMouseScrolled(double aXOffset,
                                        double aYOffset) {}

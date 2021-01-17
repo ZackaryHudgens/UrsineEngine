@@ -15,19 +15,17 @@ InputComponent::InputComponent()
    */
 
   // Key Pressed callback
-  core::KeyPressed.Connect(*this, [this](int aKey,
-                                         int aScancode,
+  core::KeyPressed.Connect(*this, [this](const KeyCode& aCode,
                                          int aMods)
   {
-    this->HandleKeyPress(aKey, aScancode, aMods);
+    this->HandleKeyPress(aCode, aMods);
   });
 
   // Key Released callback
-  core::KeyReleased.Connect(*this, [this](int aKey,
-                                          int aScancode,
+  core::KeyReleased.Connect(*this, [this](const KeyCode& aCode,
                                           int aMods)
   {
-    this->HandleKeyRelease(aKey, aScancode, aMods);
+    this->HandleKeyRelease(aCode, aMods);
   });
 
   /**
@@ -48,11 +46,10 @@ InputComponent::InputComponent()
   });
 
   // Mouse Button Pressed callback
-  core::MouseButtonPressed.Connect(*this, [this](int aButton,
-                                                 int aAction,
+  core::MouseButtonPressed.Connect(*this, [this](const MouseButton& aButton,
                                                  int aMods)
   {
-    this->HandleMouseButtonPress(aButton, aAction, aMods);
+    this->HandleMouseButtonPress(aButton, aMods);
   });
 
   // Mouse Scrolled callback
