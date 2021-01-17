@@ -1,7 +1,6 @@
 #include "CoreSignals.hpp"
 
 #include <GLFW/glfw3.h>
-#include <iostream>
 
 /**
  * Returns the name of a key as a string.
