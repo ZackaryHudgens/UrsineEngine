@@ -94,7 +94,7 @@ Environment& Environment::GetInstance()
   return *mInstance.get();
 }
 
-bool Environment::CreateWindow(const char* aTitle, int aWidth, int aHeight)
+bool Environment::CreateWindow(const std::string& aTitle, int aWidth, int aHeight)
 {
   bool init = false;
 
@@ -104,7 +104,7 @@ bool Environment::CreateWindow(const char* aTitle, int aWidth, int aHeight)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-    mWindow = glfwCreateWindow(aWidth, aHeight, aTitle, nullptr, nullptr);
+    mWindow = glfwCreateWindow(aWidth, aHeight, aTitle.c_str(), nullptr, nullptr);
     if(mWindow == nullptr)
     {
       glfwTerminate();

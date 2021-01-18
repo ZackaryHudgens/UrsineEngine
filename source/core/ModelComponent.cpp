@@ -46,6 +46,25 @@ void ModelComponent::LoadModel(const std::string& aFilePath)
   }
 }
 
+void ModelComponent::LoadModel(const void* aBuffer, size_t aBufLength)
+{
+  Assimp::Importer importer;
+  unsigned int postProcessFlags = aiProcess_Triangulate | aiProcess_FlipUVs;
+  const aiScene* scene = importer.ReadFileFromMemory(aBuffer, aBufLength, postProcessFlags);
+
+  if(scene == nullptr ||
+     scene->mRootNode == nullptr ||
+     scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE)
+  {
+    std::cout << "Error loading model! " <<
+                 importer.GetErrorString() << std::endl;
+  }
+  else
+  {
+    ProcessNode(scene->mRootNode, scene);
+  }
+}
+
 unsigned int ModelComponent::LoadTextureFromFile(const std::string& aFilePath)
 {
   ILuint imageID;          // Used for loading images with DevIL

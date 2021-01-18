@@ -13,6 +13,7 @@ namespace core
       ModelComponent();
 
       void LoadModel(const std::string& aFilePath);
+      void LoadModel(const void* aBuffer, size_t aBufLength);
 
     private:
       unsigned int LoadTextureFromFile(const std::string& aFilePath);
