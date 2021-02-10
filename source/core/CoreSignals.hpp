@@ -141,6 +141,18 @@ namespace core
   };
 
   /**
+   * An enumeration for each supported GLFW key/button action, defined
+   * in the same order as GLFW and assigned the same value.
+   */
+  enum class InputAction
+  {
+    eRELEASED = 0,
+    ePRESSED = 1,
+    eREPEATED = 2
+  };
+
+
+  /**
    * An enumeration for each supported GLFW keyboard modifier, defined
    * in the same order as GLFW and assigned the same value.
    */
@@ -185,17 +197,21 @@ namespace core
    */
   typedef core::SignalT<KeyCode, int>     KeyPressedSignal;
   typedef core::SignalT<KeyCode, int>     KeyReleasedSignal;
+  typedef core::SignalT<KeyCode, int>     KeyRepeatedSignal;
   typedef core::SignalT<double, double>   MouseMovedSignal;
   typedef core::SignalT<bool>             MouseEnteredOrLeftSignal;
   typedef core::SignalT<MouseButton, int> MouseButtonPressedSignal;
+  typedef core::SignalT<MouseButton, int> MouseButtonReleasedSignal;
   typedef core::SignalT<double, double>   MouseScrolledSignal;
 
-  extern KeyPressedSignal         KeyPressed;
-  extern KeyReleasedSignal        KeyReleased;
-  extern MouseMovedSignal         MouseMoved;
-  extern MouseEnteredOrLeftSignal MouseEnteredOrLeft;
-  extern MouseButtonPressedSignal MouseButtonPressed;
-  extern MouseScrolledSignal      MouseScrolled;
+  extern KeyPressedSignal          KeyPressed;
+  extern KeyReleasedSignal         KeyReleased;
+  extern KeyRepeatedSignal         KeyRepeated;
+  extern MouseMovedSignal          MouseMoved;
+  extern MouseEnteredOrLeftSignal  MouseEnteredOrLeft;
+  extern MouseButtonPressedSignal  MouseButtonPressed;
+  extern MouseButtonReleasedSignal MouseButtonReleased;
+  extern MouseScrolledSignal       MouseScrolled;
 }
 
 #endif

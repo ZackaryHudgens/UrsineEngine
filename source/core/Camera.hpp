@@ -34,7 +34,6 @@ namespace core
       void LookAt(const GameObject& aObject);
       void LookAt(const glm::vec3& aPosition);
 
-      void Translate(const glm::vec3& aVector) override;
       void Rotate(double aDegrees, const glm::vec3& aAxis) override;
 
     private:
@@ -44,7 +43,9 @@ namespace core
       double mNearPlane;
       double mFarPlane;
 
-      glm::vec3 mTarget;
+      double mYaw;
+      double mPitch;
+      double mRoll;
 
       glm::vec3 mRightVector;  // x-axis
       glm::vec3 mUpVector;     // y-axis

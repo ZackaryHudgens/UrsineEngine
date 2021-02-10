@@ -2,9 +2,7 @@
 
 # Create a build directory.
 if [ ! -d build ]; then
-  if [ ! -L build ]; then
-    mkdir build
-  fi
+  mkdir build
 fi
 
 # Run CMakeLists.txt using g++ as the compiler.

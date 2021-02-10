@@ -24,13 +24,29 @@ namespace inputCallbacks
                               int aAction,
                               int aMods)
   {
-    if(aAction == GLFW_PRESS)
+    core::InputAction action = (core::InputAction)aAction;
+
+    switch(action)
     {
-      core::KeyPressed.Notify((core::KeyCode)aKey, aMods);
-    }
-    else if(aAction == GLFW_RELEASE)
-    {
-      core::KeyReleased.Notify((core::KeyCode)aKey, aMods);
+      case core::InputAction::ePRESSED:
+      {
+        core::KeyPressed.Notify((core::KeyCode)aKey, aMods);
+        break;
+      }
+      case core::InputAction::eRELEASED:
+      {
+        core::KeyReleased.Notify((core::KeyCode)aKey, aMods);
+        break;
+      }
+      case core::InputAction::eREPEATED:
+      {
+        core::KeyRepeated.Notify((core::KeyCode)aKey, aMods);
+        break;
+      }
+      default:
+      {
+        break;
+      }
     }
   }
 
@@ -59,7 +75,26 @@ namespace inputCallbacks
                                       int aAction,
                                       int aMods)
   {
-    core::MouseButtonPressed.Notify((core::MouseButton)aButton, aMods);
+    core::InputAction action = (core::InputAction)aAction;
+
+    switch(action)
+    {
+      case core::InputAction::ePRESSED:
+      {
+        core::MouseButtonPressed.Notify((core::MouseButton)aButton, aMods);
+        break;
+      }
+      case core::InputAction::eRELEASED:
+      {
+        core::MouseButtonReleased.Notify((core::MouseButton)aButton, aMods);
+        break;
+      }
+      case core::InputAction::eREPEATED:
+      default:
+      {
+        break;
+      }
+    }
   }
 
   void GLFWMouseScrolledCallback(GLFWwindow* aWindow,

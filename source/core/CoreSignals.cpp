@@ -328,9 +328,11 @@ bool core::IsModifierActive(const KeyboardModifier& aMod, int aMods)
 /**
  * Input signals.
  */
-core::KeyPressedSignal         core::KeyPressed;
-core::KeyReleasedSignal        core::KeyReleased;
-core::MouseMovedSignal         core::MouseMoved;
-core::MouseEnteredOrLeftSignal core::MouseEnteredOrLeft;
-core::MouseButtonPressedSignal core::MouseButtonPressed;
-core::MouseScrolledSignal      core::MouseScrolled;
+core::KeyPressedSignal          core::KeyPressed;
+core::KeyReleasedSignal         core::KeyReleased;
+core::KeyRepeatedSignal         core::KeyRepeated;
+core::MouseMovedSignal          core::MouseMoved;
+core::MouseEnteredOrLeftSignal  core::MouseEnteredOrLeft;
+core::MouseButtonPressedSignal  core::MouseButtonPressed;
+core::MouseButtonReleasedSignal core::MouseButtonReleased;
+core::MouseScrolledSignal       core::MouseScrolled;

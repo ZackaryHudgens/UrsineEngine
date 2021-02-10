@@ -67,6 +67,7 @@ void ModelComponent::LoadModel(const void* aBuffer, size_t aBufLength)
 
 unsigned int ModelComponent::LoadTextureFromFile(const std::string& aFilePath)
 {
+  std::cout << aFilePath << std::endl;
   ILuint imageID;          // Used for loading images with DevIL
   unsigned int textureID;  // Used for OpenGL texture binding
 
