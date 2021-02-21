@@ -6,7 +6,6 @@ find_package(glm REQUIRED)
 
 file(GLOB CORE_SOURCES *.?pp)
 file(GLOB CORE_INCLUDES *.hpp)
-#file(GLOB SHADERS shaders/*.vert shaders/*.frag)
 
 message(STATUS "DevIL Libraries = ${IL_LIBRARIES}")
 message(STATUS "DevIL Include Directory = ${IL_INCLUDE_DIR}")

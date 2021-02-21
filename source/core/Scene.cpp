@@ -26,12 +26,6 @@ void Scene::Unload()
   }
 }
 
-// Adds a GameObject to the scene.
-void Scene::AddObject(std::unique_ptr<GameObject> aGameObject)
-{
-  mObjects.emplace_back(std::move(aGameObject));
-}
-
 // Updates each GameObject in the scene.
 void Scene::Update()
 {
@@ -47,4 +41,10 @@ void Scene::Render()
   {
     object->Render();
   }
+}
+
+// Adds a GameObject to the scene.
+void Scene::AddObject(std::unique_ptr<GameObject> aGameObject)
+{
+  mObjects.emplace_back(std::move(aGameObject));
 }

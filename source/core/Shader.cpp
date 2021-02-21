@@ -75,6 +75,20 @@ void Shader::SetFloat(const std::string& aName, float aValue) const
   }
 }
 
+void Shader::SetVec3(const std::string& aName, const glm::vec3& aVec) const
+{
+  int loc = glGetUniformLocation(mProgramId, aName.c_str());
+  if(loc != -1)
+  {
+    glUniform3fv(loc, 1, glm::value_ptr(aVec));
+  }
+  else
+  {
+    std::cout << "Uniform " << aName << " does not exist "
+              << "or is reserved!" << std::endl;
+  }
+}
+
 void Shader::SetMat4(const std::string& aName, const glm::mat4& aMat) const
 {
   int loc = glGetUniformLocation(mProgramId, aName.c_str());

@@ -20,13 +20,33 @@ namespace core
 
       void Load();
       void Unload();
-
-      void AddObject(std::unique_ptr<GameObject> aGameObject);
-
       void Update();
       void Render();
 
+      void AddObject(std::unique_ptr<GameObject> aGameObject);
+
       Camera* GetCamera() { return mMainCamera.get(); }
+
+      /**
+       * Returns a vector of all GameObjects of the given type
+       * currently in the scene.
+       */
+      template<typename T>
+      std::vector<T*> GetObjectsOfType()
+      {
+        std::vector<T*> objects;
+
+        for(const auto& obj : mObjects)
+        {
+          T* castObj = dynamic_cast<T*>(obj.get());
+          if(castObj != nullptr)
+          {
+            objects.emplace_back(castObj);
+          }
+        }
+
+        return objects;
+      }
 
     private:
       std::vector<std::unique_ptr<GameObject>> mObjects;

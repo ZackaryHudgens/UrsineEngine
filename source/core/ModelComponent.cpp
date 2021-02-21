@@ -24,7 +24,7 @@ ModelComponent::ModelComponent()
   auto fs = cmrc::ShaderLib::get_filesystem();
   auto vertexFile = fs.open("shaders/ModelBase.vert");
   auto fragmentFile = fs.open("shaders/ModelBase.frag");
-  AddShader(vertexFile.begin(), fragmentFile.begin());
+  AddShader(Shader(vertexFile.begin(), fragmentFile.begin()));
 }
 
 void ModelComponent::LoadModel(const std::string& aFilePath)

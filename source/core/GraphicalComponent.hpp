@@ -24,7 +24,7 @@ namespace core
 
       virtual void AddChild(std::unique_ptr<Component> aChild) override;
 
-      void AddShader(const char* aVertexSource, const char* aFragmentSource);
+      void AddShader(const Shader& aShader);
       const ShaderList& GetShaders() const { return mShaders; }
 
     private:

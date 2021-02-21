@@ -27,6 +27,7 @@ namespace core
       void SetBool(const std::string& aName, bool aValue) const;
       void SetInt(const std::string& aName, int aValue) const;
       void SetFloat(const std::string& aName, float aValue) const;
+      void SetVec3(const std::string& aName, const glm::vec3& aVec) const;
       void SetMat4(const std::string& aName, const glm::mat4& aMat) const;
 
     private:
