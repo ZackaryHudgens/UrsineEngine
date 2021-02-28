@@ -9,7 +9,7 @@
  * A selection of signals that come in handy throughout the core
  * engine. Instances of each are created in CoreSignals.cpp..
  */
-namespace core
+namespace UrsineCore
 {
   /**
    * An enumeration for each supported GLFW key code, defined
@@ -195,14 +195,14 @@ namespace core
   /**
    * Input Signals
    */
-  typedef core::SignalT<KeyCode, int>     KeyPressedSignal;
-  typedef core::SignalT<KeyCode, int>     KeyReleasedSignal;
-  typedef core::SignalT<KeyCode, int>     KeyRepeatedSignal;
-  typedef core::SignalT<double, double>   MouseMovedSignal;
-  typedef core::SignalT<bool>             MouseEnteredOrLeftSignal;
-  typedef core::SignalT<MouseButton, int> MouseButtonPressedSignal;
-  typedef core::SignalT<MouseButton, int> MouseButtonReleasedSignal;
-  typedef core::SignalT<double, double>   MouseScrolledSignal;
+  typedef UrsineCore::SignalT<KeyCode, int>     KeyPressedSignal;
+  typedef UrsineCore::SignalT<KeyCode, int>     KeyReleasedSignal;
+  typedef UrsineCore::SignalT<KeyCode, int>     KeyRepeatedSignal;
+  typedef UrsineCore::SignalT<double, double>   MouseMovedSignal;
+  typedef UrsineCore::SignalT<bool>             MouseEnteredOrLeftSignal;
+  typedef UrsineCore::SignalT<MouseButton, int> MouseButtonPressedSignal;
+  typedef UrsineCore::SignalT<MouseButton, int> MouseButtonReleasedSignal;
+  typedef UrsineCore::SignalT<double, double>   MouseScrolledSignal;
 
   extern KeyPressedSignal          KeyPressed;
   extern KeyReleasedSignal         KeyReleased;

@@ -4,8 +4,8 @@
 
 #include "Signal.hpp"
 
-using core::Observer;
-using core::Signal;
+using UrsineCore::Observer;
+using UrsineCore::Signal;
 
 Observer::Observer()
 {

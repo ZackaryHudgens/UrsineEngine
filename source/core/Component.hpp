@@ -5,7 +5,7 @@
 
 #include "Observer.hpp"
 
-namespace core
+namespace UrsineCore
 {
   class Component;
   class GameObject;

@@ -3,10 +3,13 @@
 
 #include <memory>
 
-#include "Component.hpp"
+#include "core/Component.hpp"
+
 #include "Shader.hpp"
 
-namespace core
+using UrsineCore::Component;
+
+namespace UrsineRenderer
 {
   typedef std::vector<Shader> ShaderList;
 

@@ -15,6 +15,10 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # Include the resource compiler.
 include("cmake/CMakeRC.cmake")
 
+# Create a library containing the shader resources.
+cmrc_add_resource_library(ShaderLib resources/shaders/ModelBase.frag
+                                    resources/shaders/ModelBase.vert)
+
 # Add subdirectories to configure.
 add_subdirectory(source)
 add_subdirectory(extensions)

@@ -2,9 +2,10 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-using core::Component;
-using core::GameObject;
-using core::GraphicalComponent;
+using UrsineCore::Component;
+using UrsineCore::GameObject;
+
+using UrsineRenderer::GraphicalComponent;
 
 /**
  * Constructor for the base GameObject class.

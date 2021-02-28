@@ -2,10 +2,10 @@
 
 #include <glm/ext/matrix_transform.hpp>
 
-#include "GameObject.hpp"
+#include "core/GameObject.hpp"
 
-using core::Camera;
-using core::GameObject;
+using UrsineRenderer::Camera;
+using UrsineCore::GameObject;
 
 Camera::Camera()
   : GameObject()

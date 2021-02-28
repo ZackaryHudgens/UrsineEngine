@@ -8,7 +8,7 @@
 
 #include <glm/glm.hpp>
 
-namespace core
+namespace UrsineRenderer
 {
   /**
    * A class that encapsulates a GLSL shader.
@@ -29,6 +29,8 @@ namespace core
       void SetFloat(const std::string& aName, float aValue) const;
       void SetVec3(const std::string& aName, const glm::vec3& aVec) const;
       void SetMat4(const std::string& aName, const glm::mat4& aMat) const;
+
+      void SetMacroValue(const std::string& aMacroName, double aValue);
 
     private:
       void CompileShader(unsigned int& aShaderID,

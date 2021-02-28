@@ -7,7 +7,7 @@
 
 #include "Observer.hpp"
 
-namespace core
+namespace UrsineCore
 {
   /**
    * A non-templated base class for Signals.

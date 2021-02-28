@@ -2,8 +2,10 @@
 
 #include "Scene.hpp"
 
-using core::Camera;
-using core::Scene;
+using UrsineCore::GameObject;
+using UrsineCore::Scene;
+
+using UrsineRenderer::Camera;
 
 Scene::Scene()
   : mMainCamera(std::make_unique<Camera>())
@@ -47,4 +49,16 @@ void Scene::Render()
 void Scene::AddObject(std::unique_ptr<GameObject> aGameObject)
 {
   mObjects.emplace_back(std::move(aGameObject));
+}
+
+std::vector<GameObject*> Scene::GetObjects() const
+{
+  std::vector<GameObject*> objects;
+
+  for(const auto& obj : mObjects)
+  {
+    objects.emplace_back(obj.get());
+  }
+
+  return objects;
 }

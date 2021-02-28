@@ -3,7 +3,7 @@
 
 #include <vector>
 
-namespace core
+namespace UrsineCore
 {
   class Signal;
 

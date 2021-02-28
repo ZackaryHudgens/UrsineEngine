@@ -8,8 +8,8 @@
 
 #include "CoreSignals.hpp"
 
-using core::Environment;
-using core::Scene;
+using UrsineCore::Environment;
+using UrsineCore::Scene;
 
 std::unique_ptr<Environment> Environment::mInstance = nullptr;
 
@@ -24,23 +24,23 @@ namespace inputCallbacks
                               int aAction,
                               int aMods)
   {
-    core::InputAction action = (core::InputAction)aAction;
+    UrsineCore::InputAction action = (UrsineCore::InputAction)aAction;
 
     switch(action)
     {
-      case core::InputAction::ePRESSED:
+      case UrsineCore::InputAction::ePRESSED:
       {
-        core::KeyPressed.Notify((core::KeyCode)aKey, aMods);
+        UrsineCore::KeyPressed.Notify((UrsineCore::KeyCode)aKey, aMods);
         break;
       }
-      case core::InputAction::eRELEASED:
+      case UrsineCore::InputAction::eRELEASED:
       {
-        core::KeyReleased.Notify((core::KeyCode)aKey, aMods);
+        UrsineCore::KeyReleased.Notify((UrsineCore::KeyCode)aKey, aMods);
         break;
       }
-      case core::InputAction::eREPEATED:
+      case UrsineCore::InputAction::eREPEATED:
       {
-        core::KeyRepeated.Notify((core::KeyCode)aKey, aMods);
+        UrsineCore::KeyRepeated.Notify((UrsineCore::KeyCode)aKey, aMods);
         break;
       }
       default:
@@ -54,7 +54,7 @@ namespace inputCallbacks
                               double aXPosition,
                               double aYPosition)
   {
-    core::MouseMoved.Notify(aXPosition, aYPosition);
+    UrsineCore::MouseMoved.Notify(aXPosition, aYPosition);
   }
 
   void GLFWMouseEnteredOrLeftCallback(GLFWwindow* aWindow,
@@ -67,7 +67,7 @@ namespace inputCallbacks
       entered = true;
     }
 
-    core::MouseEnteredOrLeft.Notify(entered);
+    UrsineCore::MouseEnteredOrLeft.Notify(entered);
   }
 
   void GLFWMouseButtonPressedCallback(GLFWwindow* aWindow,
@@ -75,21 +75,21 @@ namespace inputCallbacks
                                       int aAction,
                                       int aMods)
   {
-    core::InputAction action = (core::InputAction)aAction;
+    UrsineCore::InputAction action = (UrsineCore::InputAction)aAction;
 
     switch(action)
     {
-      case core::InputAction::ePRESSED:
+      case UrsineCore::InputAction::ePRESSED:
       {
-        core::MouseButtonPressed.Notify((core::MouseButton)aButton, aMods);
+        UrsineCore::MouseButtonPressed.Notify((UrsineCore::MouseButton)aButton, aMods);
         break;
       }
-      case core::InputAction::eRELEASED:
+      case UrsineCore::InputAction::eRELEASED:
       {
-        core::MouseButtonReleased.Notify((core::MouseButton)aButton, aMods);
+        UrsineCore::MouseButtonReleased.Notify((UrsineCore::MouseButton)aButton, aMods);
         break;
       }
-      case core::InputAction::eREPEATED:
+      case UrsineCore::InputAction::eREPEATED:
       default:
       {
         break;
@@ -101,7 +101,7 @@ namespace inputCallbacks
                                  double aXOffset,
                                  double aYOffset)
   {
-    core::MouseScrolled.Notify(aXOffset, aYOffset);
+    UrsineCore::MouseScrolled.Notify(aXOffset, aYOffset);
   }
 }
 

@@ -4,11 +4,11 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "Environment.hpp"
-#include "GameObject.hpp"
+#include "core/Environment.hpp"
+#include "core/GameObject.hpp"
 
-using core::Camera;
-using core::MeshComponent;
+using UrsineRenderer::Camera;
+using UrsineRenderer::MeshComponent;
 
 MeshComponent::MeshComponent(const VertexList& aVertices,
                              const IndexList& aIndices,

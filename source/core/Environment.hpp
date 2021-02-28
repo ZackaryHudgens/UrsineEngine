@@ -14,10 +14,10 @@
  * Define "env" as a shorthand to get the Envrionment instance.
  */
 #ifndef env
-#define env core::Environment::GetInstance()
+#define env UrsineCore::Environment::GetInstance()
 #endif
 
-namespace core
+namespace UrsineCore
 {
   /**
    * A singleton class that handles creating a valid OpenGL context,

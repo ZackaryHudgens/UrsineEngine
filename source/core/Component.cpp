@@ -4,8 +4,8 @@
 
 #include "Signal.hpp"
 
-using core::Component;
-using core::GameObject;
+using UrsineCore::Component;
+using UrsineCore::GameObject;
 
 /**
  * The default constuctor for the Component class.

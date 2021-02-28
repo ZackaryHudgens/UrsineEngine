@@ -4,10 +4,13 @@
 #include <memory>
 #include <vector>
 
-#include "Camera.hpp"
+#include "renderer/Camera.hpp"
+
 #include "GameObject.hpp"
 
-namespace core
+using UrsineRenderer::Camera;
+
+namespace UrsineCore
 {
   /**
    * A Scene contains all the GameObjects necessary for a
@@ -27,12 +30,14 @@ namespace core
 
       Camera* GetCamera() { return mMainCamera.get(); }
 
+      std::vector<GameObject*> GetObjects() const;
+
       /**
        * Returns a vector of all GameObjects of the given type
        * currently in the scene.
        */
       template<typename T>
-      std::vector<T*> GetObjectsOfType()
+      std::vector<T*> GetObjectsOfType() const
       {
         std::vector<T*> objects;
 

@@ -6,11 +6,14 @@
 
 #include <glm/glm.hpp>
 
+#include "renderer/GraphicalComponent.hpp"
+
 #include "Component.hpp"
-#include "GraphicalComponent.hpp"
 #include "Observer.hpp"
 
-namespace core
+using UrsineRenderer::GraphicalComponent;
+
+namespace UrsineCore
 {
   class GameObject;
 
@@ -43,9 +46,42 @@ namespace core
       glm::mat4 GetTransform() const { return mTransform; }
       glm::vec3 GetPosition() const  { return mPosition; }
 
+      std::vector<Component*> GetComponents() const;
+      std::vector<GraphicalComponent*> GetGraphicalComponents() const;
+
       virtual void Scale(const glm::vec3& aScalar);
       virtual void Translate(const glm::vec3& aVector);
       virtual void Rotate(double aDegrees, const glm::vec3& aAxis);
+
+      /**
+       * Returns a vector containing pointers to all components
+       * of a given type.
+       */
+      template<typename T>
+      std::vector<T*> GetComponentsOfType() const
+      {
+        std::vector<T*> components;
+
+        for(const auto& comp : mComponents)
+        {
+          T* castComp = dynamic_cast<T*>(comp.get());
+          if(castComp != nullptr)
+          {
+            components.emplace_back(castComp);
+          }
+        }
+
+        for(const auto& gComp : mGraphicalComponents)
+        {
+          T* castGComp = dynamic_cast<T*>(gComp.get());
+          if(castGComp != nullptr)
+          {
+            components.emplace_back(castGComp);
+          }
+        }
+
+        return components;
+      };
 
     private:
       ObjectList mChildren;

@@ -5,7 +5,7 @@
 
 #include "MeshComponent.hpp"
 
-namespace core
+namespace UrsineRenderer
 {
   class ModelComponent : public GraphicalComponent
   {

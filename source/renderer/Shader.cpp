@@ -6,7 +6,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-using core::Shader;
+using UrsineRenderer::Shader;
 
 Shader::Shader(const char* aVertexSource,
                const char* aFragmentSource)
@@ -101,6 +101,10 @@ void Shader::SetMat4(const std::string& aName, const glm::mat4& aMat) const
     std::cout << "Uniform " << aName << " does not exist "
               << "or is reserved!" << std::endl;
   }
+}
+
+void Shader::SetMacroValue(const std::string& aMacroName, double aValue)
+{
 }
 
 void Shader::CompileShader(unsigned int& aShaderID,

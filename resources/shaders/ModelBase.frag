@@ -8,9 +8,9 @@
  * and other vertices.
  */
 
-#define DIR_LIGHTS   0
-#define POINT_LIGHTS 0
-#define SPOT_LIGHTS  0
+#define MAX_DIR_LIGHTS   100
+#define MAX_POINT_LIGHTS 100
+#define MAX_SPOT_LIGHTS  100
 
 /**
  * A struct defining an object's behavior under light.
@@ -80,9 +80,9 @@ out vec4 fragColor;  // The final output color.
 // Uniform variables
 uniform vec3 viewPosition;
 uniform Material material;
-uniform DirectionalLight dirLights[DIR_LIGHTS];
-uniform PointLight pointLights[POINT_LIGHTS];
-uniform SpotLight spotLights[SPOT_LIGHTS];
+uniform DirectionalLight dirLights[MAX_DIR_LIGHTS];
+uniform PointLight pointLights[MAX_POINT_LIGHTS];
+uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 /**
  * Calculates the effect of a directional light on this fragment and returns the

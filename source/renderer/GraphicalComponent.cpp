@@ -1,6 +1,6 @@
 #include "GraphicalComponent.hpp"
 
-using core::GraphicalComponent;
+using UrsineRenderer::GraphicalComponent;
 
 GraphicalComponent::GraphicalComponent()
   : Component()

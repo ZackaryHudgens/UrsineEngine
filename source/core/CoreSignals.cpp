@@ -7,7 +7,7 @@
  *
  * @param aCode The KeyCode whose name to look up.
  */
-std::string core::GetKeyName(const core::KeyCode& aCode)
+std::string UrsineCore::GetKeyName(const UrsineCore::KeyCode& aCode)
 {
   std::string name;
 
@@ -319,7 +319,7 @@ std::string core::GetKeyName(const core::KeyCode& aCode)
  * active/inactive status.
  * @param aMods The list of modifiers to check.
  */
-bool core::IsModifierActive(const KeyboardModifier& aMod, int aMods)
+bool UrsineCore::IsModifierActive(const KeyboardModifier& aMod, int aMods)
 {
   int modAsInt = (int)aMod;
   return (aMods & (1 << modAsInt));
@@ -328,11 +328,11 @@ bool core::IsModifierActive(const KeyboardModifier& aMod, int aMods)
 /**
  * Input signals.
  */
-core::KeyPressedSignal          core::KeyPressed;
-core::KeyReleasedSignal         core::KeyReleased;
-core::KeyRepeatedSignal         core::KeyRepeated;
-core::MouseMovedSignal          core::MouseMoved;
-core::MouseEnteredOrLeftSignal  core::MouseEnteredOrLeft;
-core::MouseButtonPressedSignal  core::MouseButtonPressed;
-core::MouseButtonReleasedSignal core::MouseButtonReleased;
-core::MouseScrolledSignal       core::MouseScrolled;
+UrsineCore::KeyPressedSignal          UrsineCore::KeyPressed;
+UrsineCore::KeyReleasedSignal         UrsineCore::KeyReleased;
+UrsineCore::KeyRepeatedSignal         UrsineCore::KeyRepeated;
+UrsineCore::MouseMovedSignal          UrsineCore::MouseMoved;
+UrsineCore::MouseEnteredOrLeftSignal  UrsineCore::MouseEnteredOrLeft;
+UrsineCore::MouseButtonPressedSignal  UrsineCore::MouseButtonPressed;
+UrsineCore::MouseButtonReleasedSignal UrsineCore::MouseButtonReleased;
+UrsineCore::MouseScrolledSignal       UrsineCore::MouseScrolled;

@@ -8,7 +8,7 @@
 
 #include "GraphicalComponent.hpp"
 
-namespace core
+namespace UrsineRenderer
 {
   struct MeshVertex
   {

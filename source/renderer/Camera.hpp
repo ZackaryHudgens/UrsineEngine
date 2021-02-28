@@ -3,9 +3,11 @@
 
 #include <glm/fwd.hpp>
 
-#include "GameObject.hpp"
+#include "core/GameObject.hpp"
 
-namespace core
+using UrsineCore::GameObject;
+
+namespace UrsineRenderer
 {
   /*
    * Provides a simulated camera for OpenGL. Note that this isn't

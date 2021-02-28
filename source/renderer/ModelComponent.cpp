@@ -11,11 +11,11 @@
 
 CMRC_DECLARE(ShaderLib);
 
-using core::MeshComponent;
-using core::MeshTexture;
-using core::MeshVertex;
-using core::ModelComponent;
-using core::TextureList;
+using UrsineRenderer::MeshComponent;
+using UrsineRenderer::MeshTexture;
+using UrsineRenderer::MeshVertex;
+using UrsineRenderer::ModelComponent;
+using UrsineRenderer::TextureList;
 
 ModelComponent::ModelComponent()
   : GraphicalComponent()
