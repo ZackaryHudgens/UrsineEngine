@@ -4,8 +4,12 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "core/Environment.hpp"
-#include "core/GameObject.hpp"
+#include <cmrc/cmrc.hpp>
+
+#include "Environment.hpp"
+#include "GameObject.hpp"
+
+CMRC_DECLARE(ShaderLib);
 
 using UrsineRenderer::Camera;
 using UrsineRenderer::MeshComponent;
@@ -20,6 +24,12 @@ MeshComponent::MeshComponent(const VertexList& aVertices,
   , mIndices(aIndices)
   , mTextures(aTextures)
 {
+  // Add the base model shader.
+  auto fs = cmrc::ShaderLib::get_filesystem();
+  auto vertexFile = fs.open("shaders/ModelBase.vert");
+  auto fragmentFile = fs.open("shaders/ModelBase.frag");
+  AddShader(Shader(vertexFile.begin(), fragmentFile.begin()));
+
   Initialize();
 }
 

@@ -5,11 +5,7 @@
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
 
-#include <cmrc/cmrc.hpp>
-
 #include <il.h>
-
-CMRC_DECLARE(ShaderLib);
 
 using UrsineRenderer::MeshComponent;
 using UrsineRenderer::MeshTexture;
@@ -20,11 +16,6 @@ using UrsineRenderer::TextureList;
 ModelComponent::ModelComponent()
   : GraphicalComponent()
 {
-  // Add the base model shader.
-  auto fs = cmrc::ShaderLib::get_filesystem();
-  auto vertexFile = fs.open("shaders/ModelBase.vert");
-  auto fragmentFile = fs.open("shaders/ModelBase.frag");
-  AddShader(Shader(vertexFile.begin(), fragmentFile.begin()));
 }
 
 void ModelComponent::LoadModel(const std::string& aFilePath)

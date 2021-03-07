@@ -3,7 +3,7 @@
 
 #include <glm/fwd.hpp>
 
-#include "core/GameObject.hpp"
+#include "GameObject.hpp"
 
 using UrsineCore::GameObject;
 

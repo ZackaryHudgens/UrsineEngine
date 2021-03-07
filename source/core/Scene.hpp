@@ -4,8 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "renderer/Camera.hpp"
-
+#include "Camera.hpp"
 #include "GameObject.hpp"
 
 using UrsineRenderer::Camera;

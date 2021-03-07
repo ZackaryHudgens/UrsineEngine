@@ -3,7 +3,7 @@
 
 #include <glm/glm.hpp>
 
-#include "core/Component.hpp"
+#include "Component.hpp"
 
 using UrsineCore::Component;
 

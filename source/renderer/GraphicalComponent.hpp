@@ -3,8 +3,7 @@
 
 #include <memory>
 
-#include "core/Component.hpp"
-
+#include "Component.hpp"
 #include "Shader.hpp"
 
 using UrsineCore::Component;

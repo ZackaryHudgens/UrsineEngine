@@ -1,8 +1,7 @@
 #include "LightComponent.hpp"
 
-#include "core/Environment.hpp"
-
-#include "renderer/ModelComponent.hpp"
+#include "Environment.hpp"
+#include "ModelComponent.hpp"
 
 using UrsineRenderer::LightComponent;
 

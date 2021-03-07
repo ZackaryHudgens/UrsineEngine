@@ -2,7 +2,7 @@
 
 #include <glm/ext/matrix_transform.hpp>
 
-#include "core/GameObject.hpp"
+#include "GameObject.hpp"
 
 using UrsineRenderer::Camera;
 using UrsineCore::GameObject;

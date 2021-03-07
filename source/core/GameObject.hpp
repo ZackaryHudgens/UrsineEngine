@@ -6,9 +6,8 @@
 
 #include <glm/glm.hpp>
 
-#include "renderer/GraphicalComponent.hpp"
-
 #include "Component.hpp"
+#include "GraphicalComponent.hpp"
 #include "Observer.hpp"
 
 using UrsineRenderer::GraphicalComponent;
