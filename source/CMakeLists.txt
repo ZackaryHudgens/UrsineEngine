@@ -5,13 +5,9 @@ find_package(assimp REQUIRED)
 find_package(glm REQUIRED)
 
 file(GLOB ENGINE_SOURCES core/*.?pp
-                         renderer/*.?pp
-                         renderer/lighting/*.?pp
-                         renderer/primitives/*.?pp)
+                         renderer/*.?pp)
 file(GLOB ENGINE_INCLUDES core/*.hpp
-                          renderer/*.hpp
-                          renderer/lighting/*.hpp
-                          renderer/primitives/*.hpp)
+                          renderer/*.hpp)
 
 add_library(UrsineEngine SHARED ${ENGINE_SOURCES})
 target_link_libraries(UrsineEngine PUBLIC
@@ -25,7 +21,6 @@ target_link_libraries(UrsineEngine PUBLIC
 target_include_directories(UrsineEngine PUBLIC
                            core
                            renderer
-                           renderer/lighting
                            ${GLEW_INCLUDE_DIRS}
                            ${IL_INCLUDE_DIR}
                            ${ASSIMP_IMCLUDE_DIRS}

@@ -5,10 +5,7 @@
 using UrsineCore::GameObject;
 using UrsineCore::Scene;
 
-using UrsineRenderer::Camera;
-
 Scene::Scene()
-  : mMainCamera(std::make_unique<Camera>())
 {
 }
 

@@ -4,10 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "Camera.hpp"
 #include "GameObject.hpp"
-
-using UrsineRenderer::Camera;
 
 namespace UrsineCore
 {
@@ -26,8 +23,6 @@ namespace UrsineCore
       void Render();
 
       void AddObject(std::unique_ptr<GameObject> aGameObject);
-
-      Camera* GetCamera() { return mMainCamera.get(); }
 
       std::vector<GameObject*> GetObjects() const;
 
@@ -54,7 +49,6 @@ namespace UrsineCore
 
     private:
       std::vector<std::unique_ptr<GameObject>> mObjects;
-      std::unique_ptr<Camera> mMainCamera;
   };
 }
 

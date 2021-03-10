@@ -1,24 +1,11 @@
 #include "GraphicalComponent.hpp"
 
 using UrsineRenderer::GraphicalComponent;
+using UrsineRenderer::Shader;
 
 GraphicalComponent::GraphicalComponent()
   : Component()
 {
-}
-
-void GraphicalComponent::AddChild(std::unique_ptr<Component> aChild)
-{
-  auto* gc = dynamic_cast<GraphicalComponent*>(aChild.get());
-  if(gc != nullptr)
-  {
-    for(const auto& shader : mShaders)
-    {
-      gc->AddShader(shader);
-    }
-  }
-
-  Component::AddChild(std::move(aChild));
 }
 
 void GraphicalComponent::Render() const
@@ -35,16 +22,26 @@ void GraphicalComponent::Render() const
   }
 }
 
-void GraphicalComponent::AddShader(const Shader& aShader)
+void GraphicalComponent::AddShader(const std::string& aName,
+                                   const Shader& aShader)
 {
-  mShaders.emplace_back(aShader);
+  mShaderMap.emplace(aName, aShader);
+}
 
-  for(auto& child : GetChildren())
+void GraphicalComponent::RemoveShader(const std::string& aName)
+{
+  mShaderMap.erase(aName);
+}
+
+const Shader* GraphicalComponent::GetShaderByName(const std::string& aName) const
+{
+  const Shader* r = nullptr;
+
+  auto s = mShaderMap.find(aName);
+  if(s != mShaderMap.end())
   {
-    GraphicalComponent* gc = dynamic_cast<GraphicalComponent*>(child.get());
-    if(gc != nullptr)
-    {
-      gc->AddShader(aShader);
-    }
+    r = &(s->second);
   }
+
+  return r;
 }

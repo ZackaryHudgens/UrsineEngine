@@ -1,6 +1,7 @@
 #ifndef GRAPHICALCOMPONENT_HPP
 #define GRAPHICALCOMPONENT_HPP
 
+#include <map>
 #include <memory>
 
 #include "Component.hpp"
@@ -10,7 +11,7 @@ using UrsineCore::Component;
 
 namespace UrsineRenderer
 {
-  typedef std::vector<Shader> ShaderList;
+  typedef std::map<std::string, Shader> ShaderMap;
 
   /**
    * A GraphicalComponent is a Component that also contains a Render()
@@ -24,15 +25,16 @@ namespace UrsineRenderer
 
       void Render() const;
 
-      virtual void AddChild(std::unique_ptr<Component> aChild) override;
-
-      void AddShader(const Shader& aShader);
-      const ShaderList& GetShaders() const { return mShaders; }
+      void AddShader(const std::string& aName,
+                     const Shader& aShader);
+      void RemoveShader(const std::string& aName);
+      const Shader* GetShaderByName(const std::string& aName) const;
+      const ShaderMap& GetShaderMap() const { return mShaderMap; }
 
     private:
       virtual void PrivateRender() const {};
 
-      ShaderList mShaders;
+      ShaderMap mShaderMap;
   };
 }
 

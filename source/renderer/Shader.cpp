@@ -103,10 +103,6 @@ void Shader::SetMat4(const std::string& aName, const glm::mat4& aMat) const
   }
 }
 
-void Shader::SetMacroValue(const std::string& aMacroName, double aValue)
-{
-}
-
 void Shader::CompileShader(unsigned int& aShaderID,
                            const std::string& aShaderSource,
                            GLenum aShaderType)

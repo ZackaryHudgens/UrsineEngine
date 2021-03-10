@@ -12,28 +12,24 @@ namespace UrsineRenderer
 {
   struct MeshVertex
   {
-    glm::vec3 mPosition;  // 0
-    glm::vec3 mNormal;    // 1
-    glm::vec2 mTexCoords; // 2
-  };
-
-  struct MeshTexture
-  {
-    unsigned int mId;
-    std::string mType;
-    std::string mPath;
+    glm::vec3 mPosition;
+    glm::vec3 mColor;
+    glm::vec2 mTexCoords;
   };
 
   typedef std::vector<MeshVertex> VertexList;
   typedef std::vector<unsigned int> IndexList;
-  typedef std::vector<MeshTexture> TextureList;
 
   class MeshComponent : public GraphicalComponent
   {
     public:
-      MeshComponent(const VertexList& aVertices,
-                    const IndexList& aIndices,
-                    const TextureList& aTextures);
+      MeshComponent();
+
+      void SetVertices(const VertexList& aVertices);
+      VertexList GetVertices() const { return mVertices; }
+
+      void SetIndices(const IndexList& aIndices);
+      IndexList GetIndices() const { return mIndices; }
 
     private:
       void Initialize();
@@ -44,7 +40,6 @@ namespace UrsineRenderer
 
       VertexList mVertices;
       IndexList mIndices;
-      TextureList mTextures;
   };
 }
 
