@@ -113,7 +113,7 @@ void GameObject::AddChild(std::unique_ptr<GameObject> aObject)
  */
 void GameObject::AddComponent(std::unique_ptr<Component> aComponent)
 {
-  aComponent->SetParent(this);
+  aComponent->SetParent(*this);
 
   // Keep GraphicalComponents and regular Components separate to optimize
   // the Render() function.

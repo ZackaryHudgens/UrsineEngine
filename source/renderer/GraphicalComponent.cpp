@@ -1,25 +1,14 @@
 #include "GraphicalComponent.hpp"
 
+#include <algorithm>
+
 using UrsineRenderer::GraphicalComponent;
 using UrsineRenderer::Shader;
 
 GraphicalComponent::GraphicalComponent()
   : Component()
+  , mCurrentShader(nullptr)
 {
-}
-
-void GraphicalComponent::Render() const
-{
-  PrivateRender();
-
-  for(const auto& child : GetChildren())
-  {
-    GraphicalComponent* gc = dynamic_cast<GraphicalComponent*>(child.get());
-    if(gc != nullptr)
-    {
-      gc->Render();
-    }
-  }
 }
 
 void GraphicalComponent::AddShader(const std::string& aName,
@@ -33,15 +22,15 @@ void GraphicalComponent::RemoveShader(const std::string& aName)
   mShaderMap.erase(aName);
 }
 
-const Shader* GraphicalComponent::GetShaderByName(const std::string& aName) const
+void GraphicalComponent::SetCurrentShader(const std::string& aName)
 {
-  const Shader* r = nullptr;
-
-  auto s = mShaderMap.find(aName);
-  if(s != mShaderMap.end())
+  auto shader = mShaderMap.find(aName);
+  if(shader != mShaderMap.end())
   {
-    r = &(s->second);
+    mCurrentShader = &(shader->second);
   }
-
-  return r;
+  else
+  {
+    mCurrentShader = nullptr;
+  }
 }

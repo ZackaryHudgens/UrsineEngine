@@ -25,6 +25,8 @@ namespace UrsineRenderer
     public:
       MeshComponent();
 
+      void Render() const override;
+
       void SetVertices(const VertexList& aVertices);
       VertexList GetVertices() const { return mVertices; }
 
@@ -33,8 +35,6 @@ namespace UrsineRenderer
 
     private:
       void Initialize();
-
-      void PrivateRender() const override;
 
       unsigned int mVAO, mVBO, mEBO;
 

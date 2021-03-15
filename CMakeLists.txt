@@ -12,13 +12,6 @@ set(URSINE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/install/include")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# Include the resource compiler.
-include("cmake/CMakeRC.cmake")
-
-# Create a library containing the shader resources.
-cmrc_add_resource_library(ShaderLib resources/shaders/DefaultShader.frag
-                                    resources/shaders/DefaultShader.vert)
-
 # Add subdirectories to configure.
 add_subdirectory(source)
 add_subdirectory(extensions)

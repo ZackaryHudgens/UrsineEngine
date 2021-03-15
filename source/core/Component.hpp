@@ -7,10 +7,7 @@
 
 namespace UrsineCore
 {
-  class Component;
   class GameObject;
-
-  typedef std::vector<std::unique_ptr<Component>> ComponentList;
 
   /**
    * A Component is an interface for any sort of behavior
@@ -22,19 +19,14 @@ namespace UrsineCore
     public:
       Component();
 
-      virtual void Update() {};
-      virtual void Load() {}
-      virtual void Unload() {}
+      virtual void Update() {}
+      virtual void Load() {}    // Called when the scene is loaded
+      virtual void Unload() {}  // Called when the scene is unloaded
 
-      virtual void AddChild(std::unique_ptr<Component> aChild);
-      const ComponentList& GetChildren() const { return mChildren; }
-
-      void SetParent(GameObject* aParent);
-      GameObject* GetParent() const { return mParent; }
+      void SetParent(GameObject& aParent) { mParent = &aParent; }
+      GameObject* GetParent() const       { return mParent; }
 
     private:
-      ComponentList mChildren;
-
       GameObject* mParent;
   };
 }

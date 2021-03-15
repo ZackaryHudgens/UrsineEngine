@@ -8,6 +8,7 @@
 #include "Shader.hpp"
 
 using UrsineCore::Component;
+using UrsineCore::GameObject;
 
 namespace UrsineRenderer
 {
@@ -15,7 +16,7 @@ namespace UrsineRenderer
 
   /**
    * A GraphicalComponent is a Component that also contains a Render()
-   * function. Inheriting classes should override the PrivateRender() function
+   * function. Inheriting components should override this function
    * to define how to draw them.
    */
   class GraphicalComponent : public Component
@@ -23,18 +24,18 @@ namespace UrsineRenderer
     public:
       GraphicalComponent();
 
-      void Render() const;
+      virtual void Render() const {}
 
       void AddShader(const std::string& aName,
                      const Shader& aShader);
       void RemoveShader(const std::string& aName);
-      const Shader* GetShaderByName(const std::string& aName) const;
-      const ShaderMap& GetShaderMap() const { return mShaderMap; }
+
+      void SetCurrentShader(const std::string& aName);
+      const Shader* GetCurrentShader() const { return mCurrentShader; };
 
     private:
-      virtual void PrivateRender() const {};
-
       ShaderMap mShaderMap;
+      Shader* mCurrentShader;
   };
 }
 

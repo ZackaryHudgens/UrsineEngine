@@ -4,12 +4,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <cmrc/cmrc.hpp>
-
 #include "Environment.hpp"
 #include "GameObject.hpp"
-
-CMRC_DECLARE(ShaderLib);
 
 using UrsineRenderer::MeshComponent;
 
@@ -18,16 +14,23 @@ MeshComponent::MeshComponent()
   , mVBO(0)
   , mEBO(0)
 {
-  // Add the base model shader.
-  auto fs = cmrc::ShaderLib::get_filesystem();
-  auto vertexFile = fs.open("resources/shaders/DefaultShader.vert");
-  auto fragmentFile = fs.open("resources/shaders/DefaultShader.frag");
-  AddShader("default", Shader(vertexFile.begin(), fragmentFile.begin()));
-
   // Generate IDs for the vertex array, vertex buffer and element buffer.
   glGenVertexArrays(1, &mVAO);
   glGenBuffers(1, &mVBO);
   glGenBuffers(1, &mEBO);
+}
+
+void MeshComponent::Render() const
+{
+  if(GetCurrentShader() != nullptr)
+  {
+    GetCurrentShader()->Activate();
+
+    // Draw the mesh.
+    glBindVertexArray(mVAO);
+    glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+  }
 }
 
 void MeshComponent::SetVertices(const VertexList& aVertices)
@@ -53,6 +56,24 @@ void MeshComponent::SetVertices(const VertexList& aVertices)
                         sizeof(MeshVertex),
                         (void*)(0));
 
+  // Set the vertex color attributes.
+  glEnableVertexAttribArray(1);
+  glVertexAttribPointer(1,
+                        3,
+                        GL_FLOAT,
+                        GL_FALSE,
+                        sizeof(MeshVertex),
+                        (void*)(offsetof(MeshVertex, mColor)));
+
+  // Set the vertex texture coordinates.
+  glEnableVertexAttribArray(2);
+  glVertexAttribPointer(2,
+                        2,
+                        GL_FLOAT,
+                        GL_FALSE,
+                        sizeof(MeshVertex),
+                        (void*)(offsetof(MeshVertex, mTexCoords)));
+
   // Unbind the vertex array.
   glBindVertexArray(0);
 }
@@ -73,17 +94,4 @@ void MeshComponent::SetIndices(const IndexList& aIndices)
 
   // Unbind the vertex array.
   glBindVertexArray(0);
-}
-
-void MeshComponent::PrivateRender() const
-{
-  for(const auto& shaderPair : GetShaderMap())
-  {
-    shaderPair.second.Activate();
-
-    // Draw the mesh.
-    glBindVertexArray(mVAO);
-    glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-  }
 }

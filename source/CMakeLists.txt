@@ -11,7 +11,6 @@ file(GLOB ENGINE_INCLUDES core/*.hpp
 
 add_library(UrsineEngine SHARED ${ENGINE_SOURCES})
 target_link_libraries(UrsineEngine PUBLIC
-                      ShaderLib
                       glfw
                       ${GLEW_LIBRARIES}
                       ${IL_LIBRARIES}
