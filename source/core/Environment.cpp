@@ -18,6 +18,13 @@ std::unique_ptr<Environment> Environment::mInstance = nullptr;
  */
 namespace inputCallbacks
 {
+  void GLFWFramebufferSizeCallback(GLFWwindow* aWindow,
+                                   int aWidth,
+                                   int aHeight)
+  {
+    glViewport(0, 0, aWidth, aHeight);
+  }
+
   void GLFWKeyPressedCallback(GLFWwindow* aWindow,
                               int aKey,
                               int aScancode,
@@ -136,8 +143,17 @@ bool Environment::CreateWindow(const std::string& aTitle, int aWidth, int aHeigh
   // Initialize GLFW
   if(glfwInit())
   {
+    // Set the desired OpenGL version to 3.3
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+
+    // Use the core profile only; this removes backwards-compatible features
+    // that are no longer needed for the engine.
+    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    // Enable forward compatibility; this removes all deprecated features
+    // in the desired version of OpenGL (3.3).
+    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 
     mWindow = glfwCreateWindow(aWidth, aHeight, aTitle.c_str(), nullptr, nullptr);
     if(mWindow == nullptr)
@@ -170,11 +186,15 @@ bool Environment::CreateWindow(const std::string& aTitle, int aWidth, int aHeigh
           init = true;
 
           // Connect GLFW callback functions.
+          glfwSetFramebufferSizeCallback(mWindow, inputCallbacks::GLFWFramebufferSizeCallback);
           glfwSetKeyCallback(mWindow, inputCallbacks::GLFWKeyPressedCallback);
           glfwSetCursorPosCallback(mWindow, inputCallbacks::GLFWMouseMovedCallback);
           glfwSetCursorEnterCallback(mWindow, inputCallbacks::GLFWMouseEnteredOrLeftCallback);
           glfwSetMouseButtonCallback(mWindow, inputCallbacks::GLFWMouseButtonPressedCallback);
           glfwSetScrollCallback(mWindow, inputCallbacks::GLFWMouseScrolledCallback);
+
+          // Set the viewport to the entire window.
+          glViewport(0, 0, aWidth, aHeight);
 
           // Initialize various OpenGL flags.
           glEnable(GL_DEPTH_TEST);

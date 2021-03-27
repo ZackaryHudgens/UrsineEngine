@@ -27,11 +27,8 @@ namespace UrsineRenderer
 
       void Render() const override;
 
-      void SetVertices(const VertexList& aVertices);
-      VertexList GetVertices() const { return mVertices; }
-
-      void SetIndices(const IndexList& aIndices);
-      IndexList GetIndices() const { return mIndices; }
+      void AddVertex(const MeshVertex& aVertex);
+      void AddIndex(unsigned int aIndex);
 
     private:
       void Initialize();

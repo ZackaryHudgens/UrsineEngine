@@ -4,6 +4,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <iostream>
+
 #include "Environment.hpp"
 #include "GameObject.hpp"
 
@@ -33,21 +35,21 @@ void MeshComponent::Render() const
   }
 }
 
-void MeshComponent::SetVertices(const VertexList& aVertices)
+void MeshComponent::AddVertex(const MeshVertex& aVertex)
 {
-  mVertices = aVertices;
+  mVertices.emplace_back(aVertex);
 
   // Bind the vertex array.
   glBindVertexArray(mVAO);
 
-  // Load the vertex data.
+  // Copy the vertex data into the buffer.
   glBindBuffer(GL_ARRAY_BUFFER, mVBO);
   glBufferData(GL_ARRAY_BUFFER,
                mVertices.size() * sizeof(MeshVertex),
                &mVertices[0],
                GL_STATIC_DRAW);
 
-  // Set the vertex position attributes.
+  // Configure the vertex position attributes.
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0,
                         3,
@@ -56,7 +58,7 @@ void MeshComponent::SetVertices(const VertexList& aVertices)
                         sizeof(MeshVertex),
                         (void*)(0));
 
-  // Set the vertex color attributes.
+  // Configure the vertex color attributes.
   glEnableVertexAttribArray(1);
   glVertexAttribPointer(1,
                         3,
@@ -65,7 +67,7 @@ void MeshComponent::SetVertices(const VertexList& aVertices)
                         sizeof(MeshVertex),
                         (void*)(offsetof(MeshVertex, mColor)));
 
-  // Set the vertex texture coordinates.
+  // Configure the vertex texture coordinates.
   glEnableVertexAttribArray(2);
   glVertexAttribPointer(2,
                         2,
@@ -78,14 +80,14 @@ void MeshComponent::SetVertices(const VertexList& aVertices)
   glBindVertexArray(0);
 }
 
-void MeshComponent::SetIndices(const IndexList& aIndices)
+void MeshComponent::AddIndex(unsigned int aIndex)
 {
-  mIndices = aIndices;
+  mIndices.emplace_back(aIndex);
 
   // Bind the vertex array.
   glBindVertexArray(mVAO);
 
-  // Load the element data.
+  // Copy the index data into the buffer.
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER,
                mIndices.size() * sizeof(unsigned int),
