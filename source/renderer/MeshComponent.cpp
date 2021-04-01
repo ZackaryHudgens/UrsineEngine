@@ -28,6 +28,12 @@ void MeshComponent::Render() const
   {
     GetCurrentShader()->Activate();
 
+    // Add the model matrix to the shader.
+    if(GetCurrentShader()->IsUniformDefined("modelMatrix"))
+    {
+      GetCurrentShader()->SetMat4("modelMatrix", GetParent()->GetTransform());
+    }
+
     // Draw the mesh.
     glBindVertexArray(mVAO);
     glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);

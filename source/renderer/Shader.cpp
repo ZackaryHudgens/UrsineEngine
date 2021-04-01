@@ -52,6 +52,11 @@ void Shader::AddTexture(const Texture& aTexture)
   }
 }
 
+bool Shader::IsUniformDefined(const std::string& aName) const
+{
+  return glGetUniformLocation(mProgramId, aName.c_str()) != -1;
+}
+
 void Shader::SetBool(const std::string& aName, bool aValue) const
 {
   int loc = glGetUniformLocation(mProgramId, aName.c_str());

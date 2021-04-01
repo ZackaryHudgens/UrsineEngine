@@ -31,6 +31,8 @@ namespace UrsineRenderer
 
       void AddTexture(const Texture& aTexture);
 
+      bool IsUniformDefined(const std::string& aName) const;
+
       void SetBool(const std::string& aName, bool aValue) const;
       void SetInt(const std::string& aName, int aValue) const;
       void SetFloat(const std::string& aName, float aValue) const;

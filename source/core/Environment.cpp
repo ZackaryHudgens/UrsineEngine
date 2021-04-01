@@ -149,11 +149,11 @@ bool Environment::CreateWindow(const std::string& aTitle, int aWidth, int aHeigh
 
     // Use the core profile only; this removes backwards-compatible features
     // that are no longer needed for the engine.
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Enable forward compatibility; this removes all deprecated features
     // in the desired version of OpenGL (3.3).
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 
     mWindow = glfwCreateWindow(aWidth, aHeight, aTitle.c_str(), nullptr, nullptr);
     if(mWindow == nullptr)
