@@ -24,20 +24,46 @@ MeshComponent::MeshComponent()
 
 void MeshComponent::Render() const
 {
-  if(GetCurrentShader() != nullptr)
+  // Render this object for each Camera in the current scene.
+  for(const auto& cam : env.GetCurrentScene()->GetObjectsOfType<Camera>())
   {
-    GetCurrentShader()->Activate();
-
-    // Add the model matrix to the shader.
-    if(GetCurrentShader()->IsUniformDefined("modelMatrix"))
+    if(GetCurrentShader() != nullptr)
     {
-      GetCurrentShader()->SetMat4("modelMatrix", GetParent()->GetTransform());
-    }
+      GetCurrentShader()->Activate();
 
-    // Draw the mesh.
-    glBindVertexArray(mVAO);
-    glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
+      // Set the model matrix.
+      if(GetCurrentShader()->IsUniformDefined("modelMatrix"))
+      {
+        GetCurrentShader()->SetMat4("modelMatrix", GetParent()->GetTransform());
+      }
+
+      // Set the view matrix for this Camera.
+      if(GetCurrentShader()->IsUniformDefined("viewMatrix"))
+      {
+        GetCurrentShader()->SetMat4("viewMatrix", cam->GetViewMatrix());
+      }
+
+      // Create a perspective projection matrix and set it.
+      // TODO: create a settings class for stuff like this
+      if(GetCurrentShader()->IsUniformDefined("projectionMatrix"))
+      {
+        int w, h;
+        glfwGetWindowSize(env.GetWindow(), &w, &h);
+
+        // arguments:
+        // field of view
+        // aspect ratio
+        // near plane
+        // far plane
+        glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)w/(float)h, 0.1f, 100.0f);
+        GetCurrentShader()->SetMat4("projectionMatrix", proj);
+      }
+
+      // Draw the mesh.
+      glBindVertexArray(mVAO);
+      glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
+      glBindVertexArray(0);
+    }
   }
 }
 

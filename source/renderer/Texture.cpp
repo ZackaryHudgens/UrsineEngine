@@ -79,6 +79,5 @@ void Texture::LoadImageFromFile(const std::string& aFilePath)
 
 void Texture::Activate() const
 {
-  std::cout << "binding texture " << mID << std::endl;
   glBindTexture(GL_TEXTURE_2D, mID);
 }

@@ -2,17 +2,18 @@
 
 #include "Scene.hpp"
 
-#include "Camera.hpp"
-
 using UrsineCore::GameObject;
 using UrsineCore::Scene;
-
-using UrsineRenderer::Camera;
 
 Scene::Scene()
 {
   // Add a default camera to the scene.
   AddObject(std::make_unique<Camera>());
+
+  for(const auto& obj : GetObjectsOfType<Camera>())
+  {
+    mDefaultCamera = obj;
+  }
 }
 
 void Scene::Load()

@@ -4,7 +4,10 @@
 #include <memory>
 #include <vector>
 
+#include "Camera.hpp"
 #include "GameObject.hpp"
+
+using UrsineRenderer::Camera;
 
 namespace UrsineCore
 {
@@ -47,8 +50,11 @@ namespace UrsineCore
         return objects;
       }
 
+      Camera* GetDefaultCamera() const { return mDefaultCamera; }
+
     private:
       std::vector<std::unique_ptr<GameObject>> mObjects;
+      Camera* mDefaultCamera;
   };
 }
 
