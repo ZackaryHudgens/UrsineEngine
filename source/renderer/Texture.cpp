@@ -11,6 +11,8 @@ using UrsineRenderer::Texture;
 
 Texture::Texture()
   : mID(0)
+  , mWidth(0)
+  , mHeight(0)
 {
 }
 
@@ -32,8 +34,8 @@ void Texture::LoadImageFromFile(const std::string& aFilePath)
       unsigned char* data = ilGetData();
       if(data != nullptr)
       {
-        int w = ilGetInteger(IL_IMAGE_WIDTH);
-        int h = ilGetInteger(IL_IMAGE_HEIGHT);
+        mWidth = ilGetInteger(IL_IMAGE_WIDTH);
+        mHeight = ilGetInteger(IL_IMAGE_HEIGHT);
 
         // Generate an OpenGL texture.
         glGenTextures(1, &mID);
@@ -49,8 +51,8 @@ void Texture::LoadImageFromFile(const std::string& aFilePath)
         glTexImage2D(GL_TEXTURE_2D,
                      0,
                      GL_RGBA,
-                     w,
-                     h,
+                     mWidth,
+                     mHeight,
                      0,
                      GL_RGBA,
                      GL_UNSIGNED_BYTE,

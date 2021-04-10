@@ -13,8 +13,13 @@ namespace UrsineRenderer
       void LoadImageFromFile(const std::string& aFilePath);
       void Activate() const;
 
+      unsigned int GetHeight() const { return mHeight; }
+      unsigned int GetWidth() const  { return mWidth; }
+
     private:
       unsigned int mID;
+      unsigned int mWidth;
+      unsigned int mHeight;
   };
 }
 

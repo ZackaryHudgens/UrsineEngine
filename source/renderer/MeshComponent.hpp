@@ -1,5 +1,5 @@
-#ifndef MESH_HPP
-#define MESH_HPP
+#ifndef MESHCOMPONENT_HPP
+#define MESHCOMPONENT_HPP
 
 #include <string>
 #include <vector>
@@ -32,6 +32,10 @@ namespace UrsineRenderer
       void AddVertex(const MeshVertex& aVertex);
       void AddIndex(unsigned int aIndex);
       void AddTexture(const Texture& aTexture);
+
+      VertexList& GetVertices()  { return mVertices; }
+      IndexList& GetIndices()    { return mIndices; }
+      TextureList& GetTextures() { return mTextures; }
 
     private:
       void Initialize();
