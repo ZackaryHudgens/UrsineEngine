@@ -15,6 +15,9 @@ std::unique_ptr<Environment> Environment::mInstance = nullptr;
 
 /**
  * GLFW input callback functions.
+ *
+ * These are called whenever glfwPollEvents() processes the appropriate event.
+ * Note that glfwPollEvents() is called once per Update cycle in Run().
  */
 namespace inputCallbacks
 {
@@ -193,6 +196,10 @@ bool Environment::CreateWindow(const std::string& aTitle, int aWidth, int aHeigh
           glfwSetMouseButtonCallback(mWindow, inputCallbacks::GLFWMouseButtonPressedCallback);
           glfwSetScrollCallback(mWindow, inputCallbacks::GLFWMouseScrolledCallback);
 
+          // Set the GLFW cursor input mode.
+          // TODO: set up a settings class for this kinda thing
+          glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
           // Set the viewport to the entire window.
           glViewport(0, 0, aWidth, aHeight);
 
@@ -227,11 +234,11 @@ void Environment::Run()
       updateLag += elapsedTime;
 
       int updateCounter = 0;
-      while(updateLag >= 0.15)
+      while(updateLag >= 0.0015)
       {
         Update();
 
-        updateLag -= 0.15;
+        updateLag -= 0.0015;
 
         ++updateCounter;
         if(updateCounter >= 1000)

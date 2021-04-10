@@ -29,7 +29,15 @@ void MeshComponent::Render() const
   {
     if(GetCurrentShader() != nullptr)
     {
+      // Activate the current shader.
       GetCurrentShader()->Activate();
+
+      // Bind all textures on this mesh.
+      for(unsigned int i = 0; i < mTextures.size(); ++i)
+      {
+        glActiveTexture(GL_TEXTURE0 + i);
+        mTextures.at(i).Activate();
+      }
 
       // Set the model matrix.
       if(GetCurrentShader()->IsUniformDefined("modelMatrix"))
@@ -128,4 +136,16 @@ void MeshComponent::AddIndex(unsigned int aIndex)
 
   // Unbind the vertex array.
   glBindVertexArray(0);
+}
+
+void MeshComponent::AddTexture(const Texture& aTexture)
+{
+  if(mTextures.size() >= 16)
+  {
+    std::cout << "Meshes can only support up to 16 textures!" << std::endl;
+  }
+  else
+  {
+    mTextures.emplace_back(aTexture);
+  }
 }

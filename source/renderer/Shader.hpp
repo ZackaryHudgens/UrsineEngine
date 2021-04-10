@@ -8,13 +8,8 @@
 
 #include <glm/glm.hpp>
 
-#include "Texture.hpp"
-
 namespace UrsineRenderer
 {
-
-  typedef std::vector<Texture> TextureList;
-
   /**
    * A class that encapsulates a GLSL shader.
    */
@@ -28,8 +23,6 @@ namespace UrsineRenderer
       const std::string& GetFragmentSource() const { return mFragmentSource; }
 
       void Activate() const;
-
-      void AddTexture(const Texture& aTexture);
 
       bool IsUniformDefined(const std::string& aName) const;
 
@@ -45,8 +38,6 @@ namespace UrsineRenderer
                          GLenum aShaderType);
       void CreateProgram(unsigned int aVertexID,
                          unsigned int aFragmentID);
-
-      TextureList mTextures;
 
       std::string mVertexSource;
       std::string mFragmentSource;

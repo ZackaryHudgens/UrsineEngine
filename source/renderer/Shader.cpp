@@ -30,26 +30,7 @@ Shader::Shader(const char* aVertexSource,
 
 void Shader::Activate() const
 {
-  // Bind all textures on this shader.
-  for(unsigned int i = 0; i < mTextures.size(); ++i)
-  {
-    glActiveTexture(GL_TEXTURE0 + i);
-    mTextures.at(i).Activate();
-  }
-
   glUseProgram(mProgramId);
-}
-
-void Shader::AddTexture(const Texture& aTexture)
-{
-  if(mTextures.size() >= 16)
-  {
-    std::cout << "Shaders can only support up to 16 textures!" << std::endl;
-  }
-  else
-  {
-    mTextures.emplace_back(aTexture);
-  }
 }
 
 bool Shader::IsUniformDefined(const std::string& aName) const

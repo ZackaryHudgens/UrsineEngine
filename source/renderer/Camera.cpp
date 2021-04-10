@@ -15,7 +15,7 @@ Camera::Camera()
 glm::mat4 Camera::GetViewMatrix() const
 {
   return glm::lookAt(GetPosition(),
-                     mForwardVector,
+                     GetPosition() + mForwardVector,
                      mUpVector);
 }
 
@@ -26,5 +26,5 @@ void Camera::LookAt(const GameObject& aObject)
 
 void Camera::LookAt(const glm::vec3 aPos)
 {
-  mForwardVector = aPos;
+  mForwardVector = glm::normalize(aPos);
 }

@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 
 #include "GraphicalComponent.hpp"
+#include "Texture.hpp"
 
 namespace UrsineRenderer
 {
@@ -19,6 +20,7 @@ namespace UrsineRenderer
 
   typedef std::vector<MeshVertex> VertexList;
   typedef std::vector<unsigned int> IndexList;
+  typedef std::vector<Texture> TextureList;
 
   class MeshComponent : public GraphicalComponent
   {
@@ -29,6 +31,7 @@ namespace UrsineRenderer
 
       void AddVertex(const MeshVertex& aVertex);
       void AddIndex(unsigned int aIndex);
+      void AddTexture(const Texture& aTexture);
 
     private:
       void Initialize();
@@ -37,6 +40,7 @@ namespace UrsineRenderer
 
       VertexList mVertices;
       IndexList mIndices;
+      TextureList mTextures;
   };
 }
 
