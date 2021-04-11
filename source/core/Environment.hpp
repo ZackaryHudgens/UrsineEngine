@@ -35,6 +35,8 @@ namespace UrsineCore
       bool CreateWindow(const std::string& aTitle, int aWidth, int aHeight);
       GLFWwindow* GetWindow() const { return mWindow; }
 
+      double GetTime() const { return glfwGetTime(); }
+
       void LoadScene(Scene& aScene);
       Scene* GetCurrentScene() { return mCurrentScene; }
 
