@@ -14,7 +14,6 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Add subdirectories to configure.
 add_subdirectory(source)
-add_subdirectory(extensions)
 
 # Install the config.cmake file for find_package.
 install(FILES cmake/UrsineEngineConfig.cmake DESTINATION ${URSINE_LIB_DIR}/cmake/)
