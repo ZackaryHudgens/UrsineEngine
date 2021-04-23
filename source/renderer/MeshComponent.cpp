@@ -12,7 +12,8 @@
 using UrsineRenderer::MeshComponent;
 
 MeshComponent::MeshComponent()
-  : mVAO(0)
+  : mMode(RenderMode::eTRIANGLES)
+  , mVAO(0)
   , mVBO(0)
   , mEBO(0)
 {
@@ -69,7 +70,7 @@ void MeshComponent::Render() const
 
       // Draw the mesh.
       glBindVertexArray(mVAO);
-      glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
+      glDrawElements(mMode, mIndices.size(), GL_UNSIGNED_INT, 0);
       glBindVertexArray(0);
     }
   }
