@@ -155,8 +155,10 @@ void GameObject::Scale(const glm::vec3& aScalar)
  */
 void GameObject::Translate(const glm::vec3& aVector)
 {
-  mPosition += aVector;
-  mTransform = glm::translate(mTransform, aVector);
+  // First, remove the effects of any previous translations.
+  mTransform = glm::translate(mTransform, mPosition * -1.0f);
+  mPosition = aVector;
+  mTransform = glm::translate(mTransform, mPosition);
 }
 
 /**
