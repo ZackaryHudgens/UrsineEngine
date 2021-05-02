@@ -11,8 +11,9 @@ using UrsineRenderer::GraphicalComponent;
  * Constructor for the base GameObject class.
  */
 GameObject::GameObject()
-  : mTransform(1.0f)
-  , mPosition(0.0f, 0.0f, 0.0f)
+  : mScalarTransform(1.0f)
+  , mRotationTransform(1.0f)
+  , mTranslationTransform(1.0f)
 {
 }
 
@@ -139,26 +140,49 @@ void GameObject::AddComponent(std::unique_ptr<Component> aComponent)
 }
 
 /**
+ * Returns a matrix containing all transformations that have been applied
+ * to this object.
+ *
+ * @return A transformation matrix for this object.
+ */
+glm::mat4 GameObject::GetTransform() const
+{
+  glm::mat4 transform(1.0f);
+  transform *= (mTranslationTransform * mRotationTransform * mScalarTransform);
+  return transform;
+}
+
+/**
+ * Returns a vector representing this object's position in 3D space
+ * by multiplying it with its transformation matrix.
+ *
+ * @return This object's position in 3D space.
+ */
+glm::vec3 GameObject::GetPosition() const
+{
+  glm::vec4 vector(0.0, 0.0, 0.0, 1.0);
+  vector = GetTransform() * vector;
+  return glm::vec3(vector.x, vector.y, vector.z);
+}
+
+/**
  * Scales the GameObject's transform by the given amount.
  *
  * @param aScalar The amount to scale by on each axis.
  */
 void GameObject::Scale(const glm::vec3& aScalar)
 {
-  mTransform = glm::scale(mTransform, aScalar);
+  mScalarTransform = glm::scale(mScalarTransform, aScalar);
 }
 
 /**
  * Translates this GameObject's transform in the given direction.
  *
- * @param aVector The vector to translate by.
+ * @param aVector The vector to translate to.
  */
 void GameObject::Translate(const glm::vec3& aVector)
 {
-  // First, remove the effects of any previous translations.
-  mTransform = glm::translate(mTransform, mPosition * -1.0f);
-  mPosition = aVector;
-  mTransform = glm::translate(mTransform, mPosition);
+  mTranslationTransform = glm::translate(glm::mat4(1.0f), aVector);
 }
 
 /**
@@ -167,8 +191,12 @@ void GameObject::Translate(const glm::vec3& aVector)
  *
  * @param aDegrees The amount to rotate by in degrees.
  * @param aAxis The axis around which to rotate.
+ * @param aSpace The space in which to roate the object (world or local).
  */
-void GameObject::Rotate(double aDegrees, const glm::vec3& aAxis)
+void GameObject::Rotate(double aDegrees,
+                        const glm::vec3& aAxis)
 {
-  mTransform = glm::rotate(mTransform, (float)glm::radians(aDegrees), aAxis);
+  mRotationTransform = glm::rotate(mRotationTransform,
+                                   (float)glm::radians(aDegrees),
+                                   aAxis);
 }

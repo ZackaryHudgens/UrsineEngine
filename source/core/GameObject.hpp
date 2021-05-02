@@ -42,15 +42,16 @@ namespace UrsineCore
       void AddChild(std::unique_ptr<GameObject> aObject);
       void AddComponent(std::unique_ptr<Component> aComponent);
 
-      glm::mat4 GetTransform() const { return mTransform; }
-      glm::vec3 GetPosition() const  { return mPosition; }
+      glm::mat4 GetTransform() const;
+      glm::vec3 GetPosition() const;
 
       std::vector<Component*> GetComponents() const;
       std::vector<GraphicalComponent*> GetGraphicalComponents() const;
 
       virtual void Scale(const glm::vec3& aScalar);
       virtual void Translate(const glm::vec3& aVector);
-      virtual void Rotate(double aDegrees, const glm::vec3& aAxis);
+      virtual void Rotate(double aDegrees,
+                          const glm::vec3& aAxis);
 
       /**
        * Returns a vector containing pointers to all components
@@ -87,8 +88,9 @@ namespace UrsineCore
       ComponentList mComponents;
       GraphicalComponentList mGraphicalComponents;
 
-      glm::mat4 mTransform;
-      glm::vec3 mPosition;
+      glm::mat4 mScalarTransform;
+      glm::mat4 mRotationTransform;
+      glm::mat4 mTranslationTransform;
   };
 }
 
