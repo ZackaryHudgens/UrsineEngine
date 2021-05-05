@@ -166,6 +166,57 @@ glm::vec3 GameObject::GetPosition() const
 }
 
 /**
+ * Returns a list of pointers to all child GameObjects.
+ *
+ * @return A list of child GameObjects.
+ */
+std::vector<GameObject*> GameObject::GetChildren()
+{
+  std::vector<GameObject*> children;
+
+  for(auto& child : mChildren)
+  {
+    children.emplace_back(child.get());
+  }
+
+  return children;
+}
+
+/**
+ * Returns a list of pointers to all Components.
+ *
+ * @return A list of Components.
+ */
+std::vector<Component*> GameObject::GetComponents()
+{
+  std::vector<Component*> comps;
+
+  for(auto& comp : mComponents)
+  {
+    comps.emplace_back(comp.get());
+  }
+
+  return comps;
+}
+
+/**
+ * Returns a list of pointers to all GraphicalComponents.
+ *
+ * @return A list of GraphicalComponents.
+ */
+std::vector<GraphicalComponent*> GameObject::GetGraphicalComponents()
+{
+  std::vector<GraphicalComponent*> gComps;
+
+  for(auto& gComp : mGraphicalComponents)
+  {
+    gComps.emplace_back(gComp.get());
+  }
+
+  return gComps;
+}
+
+/**
  * Scales the GameObject's transform by the given amount.
  *
  * @param aScalar The amount to scale by on each axis.

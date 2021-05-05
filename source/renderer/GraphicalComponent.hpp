@@ -8,7 +8,6 @@
 #include "Shader.hpp"
 
 using UrsineCore::Component;
-using UrsineCore::GameObject;
 
 namespace UrsineRenderer
 {

@@ -45,8 +45,9 @@ namespace UrsineCore
       glm::mat4 GetTransform() const;
       glm::vec3 GetPosition() const;
 
-      std::vector<Component*> GetComponents() const;
-      std::vector<GraphicalComponent*> GetGraphicalComponents() const;
+      std::vector<GameObject*> GetChildren();
+      std::vector<Component*> GetComponents();
+      std::vector<GraphicalComponent*> GetGraphicalComponents();
 
       virtual void Scale(const glm::vec3& aScalar);
       virtual void Translate(const glm::vec3& aVector);
