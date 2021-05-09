@@ -2,15 +2,13 @@
 #define GAMEOBJECT_HPP
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include <glm/glm.hpp>
 
 #include "Component.hpp"
-#include "GraphicalComponent.hpp"
 #include "Observer.hpp"
-
-using UrsineRenderer::GraphicalComponent;
 
 namespace UrsineCore
 {
@@ -18,26 +16,23 @@ namespace UrsineCore
 
   typedef std::vector<std::unique_ptr<GameObject>> ObjectList;
   typedef std::vector<std::unique_ptr<Component>> ComponentList;
-  typedef std::vector<std::unique_ptr<GraphicalComponent>> GraphicalComponentList;
 
   /**
    * A GameObject is essentially just a sack of components.
    * The components themselves are what determine the behavior
    * of the GameObject.
-   *
-   * GraphicalComponents are kept separate from other Components
-   * so the Render() function doesn't have to iterate over
-   * Components that aren't renderable.
    */
   class GameObject : public Observer
   {
     public:
-      GameObject();
+      GameObject(const std::string& aName);
 
       void Update();
       void Render();
       void Load();
       void Unload();
+
+      std::string GetName() const { return mName; }
 
       void AddChild(std::unique_ptr<GameObject> aObject);
       void AddComponent(std::unique_ptr<Component> aComponent);
@@ -47,7 +42,6 @@ namespace UrsineCore
 
       std::vector<GameObject*> GetChildren();
       std::vector<Component*> GetComponents();
-      std::vector<GraphicalComponent*> GetGraphicalComponents();
 
       virtual void Scale(const glm::vec3& aScalar);
       virtual void Translate(const glm::vec3& aVector);
@@ -72,22 +66,14 @@ namespace UrsineCore
           }
         }
 
-        for(const auto& gComp : mGraphicalComponents)
-        {
-          T* castGComp = dynamic_cast<T*>(gComp.get());
-          if(castGComp != nullptr)
-          {
-            components.emplace_back(castGComp);
-          }
-        }
-
         return components;
       };
 
     private:
+      std::string mName;
+
       ObjectList mChildren;
       ComponentList mComponents;
-      GraphicalComponentList mGraphicalComponents;
 
       glm::mat4 mScalarTransform;
       glm::mat4 mRotationTransform;

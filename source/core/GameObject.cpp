@@ -2,6 +2,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "GraphicalComponent.hpp"
+
 using UrsineCore::Component;
 using UrsineCore::GameObject;
 
@@ -10,8 +12,9 @@ using UrsineRenderer::GraphicalComponent;
 /**
  * Constructor for the base GameObject class.
  */
-GameObject::GameObject()
-  : mScalarTransform(1.0f)
+GameObject::GameObject(const std::string& aName)
+  : mName(aName)
+  , mScalarTransform(1.0f)
   , mRotationTransform(1.0f)
   , mTranslationTransform(1.0f)
 {
@@ -27,11 +30,6 @@ void GameObject::Update()
     c->Update();
   }
 
-  for(auto& gc : mGraphicalComponents)
-  {
-    gc->Update();
-  }
-
   for(auto& child : mChildren)
   {
     child->Update();
@@ -43,9 +41,13 @@ void GameObject::Update()
  */
 void GameObject::Render()
 {
-  for(auto& gc : mGraphicalComponents)
+  for(auto& c : mComponents)
   {
-    gc->Render();
+    GraphicalComponent* gc = dynamic_cast<GraphicalComponent*>(c.get());
+    if(gc != nullptr)
+    {
+      gc->Render();
+    }
   }
 
   for(auto& child : mChildren)
@@ -64,11 +66,6 @@ void GameObject::Load()
     c->Load();
   }
 
-  for(auto& gc : mGraphicalComponents)
-  {
-    gc->Load();
-  }
-
   for(auto& child : mChildren)
   {
     child->Load();
@@ -83,11 +80,6 @@ void GameObject::Unload()
   for(auto& c : mComponents)
   {
     c->Unload();
-  }
-
-  for(auto& gc : mGraphicalComponents)
-  {
-    gc->Unload();
   }
 
   for(auto& child : mChildren)
@@ -115,28 +107,7 @@ void GameObject::AddChild(std::unique_ptr<GameObject> aObject)
 void GameObject::AddComponent(std::unique_ptr<Component> aComponent)
 {
   aComponent->SetParent(*this);
-
-  // Keep GraphicalComponents and regular Components separate to optimize
-  // the Render() function.
-  GraphicalComponent* g = dynamic_cast<GraphicalComponent*>(aComponent.get());
-  if(g != nullptr)
-  {
-    // Releases the given pointer from being responsible for deleting
-    // the Component...
-    aComponent.release();
-
-    // ...so we can create a new unique_ptr to a GraphicalComponent
-    // and assign it to that Component. This is done to place the given
-    // Component into a vector of GraphicalComponents, since
-    // std::unique_ptr can't be cast to another type.
-    std::unique_ptr<GraphicalComponent> gPointer;
-    gPointer.reset(g);
-    mGraphicalComponents.emplace_back(std::move(gPointer));
-  }
-  else
-  {
-    mComponents.emplace_back(std::move(aComponent));
-  }
+  mComponents.emplace_back(std::move(aComponent));
 }
 
 /**
@@ -197,23 +168,6 @@ std::vector<Component*> GameObject::GetComponents()
   }
 
   return comps;
-}
-
-/**
- * Returns a list of pointers to all GraphicalComponents.
- *
- * @return A list of GraphicalComponents.
- */
-std::vector<GraphicalComponent*> GameObject::GetGraphicalComponents()
-{
-  std::vector<GraphicalComponent*> gComps;
-
-  for(auto& gComp : mGraphicalComponents)
-  {
-    gComps.emplace_back(gComp.get());
-  }
-
-  return gComps;
 }
 
 /**

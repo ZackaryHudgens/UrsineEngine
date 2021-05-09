@@ -161,6 +161,7 @@ bool Environment::CreateWindow(const std::string& aTitle, int aWidth, int aHeigh
     mWindow = glfwCreateWindow(aWidth, aHeight, aTitle.c_str(), nullptr, nullptr);
     if(mWindow == nullptr)
     {
+      std::cout << "Error creating window! " << std::endl;
       glfwTerminate();
     }
     else

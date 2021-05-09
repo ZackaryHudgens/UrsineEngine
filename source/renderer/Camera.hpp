@@ -10,7 +10,7 @@ namespace UrsineRenderer
   class Camera : public GameObject
   {
     public:
-      Camera();
+      Camera(const std::string& aName = "Camera");
 
       glm::mat4 GetViewMatrix() const;
 

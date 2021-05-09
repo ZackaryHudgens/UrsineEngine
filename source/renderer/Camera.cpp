@@ -4,8 +4,8 @@
 
 using UrsineRenderer::Camera;
 
-Camera::Camera()
-  : GameObject()
+Camera::Camera(const std::string& aName)
+  : GameObject(aName)
   , mForwardVector(0.0, 0.0, -1.0)
   , mUpVector(0.0, 1.0, 0.0)
   , mRightVector(1.0, 0.0, 0.0)
