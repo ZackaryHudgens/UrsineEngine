@@ -178,6 +178,12 @@ std::vector<Component*> GameObject::GetComponents()
 void GameObject::Scale(const glm::vec3& aScalar)
 {
   mScalarTransform = glm::scale(mScalarTransform, aScalar);
+
+  // Scale each child object.
+  for(auto& child : mChildren)
+  {
+    child->Scale(aScalar);
+  }
 }
 
 /**
@@ -188,6 +194,12 @@ void GameObject::Scale(const glm::vec3& aScalar)
 void GameObject::Translate(const glm::vec3& aVector)
 {
   mTranslationTransform = glm::translate(glm::mat4(1.0f), aVector);
+
+  // Transform each child object relative to this object.
+  for(auto& child : mChildren)
+  {
+    child->Translate((child->GetPosition() + GetPosition()));
+  }
 }
 
 /**
@@ -204,4 +216,10 @@ void GameObject::Rotate(double aDegrees,
   mRotationTransform = glm::rotate(mRotationTransform,
                                    (float)glm::radians(aDegrees),
                                    aAxis);
+
+  // Rotate each child object.
+  for(auto& child : mChildren)
+  {
+    child->Rotate(aDegrees, aAxis);
+  }
 }
