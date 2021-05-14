@@ -9,12 +9,13 @@
 
 #include "Component.hpp"
 #include "Observer.hpp"
+#include "Signal.hpp"
 
 namespace UrsineCore
 {
   class GameObject;
 
-  typedef std::vector<std::unique_ptr<GameObject>> ObjectList;
+  typedef std::map<std::string, std::unique_ptr<GameObject>> ChildMap;
   typedef std::vector<std::unique_ptr<Component>> ComponentList;
 
   /**
@@ -27,26 +28,20 @@ namespace UrsineCore
     public:
       GameObject(const std::string& aName);
 
-      void Update();
-      void Render();
       void Load();
       void Unload();
+      void Update();
+      void Render();
 
       std::string GetName() const { return mName; }
 
-      void AddChild(std::unique_ptr<GameObject> aObject);
-      void AddComponent(std::unique_ptr<Component> aComponent);
-
-      glm::mat4 GetTransform() const;
-      glm::vec3 GetPosition() const;
-
+      bool AddChild(std::unique_ptr<GameObject> aObject);
+      bool RemoveChild(const std::string& aName);
+      GameObject* GetChild(const std::string& aName) const;
       std::vector<GameObject*> GetChildren();
-      std::vector<Component*> GetComponents();
 
-      virtual void Scale(const glm::vec3& aScalar);
-      virtual void Translate(const glm::vec3& aVector);
-      virtual void Rotate(double aDegrees,
-                          const glm::vec3& aAxis);
+      void AddComponent(std::unique_ptr<Component> aComponent);
+      std::vector<Component*> GetComponents();
 
       /**
        * Returns a vector containing pointers to all components
@@ -69,16 +64,35 @@ namespace UrsineCore
         return components;
       };
 
+      glm::mat4 GetTransform() const;
+      glm::vec3 GetPosition() const;
+
+      virtual void Scale(const glm::vec3& aScalar);
+      virtual void Translate(const glm::vec3& aVector);
+      virtual void Rotate(double aDegrees,
+                          const glm::vec3& aAxis);
+
     private:
       std::string mName;
 
-      ObjectList mChildren;
+      ChildMap mChildren;
       ComponentList mComponents;
 
       glm::mat4 mScalarTransform;
       glm::mat4 mRotationTransform;
       glm::mat4 mTranslationTransform;
   };
+
+  /**
+   * GameObject Signals.
+   */
+  typedef UrsineCore::SignalT<GameObject*> ObjectScaledSignal;
+  typedef UrsineCore::SignalT<GameObject*> ObjectMovedSignal;
+  typedef UrsineCore::SignalT<GameObject*> ObjectRotatedSignal;
+
+  extern ObjectScaledSignal ObjectScaled;
+  extern ObjectMovedSignal ObjectMoved;
+  extern ObjectRotatedSignal ObjectRotated;
 }
 
 #endif

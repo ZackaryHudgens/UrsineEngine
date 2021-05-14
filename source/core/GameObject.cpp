@@ -21,6 +21,38 @@ GameObject::GameObject(const std::string& aName)
 }
 
 /**
+ * Calls the Load() method for each Component and child.
+ */
+void GameObject::Load()
+{
+  for(auto& c : mComponents)
+  {
+    c->Load();
+  }
+
+  for(auto& child : mChildren)
+  {
+    child.second->Load();
+  }
+}
+
+/**
+ * Calls the Unload() method for each Component and child.
+ */
+void GameObject::Unload()
+{
+  for(auto& c : mComponents)
+  {
+    c->Unload();
+  }
+
+  for(auto& child : mChildren)
+  {
+    child.second->Unload();
+  }
+}
+
+/**
  * Calls the Update() method for each Component and child.
  */
 void GameObject::Update()
@@ -32,7 +64,7 @@ void GameObject::Update()
 
   for(auto& child : mChildren)
   {
-    child->Update();
+    child.second->Update();
   }
 }
 
@@ -52,39 +84,7 @@ void GameObject::Render()
 
   for(auto& child : mChildren)
   {
-    child->Render();
-  }
-}
-
-/**
- * Calls the Load() method for each Component and child.
- */
-void GameObject::Load()
-{
-  for(auto& c : mComponents)
-  {
-    c->Load();
-  }
-
-  for(auto& child : mChildren)
-  {
-    child->Load();
-  }
-}
-
-/**
- * Calls the Unload() method for each Component and child.
- */
-void GameObject::Unload()
-{
-  for(auto& c : mComponents)
-  {
-    c->Unload();
-  }
-
-  for(auto& child : mChildren)
-  {
-    child->Unload();
+    child.second->Render();
   }
 }
 
@@ -92,10 +92,85 @@ void GameObject::Unload()
  * Adds a child GameObject.
  *
  * @param aObject The GameObject to add.
+ * @return True if the GameObject was added successfully,
+ *         false otherwise.
  */
-void GameObject::AddChild(std::unique_ptr<GameObject> aObject)
+bool GameObject::AddChild(std::unique_ptr<GameObject> aObject)
 {
-  mChildren.emplace_back(std::move(aObject));
+  bool success = true;
+
+  auto foundChild = mChildren.find(aObject->GetName());
+  if(foundChild == mChildren.end())
+  {
+    mChildren.emplace(aObject->GetName(), std::move(aObject));
+  }
+  else
+  {
+    success = false;
+  }
+
+  return success;
+}
+
+/**
+ * Removes a child GameObject.
+ *
+ * @param aName The name of the GameObject to remove.
+ * @return True if the GameObject was removed successfully,
+ *         false otherwise.
+ */
+bool GameObject::RemoveChild(const std::string& aName)
+{
+  bool success = true;
+
+  auto foundChild = mChildren.find(aName);
+  if(foundChild != mChildren.end())
+  {
+    mChildren.erase(foundChild);
+  }
+  else
+  {
+    success = false;
+  }
+
+  return success;
+}
+
+/**
+ * Returns a pointer to a child GameObject with the given name,
+ * if it exists.
+ *
+ * @param aName The name of the desired child GameObject.
+ * @return A pointer to the GameObject if found, nullptr otherwise.
+ */
+GameObject* GameObject::GetChild(const std::string& aName) const
+{
+  GameObject* obj = nullptr;
+
+  auto foundChild = mChildren.find(aName);
+  if(foundChild != mChildren.end())
+  {
+    obj = foundChild->second.get();
+  }
+
+  return obj;
+}
+
+/**
+ * Returns a list of pointers to all child GameObjects.
+ *
+ * @return A list of child GameObjects.
+ */
+std::vector<GameObject*> GameObject::GetChildren()
+{
+  std::vector<GameObject*> children;
+
+  for(auto& child : mChildren)
+  {
+    children.emplace_back(child.second.get());
+  }
+
+  return children;
 }
 
 /**
@@ -108,6 +183,23 @@ void GameObject::AddComponent(std::unique_ptr<Component> aComponent)
 {
   aComponent->SetParent(*this);
   mComponents.emplace_back(std::move(aComponent));
+}
+
+/**
+ * Returns a list of pointers to all Components.
+ *
+ * @return A list of Components.
+ */
+std::vector<Component*> GameObject::GetComponents()
+{
+  std::vector<Component*> comps;
+
+  for(auto& comp : mComponents)
+  {
+    comps.emplace_back(comp.get());
+  }
+
+  return comps;
 }
 
 /**
@@ -137,40 +229,6 @@ glm::vec3 GameObject::GetPosition() const
 }
 
 /**
- * Returns a list of pointers to all child GameObjects.
- *
- * @return A list of child GameObjects.
- */
-std::vector<GameObject*> GameObject::GetChildren()
-{
-  std::vector<GameObject*> children;
-
-  for(auto& child : mChildren)
-  {
-    children.emplace_back(child.get());
-  }
-
-  return children;
-}
-
-/**
- * Returns a list of pointers to all Components.
- *
- * @return A list of Components.
- */
-std::vector<Component*> GameObject::GetComponents()
-{
-  std::vector<Component*> comps;
-
-  for(auto& comp : mComponents)
-  {
-    comps.emplace_back(comp.get());
-  }
-
-  return comps;
-}
-
-/**
  * Scales the GameObject's transform by the given amount.
  *
  * @param aScalar The amount to scale by on each axis.
@@ -178,11 +236,12 @@ std::vector<Component*> GameObject::GetComponents()
 void GameObject::Scale(const glm::vec3& aScalar)
 {
   mScalarTransform = glm::scale(mScalarTransform, aScalar);
+  ObjectScaled.Notify(this);
 
   // Scale each child object.
   for(auto& child : mChildren)
   {
-    child->Scale(aScalar);
+    child.second->Scale(aScalar);
   }
 }
 
@@ -194,11 +253,12 @@ void GameObject::Scale(const glm::vec3& aScalar)
 void GameObject::Translate(const glm::vec3& aVector)
 {
   mTranslationTransform = glm::translate(glm::mat4(1.0f), aVector);
+  ObjectMoved.Notify(this);
 
   // Transform each child object relative to this object.
   for(auto& child : mChildren)
   {
-    child->Translate((child->GetPosition() + GetPosition()));
+    child.second->Translate((child.second->GetPosition() + GetPosition()));
   }
 }
 
@@ -216,10 +276,18 @@ void GameObject::Rotate(double aDegrees,
   mRotationTransform = glm::rotate(mRotationTransform,
                                    (float)glm::radians(aDegrees),
                                    aAxis);
+  ObjectRotated.Notify(this);
 
   // Rotate each child object.
   for(auto& child : mChildren)
   {
-    child->Rotate(aDegrees, aAxis);
+    child.second->Rotate(aDegrees, aAxis);
   }
 }
+
+/**
+ * GameObject Signals.
+ */
+UrsineCore::ObjectScaledSignal UrsineCore::ObjectScaled;
+UrsineCore::ObjectMovedSignal UrsineCore::ObjectMoved;
+UrsineCore::ObjectRotatedSignal UrsineCore::ObjectRotated;
