@@ -40,6 +40,27 @@ namespace UrsineCore
       GameObject* GetChild(const std::string& aName) const;
       std::vector<GameObject*> GetChildren();
 
+      /**
+       * Returns a vector containing pointers to all child
+       * GameObjects of a given type.
+       */
+      template<typename T>
+      std::vector<T*> GetChildrenOfType() const
+      {
+        std::vector<T*> children;
+
+        for(const auto& obj : mChildren)
+        {
+          T* castObj = dynamic_cast<T*>(obj.second.get());
+          if(castObj != nullptr)
+          {
+            children.emplace_back(castObj);
+          }
+        }
+
+        return children;
+      }
+
       void AddComponent(std::unique_ptr<Component> aComponent);
       std::vector<Component*> GetComponents();
 
