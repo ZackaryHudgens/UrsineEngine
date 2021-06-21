@@ -93,6 +93,11 @@ namespace UrsineCore
       virtual void Rotate(double aDegrees,
                           const glm::vec3& aAxis);
 
+      virtual void SetScale(const glm::vec3& aScalar);
+      virtual void SetPosition(const glm::vec3& aVector);
+      virtual void SetRotation(double aDegrees,
+                               const glm::vec3& aAxis);
+
     private:
       std::string mName;
 

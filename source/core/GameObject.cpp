@@ -252,7 +252,7 @@ void GameObject::Scale(const glm::vec3& aScalar)
  */
 void GameObject::Translate(const glm::vec3& aVector)
 {
-  mTranslationTransform = glm::translate(glm::mat4(1.0f), aVector);
+  mTranslationTransform = glm::translate(mTranslationTransform, aVector);
   ObjectMoved.Notify(this);
 
   // Transform each child object relative to this object.
@@ -268,7 +268,6 @@ void GameObject::Translate(const glm::vec3& aVector)
  *
  * @param aDegrees The amount to rotate by in degrees.
  * @param aAxis The axis around which to rotate.
- * @param aSpace The space in which to roate the object (world or local).
  */
 void GameObject::Rotate(double aDegrees,
                         const glm::vec3& aAxis)
@@ -282,6 +281,63 @@ void GameObject::Rotate(double aDegrees,
   for(auto& child : mChildren)
   {
     child.second->Rotate(aDegrees, aAxis);
+  }
+}
+
+/**
+ * Creates a new scalar transform for this GameObject.
+ *
+ * @param aScalar The amount to scale by on each axis.
+ */
+void GameObject::SetScale(const glm::vec3& aScalar)
+{
+  mScalarTransform = glm::scale(glm::mat4(1.0), aScalar);
+  ObjectScaled.Notify(this);
+
+  // Create a new scalar transform for each child object.
+  for(auto& child : mChildren)
+  {
+    child.second->SetScale(aScalar);
+  }
+}
+
+/**
+ * Sets the position of this GameObject by creating a new translation
+ * transform.
+ *
+ * @param aVector The position to move to.
+ */
+void GameObject::SetPosition(const glm::vec3& aVector)
+{
+  mTranslationTransform = glm::translate(glm::mat4(1.0), aVector);
+  ObjectMoved.Notify(this);
+
+  // Transform each child object relative to this object.
+  for(auto& child : mChildren)
+  {
+    child.second->SetPosition((child.second->GetPosition() + GetPosition()));
+  }
+}
+
+/**
+ * Creates a new rotation transform for this GameObject using the given
+ * axis of rotation.
+ *
+ * @param aDegrees The amount to rotate by in degrees.
+ * @param aAxis The axis around which to rotate.
+ */
+void GameObject::SetRotation(double aDegrees,
+                             const glm::vec3& aAxis)
+{
+  mRotationTransform = glm::rotate(glm::mat4(1.0),
+                                   (float)glm::radians(aDegrees),
+                                   aAxis);
+  ObjectRotated.Notify(this);
+
+  // Set the rotation of each child object.
+  for(auto& child : mChildren)
+  {
+    child.second->SetRotation(aDegrees, aAxis);
   }
 }
 

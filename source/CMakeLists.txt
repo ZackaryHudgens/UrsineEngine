@@ -4,11 +4,9 @@ find_package(DevIL REQUIRED)
 find_package(assimp REQUIRED)
 find_package(glm REQUIRED)
 
-file(GLOB ENGINE_SOURCES math/*.?pp
-                         core/*.?pp
+file(GLOB ENGINE_SOURCES core/*.?pp
                          renderer/*.?pp)
-file(GLOB ENGINE_INCLUDES math/*.hpp
-                          core/*.hpp
+file(GLOB ENGINE_INCLUDES core/*.hpp
                           renderer/*.hpp)
 
 add_library(UrsineEngine SHARED ${ENGINE_SOURCES})
