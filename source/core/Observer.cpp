@@ -7,16 +7,12 @@
 using UrsineCore::Observer;
 using UrsineCore::Signal;
 
+/******************************************************************************/
 Observer::Observer()
 {
 }
 
-/**
- * The destructor for the Observer class disconnects itself
- * from each connected Signal; this way, when the Signal is
- * next notified, it won't be calling functions from an object
- * that no longer exists.
- */
+/******************************************************************************/
 Observer::~Observer()
 {
   for(auto& s : mConnectedSignals)
@@ -25,13 +21,11 @@ Observer::~Observer()
   }
 }
 
-/**
- * Adds a Signal to keep track of, if it isn't already being tracked.
- *
- * @param aSignal The Signal to keep track of.
- */
-void Observer::Add(Signal* aSignal)
+/******************************************************************************/
+bool Observer::Add(Signal* aSignal)
 {
+  bool success = true;
+
   auto s = std::find(mConnectedSignals.begin(),
                      mConnectedSignals.end(),
                      aSignal);
@@ -39,4 +33,10 @@ void Observer::Add(Signal* aSignal)
   {
     mConnectedSignals.emplace_back(aSignal);
   }
+  else
+  {
+    success = false;
+  }
+
+  return success;
 }

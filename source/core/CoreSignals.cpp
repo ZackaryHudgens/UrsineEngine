@@ -2,11 +2,7 @@
 
 #include <GLFW/glfw3.h>
 
-/**
- * Returns the name of a key as a string.
- *
- * @param aCode The KeyCode whose name to look up.
- */
+/******************************************************************************/
 std::string UrsineCore::GetKeyName(const UrsineCore::KeyCode& aCode)
 {
   std::string name;
@@ -311,23 +307,14 @@ std::string UrsineCore::GetKeyName(const UrsineCore::KeyCode& aCode)
   return name;
 }
 
-/**
- * Returns true if the given KeyboardModifier is active in the given
- * mods.
- *
- * @param aMod The modifier for which to determine to determine
- * active/inactive status.
- * @param aMods The list of modifiers to check.
- */
+/******************************************************************************/
 bool UrsineCore::IsModifierActive(const KeyboardModifier& aMod, int aMods)
 {
   int modAsInt = (int)aMod;
   return (aMods & (1 << modAsInt));
 }
 
-/**
- * Input signals.
- */
+/******************************************************************************/
 UrsineCore::KeyPressedSignal          UrsineCore::KeyPressed;
 UrsineCore::KeyReleasedSignal         UrsineCore::KeyReleased;
 UrsineCore::KeyRepeatedSignal         UrsineCore::KeyRepeated;

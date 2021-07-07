@@ -9,9 +9,7 @@ using UrsineCore::GameObject;
 
 using UrsineRenderer::GraphicalComponent;
 
-/**
- * Constructor for the base GameObject class.
- */
+/******************************************************************************/
 GameObject::GameObject(const std::string& aName)
   : mName(aName)
   , mScalarTransform(1.0f)
@@ -20,9 +18,7 @@ GameObject::GameObject(const std::string& aName)
 {
 }
 
-/**
- * Calls the Load() method for each Component and child.
- */
+/******************************************************************************/
 void GameObject::Load()
 {
   for(auto& c : mComponents)
@@ -36,9 +32,7 @@ void GameObject::Load()
   }
 }
 
-/**
- * Calls the Unload() method for each Component and child.
- */
+/******************************************************************************/
 void GameObject::Unload()
 {
   for(auto& c : mComponents)
@@ -52,9 +46,7 @@ void GameObject::Unload()
   }
 }
 
-/**
- * Calls the Update() method for each Component and child.
- */
+/******************************************************************************/
 void GameObject::Update()
 {
   for(auto& c : mComponents)
@@ -68,9 +60,7 @@ void GameObject::Update()
   }
 }
 
-/**
- * Calls the Render() method for each GraphicalComponent and child.
- */
+/******************************************************************************/
 void GameObject::Render()
 {
   for(auto& c : mComponents)
@@ -88,13 +78,7 @@ void GameObject::Render()
   }
 }
 
-/**
- * Adds a child GameObject.
- *
- * @param aObject The GameObject to add.
- * @return True if the GameObject was added successfully,
- *         false otherwise.
- */
+/******************************************************************************/
 bool GameObject::AddChild(std::unique_ptr<GameObject> aObject)
 {
   bool success = true;
@@ -112,13 +96,7 @@ bool GameObject::AddChild(std::unique_ptr<GameObject> aObject)
   return success;
 }
 
-/**
- * Removes a child GameObject.
- *
- * @param aName The name of the GameObject to remove.
- * @return True if the GameObject was removed successfully,
- *         false otherwise.
- */
+/******************************************************************************/
 bool GameObject::RemoveChild(const std::string& aName)
 {
   bool success = true;
@@ -136,13 +114,7 @@ bool GameObject::RemoveChild(const std::string& aName)
   return success;
 }
 
-/**
- * Returns a pointer to a child GameObject with the given name,
- * if it exists.
- *
- * @param aName The name of the desired child GameObject.
- * @return A pointer to the GameObject if found, nullptr otherwise.
- */
+/******************************************************************************/
 GameObject* GameObject::GetChild(const std::string& aName) const
 {
   GameObject* obj = nullptr;
@@ -156,11 +128,7 @@ GameObject* GameObject::GetChild(const std::string& aName) const
   return obj;
 }
 
-/**
- * Returns a list of pointers to all child GameObjects.
- *
- * @return A list of child GameObjects.
- */
+/******************************************************************************/
 std::vector<GameObject*> GameObject::GetChildren()
 {
   std::vector<GameObject*> children;
@@ -173,23 +141,14 @@ std::vector<GameObject*> GameObject::GetChildren()
   return children;
 }
 
-/**
- * Adds a Component to this GameObject, which takes ownership
- * of it. 
- *
- * @param aComponent The Component to add.
- */
+/******************************************************************************/
 void GameObject::AddComponent(std::unique_ptr<Component> aComponent)
 {
   aComponent->SetParent(*this);
   mComponents.emplace_back(std::move(aComponent));
 }
 
-/**
- * Returns a list of pointers to all Components.
- *
- * @return A list of Components.
- */
+/******************************************************************************/
 std::vector<Component*> GameObject::GetComponents()
 {
   std::vector<Component*> comps;
@@ -202,12 +161,7 @@ std::vector<Component*> GameObject::GetComponents()
   return comps;
 }
 
-/**
- * Returns a matrix containing all transformations that have been applied
- * to this object.
- *
- * @return A transformation matrix for this object.
- */
+/******************************************************************************/
 glm::mat4 GameObject::GetTransform() const
 {
   glm::mat4 transform(1.0f);
@@ -215,12 +169,7 @@ glm::mat4 GameObject::GetTransform() const
   return transform;
 }
 
-/**
- * Returns a vector representing this object's position in 3D space
- * by multiplying it with its transformation matrix.
- *
- * @return This object's position in 3D space.
- */
+/******************************************************************************/
 glm::vec3 GameObject::GetPosition() const
 {
   glm::vec4 vector(0.0, 0.0, 0.0, 1.0);
@@ -228,11 +177,7 @@ glm::vec3 GameObject::GetPosition() const
   return glm::vec3(vector.x, vector.y, vector.z);
 }
 
-/**
- * Scales the GameObject's transform by the given amount.
- *
- * @param aScalar The amount to scale by on each axis.
- */
+/******************************************************************************/
 void GameObject::Scale(const glm::vec3& aScalar)
 {
   mScalarTransform = glm::scale(mScalarTransform, aScalar);
@@ -245,11 +190,7 @@ void GameObject::Scale(const glm::vec3& aScalar)
   }
 }
 
-/**
- * Translates this GameObject's transform in the given direction.
- *
- * @param aVector The vector to translate to.
- */
+/******************************************************************************/
 void GameObject::Translate(const glm::vec3& aVector)
 {
   mTranslationTransform = glm::translate(mTranslationTransform, aVector);
@@ -262,13 +203,7 @@ void GameObject::Translate(const glm::vec3& aVector)
   }
 }
 
-/**
- * Rotates this GameObject's transform by the given amount around
- * the given axis.
- *
- * @param aDegrees The amount to rotate by in degrees.
- * @param aAxis The axis around which to rotate.
- */
+/******************************************************************************/
 void GameObject::Rotate(double aDegrees,
                         const glm::vec3& aAxis)
 {
@@ -284,11 +219,7 @@ void GameObject::Rotate(double aDegrees,
   }
 }
 
-/**
- * Creates a new scalar transform for this GameObject.
- *
- * @param aScalar The amount to scale by on each axis.
- */
+/******************************************************************************/
 void GameObject::SetScale(const glm::vec3& aScalar)
 {
   mScalarTransform = glm::scale(glm::mat4(1.0), aScalar);
@@ -301,12 +232,7 @@ void GameObject::SetScale(const glm::vec3& aScalar)
   }
 }
 
-/**
- * Sets the position of this GameObject by creating a new translation
- * transform.
- *
- * @param aVector The position to move to.
- */
+/******************************************************************************/
 void GameObject::SetPosition(const glm::vec3& aVector)
 {
   mTranslationTransform = glm::translate(glm::mat4(1.0), aVector);
@@ -319,13 +245,7 @@ void GameObject::SetPosition(const glm::vec3& aVector)
   }
 }
 
-/**
- * Creates a new rotation transform for this GameObject using the given
- * axis of rotation.
- *
- * @param aDegrees The amount to rotate by in degrees.
- * @param aAxis The axis around which to rotate.
- */
+/******************************************************************************/
 void GameObject::SetRotation(double aDegrees,
                              const glm::vec3& aAxis)
 {
@@ -341,9 +261,7 @@ void GameObject::SetRotation(double aDegrees,
   }
 }
 
-/**
- * GameObject Signals.
- */
+/******************************************************************************/
 UrsineCore::ObjectScaledSignal UrsineCore::ObjectScaled;
 UrsineCore::ObjectMovedSignal UrsineCore::ObjectMoved;
 UrsineCore::ObjectRotatedSignal UrsineCore::ObjectRotated;

@@ -7,7 +7,7 @@
 
 /**
  * A selection of signals that come in handy throughout the core
- * engine. Instances of each are created in CoreSignals.cpp..
+ * engine. Instances of each are created in CoreSignals.cpp.
  */
 namespace UrsineCore
 {
@@ -186,10 +186,21 @@ namespace UrsineCore
   };
 
   /**
-   * Convenience functions.
+   * Returns a string representing the given key.
+   *
+   * @param aCode The KeyCode of the key in question.
+   * @return A string representation of the key.
    */
   std::string GetKeyName(const KeyCode& aCode);
 
+  /**
+   * Checks if a certain key modifier is active in the given GLFW
+   * modifier bitmask.
+   *
+   * @param aMod The modifier to check.
+   * @param aMods The bitmask that may or may not contain the modifier.
+   * @return True if the given modifier is active, false otherwise.
+   */
   bool IsModifierActive(const KeyboardModifier& aMod, int aMods);
 
   /**

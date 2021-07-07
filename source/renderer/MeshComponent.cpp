@@ -11,6 +11,7 @@
 
 using UrsineRenderer::MeshComponent;
 
+/******************************************************************************/
 MeshComponent::MeshComponent()
   : mMode(RenderMode::eTRIANGLES)
   , mVAO(0)
@@ -23,6 +24,7 @@ MeshComponent::MeshComponent()
   glGenBuffers(1, &mEBO);
 }
 
+/******************************************************************************/
 void MeshComponent::Render() const
 {
   // Render this object for each Camera in the current scene.
@@ -76,6 +78,7 @@ void MeshComponent::Render() const
   }
 }
 
+/******************************************************************************/
 void MeshComponent::AddVertex(const MeshVertex& aVertex)
 {
   mVertices.emplace_back(aVertex);
@@ -121,6 +124,7 @@ void MeshComponent::AddVertex(const MeshVertex& aVertex)
   glBindVertexArray(0);
 }
 
+/******************************************************************************/
 void MeshComponent::AddIndex(unsigned int aIndex)
 {
   mIndices.emplace_back(aIndex);
@@ -139,6 +143,7 @@ void MeshComponent::AddIndex(unsigned int aIndex)
   glBindVertexArray(0);
 }
 
+/******************************************************************************/
 void MeshComponent::AddTexture(const Texture& aTexture)
 {
   if(mTextures.size() >= 16)

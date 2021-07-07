@@ -19,6 +19,11 @@ namespace UrsineCore
   class Signal
   {
     public:
+
+      /**
+       * This function is implemented by the templated class and
+       * it removes all functions associated with the given Observer.
+       */
       virtual void Disconnect(Observer& aObserver) = 0;
   };
 

@@ -4,6 +4,7 @@
 
 using UrsineRenderer::Camera;
 
+/******************************************************************************/
 Camera::Camera(const std::string& aName)
   : GameObject(aName)
   , mForwardVector(0.0, 0.0, -1.0)
@@ -12,6 +13,7 @@ Camera::Camera(const std::string& aName)
 {
 }
 
+/******************************************************************************/
 glm::mat4 Camera::GetViewMatrix() const
 {
   return glm::lookAt(GetPosition(),
@@ -19,11 +21,13 @@ glm::mat4 Camera::GetViewMatrix() const
                      mUpVector);
 }
 
+/******************************************************************************/
 void Camera::LookAt(const GameObject& aObject)
 {
   LookAt(aObject.GetPosition());
 }
 
+/******************************************************************************/
 void Camera::LookAt(const glm::vec3 aPos)
 {
   mForwardVector = glm::normalize(aPos);

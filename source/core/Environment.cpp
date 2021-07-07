@@ -1,6 +1,5 @@
 #include "Environment.hpp"
 
-#include <cassert>
 #include <iostream>
 
 #include <il.h>
@@ -21,6 +20,13 @@ std::unique_ptr<Environment> Environment::mInstance = nullptr;
  */
 namespace inputCallbacks
 {
+  /**
+   * Called when the window is resized.
+   *
+   * @param aWindow The window that was resized.
+   * @param aWidth The new width of the window.
+   * @param aHeight The new height of the window.
+   */
   void GLFWFramebufferSizeCallback(GLFWwindow* aWindow,
                                    int aWidth,
                                    int aHeight)
@@ -28,6 +34,16 @@ namespace inputCallbacks
     glViewport(0, 0, aWidth, aHeight);
   }
 
+  /**
+   * Called when a key is pressed, released, or held long enough
+   * to trigger a repeated entry.
+   *
+   * @param aWindow The window in focus.
+   * @param aKey The key as recognized by GLFW.
+   * @param aScancode The unique key identifier.
+   * @param aAction Whether the key was pressed, released, or held.
+   * @param aMods Any active modifications (i.e. Shift, Control, etc.)
+   */
   void GLFWKeyPressedCallback(GLFWwindow* aWindow,
                               int aKey,
                               int aScancode,
@@ -60,6 +76,14 @@ namespace inputCallbacks
     }
   }
 
+  /**
+   * Called whenever the mouse moves within the confines of the window.
+   * Positions are relative to the window.
+   *
+   * @param aWindow The window in question.
+   * @param aXPosition The new X position of the mouse cursor.
+   * @param aYPosition The new Y position of the mouse cursor.
+   */
   void GLFWMouseMovedCallback(GLFWwindow* aWindow,
                               double aXPosition,
                               double aYPosition)
@@ -67,6 +91,12 @@ namespace inputCallbacks
     UrsineCore::MouseMoved.Notify(aXPosition, aYPosition);
   }
 
+  /**
+   * Called whenever the mouse enters or leaves the window.
+   *
+   * @param aWindow The window in question.
+   * @param aEntered Whether the mouse entered or left the window.
+   */
   void GLFWMouseEnteredOrLeftCallback(GLFWwindow* aWindow,
                                       int aEntered)
   {
@@ -80,6 +110,15 @@ namespace inputCallbacks
     UrsineCore::MouseEnteredOrLeft.Notify(entered);
   }
 
+  /**
+   * Called whenever a button on the mouse is pressed, released,
+   * or held long enough to trigger a repeated entry.
+   *
+   * @param aWindow The window in question.
+   * @param aButton The button identifier.
+   * @param aAction Whether the button was pressed, released, or held.
+   * @param aMods Any active modifications (i.e. Shift, Control, etc.)
+   */
   void GLFWMouseButtonPressedCallback(GLFWwindow* aWindow,
                                       int aButton,
                                       int aAction,
@@ -107,6 +146,14 @@ namespace inputCallbacks
     }
   }
 
+  /**
+   * Called whenever the mouse is scrolled.
+   *
+   * @param aWindow The focused window.
+   * @param aXOffset The amount scrolled in the x-direction
+   *                 (usually with a touchpad)
+   * @param aYOffset The amount scrolled in the y-direction.
+   */
   void GLFWMouseScrolledCallback(GLFWwindow* aWindow,
                                  double aXOffset,
                                  double aYOffset)
@@ -115,6 +162,7 @@ namespace inputCallbacks
   }
 }
 
+/*****************************************************************************/
 Environment::Environment()
   : mWindow(nullptr)
   , mCurrentScene(nullptr)
@@ -124,11 +172,13 @@ Environment::Environment()
 {
 }
 
+/*****************************************************************************/
 Environment::~Environment()
 {
   glfwTerminate();
 }
 
+/*****************************************************************************/
 Environment& Environment::GetInstance()
 {
   if(mInstance == nullptr)
@@ -139,26 +189,34 @@ Environment& Environment::GetInstance()
   return *mInstance.get();
 }
 
-bool Environment::CreateWindow(const std::string& aTitle, int aWidth, int aHeight)
+/*****************************************************************************/
+bool Environment::Initialize(const EnvironmentInfo& aInfo)
 {
   bool init = false;
 
-  // Initialize GLFW
+  // Initialize GLFW.
   if(glfwInit())
   {
-    // Set the desired OpenGL version to 3.3
+    // Set the desired OpenGL version to 3.3.
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
     // Use the core profile only; this removes backwards-compatible features
     // that are no longer needed for the engine.
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE,
+                   GLFW_OPENGL_CORE_PROFILE);
 
     // Enable forward compatibility; this removes all deprecated features
     // in the desired version of OpenGL (3.3).
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
+                   GLFW_TRUE);
 
-    mWindow = glfwCreateWindow(aWidth, aHeight, aTitle.c_str(), nullptr, nullptr);
+    // Create the window.
+    mWindow = glfwCreateWindow(aInfo.mWidth,
+                               aInfo.mHeight,
+                               aInfo.mTitle.c_str(),
+                               nullptr,
+                               nullptr);
     if(mWindow == nullptr)
     {
       std::cout << "Error creating window! " << std::endl;
@@ -166,6 +224,7 @@ bool Environment::CreateWindow(const std::string& aTitle, int aWidth, int aHeigh
     }
     else
     {
+      // Create the OpenGL context.
       glfwMakeContextCurrent(mWindow);
 
       // Initialize GLEW.
@@ -182,8 +241,8 @@ bool Environment::CreateWindow(const std::string& aTitle, int aWidth, int aHeigh
         ILenum devilError = ilGetError();
         if(devilError != IL_NO_ERROR)
         {
-          // TODO: iluErrorString() causes a segfault; why?
-          std::cout << "Error initializing DevIL!" << std::endl;
+          std::cout << "Error initializing DevIL!"
+                    << iluErrorString(devilError) << std::endl;
         }
         else
         {
@@ -198,16 +257,34 @@ bool Environment::CreateWindow(const std::string& aTitle, int aWidth, int aHeigh
           glfwSetScrollCallback(mWindow, inputCallbacks::GLFWMouseScrolledCallback);
 
           // Set the GLFW cursor input mode.
-          // TODO: set up a settings class for this kinda thing
-          glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+          switch(aInfo.mCursorMode)
+          {
+            case CursorMode::eNORMAL:
+            {
+              glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+              break;
+            }
+            case CursorMode::eHIDDEN:
+            {
+              glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+              break;
+            }
+            case CursorMode::eDISABLED:
+            {
+              glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+              break;
+            }
+            default:
+            {
+              break;
+            }
+          }
 
           // Set the viewport to the entire window.
-          glViewport(0, 0, aWidth, aHeight);
+          glViewport(0, 0, aInfo.mWidth, aInfo.mHeight);
 
           // Initialize various OpenGL flags.
           glEnable(GL_DEPTH_TEST);
-          glEnable(GL_BLEND);
-          glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
           // Initialize various DevIL flags.
           ilEnable(IL_ORIGIN_SET);
@@ -221,43 +298,43 @@ bool Environment::CreateWindow(const std::string& aTitle, int aWidth, int aHeigh
   return init;
 }
 
-void Environment::Run()
+/*****************************************************************************/
+bool Environment::Run()
 {
+  bool success = true;
+
   if(mInitialized)
   {
-    double previousTime = glfwGetTime();
-    double updateLag = 0.0;
-
     while(!glfwWindowShouldClose(mWindow))
     {
       glfwPollEvents();
-
-      double elapsedTime = glfwGetTime() - previousTime;
-      previousTime = glfwGetTime();
-      updateLag += elapsedTime;
-
-      int updateCounter = 0;
-      while(updateLag >= 0.0015)
-      {
-        Update();
-
-        updateLag -= 0.0015;
-
-        ++updateCounter;
-        if(updateCounter >= 1000)
-        {
-          std::cout << "Maximum number of updates reached!" << std::endl;
-          break;
-        }
-      }
-
+      Update();
       Render();
     }
 
     glfwDestroyWindow(mWindow);
   }
+  else
+  {
+    success = false;
+  }
+
+  return success;
 }
 
+/*****************************************************************************/
+GLFWwindow* Environment::GetWindow() const
+{
+  return mWindow;
+}
+
+/*****************************************************************************/
+double Environment::GetTime() const
+{
+  return glfwGetTime();
+}
+
+/*****************************************************************************/
 void Environment::LoadScene(Scene& aScene)
 {
   // Unload the current scene if there is one.
@@ -270,6 +347,13 @@ void Environment::LoadScene(Scene& aScene)
   mCurrentScene->Load();
 }
 
+/*****************************************************************************/
+Scene* Environment::GetCurrentScene() const
+{
+  return mCurrentScene;
+}
+
+/*****************************************************************************/
 void Environment::Update()
 {
   if(mCurrentScene != nullptr)
@@ -278,6 +362,7 @@ void Environment::Update()
   }
 }
 
+/*****************************************************************************/
 void Environment::Render()
 {
   // Clear the window.

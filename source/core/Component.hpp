@@ -17,17 +17,44 @@ namespace UrsineCore
   class Component : public Observer
   {
     public:
+
+      /**
+       * Constructor.
+       */
       Component();
 
       /**
-        * A virtual function that 
+        * A virtual function that gets called at regular intervals.
+        * Should be overridden by inheriting components to provide
+        * functionality.
         */
       virtual void Update() {}
-      virtual void Load() {}    // Called when the scene is loaded
-      virtual void Unload() {}  // Called when the scene is unloaded
 
-      void SetParent(GameObject& aParent) { mParent = &aParent; }
-      GameObject* GetParent() const       { return mParent; }
+      /**
+       * A virtual function that gets called whenever the scene
+       * is first loaded.
+       */
+      virtual void Load() {}
+
+      /**
+       * A virtual function that gets called right before the
+       * scene is unloaded.
+       */
+      virtual void Unload() {}
+
+      /**
+       * Attaches this component to a GameObject.
+       *
+       * @param aParent The GameObject to attach to.
+       */
+      void SetParent(GameObject& aParent);
+
+      /**
+       * Returns the GameObject this component is attached to.
+       *
+       * @return A pointer to the parent GameObject.
+       */
+      GameObject* GetParent() const;
 
     private:
       GameObject* mParent;
