@@ -167,8 +167,8 @@ Environment::Environment()
   : mWindow(nullptr)
   , mCurrentScene(nullptr)
   , mInitialized(false)
-  , mInternalWidth(0)
-  , mInternalHeight(0)
+  , mFOV(45.0)
+  , mDrawDistance(1000.0)
 {
 }
 
@@ -190,108 +190,192 @@ Environment& Environment::GetInstance()
 }
 
 /*****************************************************************************/
-bool Environment::Initialize(const EnvironmentInfo& aInfo)
+bool Environment::Initialize(const GraphicsOptions& aOptions)
 {
   bool init = false;
 
-  // Initialize GLFW.
-  if(glfwInit())
+  if(!mInitialized)
   {
-    // Set the desired OpenGL version to 3.3.
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
-    // Use the core profile only; this removes backwards-compatible features
-    // that are no longer needed for the engine.
-    glfwWindowHint(GLFW_OPENGL_PROFILE,
-                   GLFW_OPENGL_CORE_PROFILE);
-
-    // Enable forward compatibility; this removes all deprecated features
-    // in the desired version of OpenGL (3.3).
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
-                   GLFW_TRUE);
-
-    // Create the window.
-    mWindow = glfwCreateWindow(aInfo.mWidth,
-                               aInfo.mHeight,
-                               aInfo.mTitle.c_str(),
-                               nullptr,
-                               nullptr);
-    if(mWindow == nullptr)
+    // Initialize GLFW.
+    if(glfwInit())
     {
-      std::cout << "Error creating window! " << std::endl;
-      glfwTerminate();
-    }
-    else
-    {
-      // Create the OpenGL context.
-      glfwMakeContextCurrent(mWindow);
+      // Set the desired OpenGL version to 3.3.
+      glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+      glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-      // Initialize GLEW.
-      GLenum glewError = glewInit();
-      if(glewError != GLEW_OK)
+      // Use the core profile only; this removes backwards-compatible features
+      // that are no longer needed for the engine.
+      glfwWindowHint(GLFW_OPENGL_PROFILE,
+                     GLFW_OPENGL_CORE_PROFILE);
+
+      // Enable forward compatibility; this removes all deprecated features
+      // in the desired version of OpenGL (3.3).
+      glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
+                     GLFW_TRUE);
+
+      // Create the window.
+      switch(aOptions.mWindowMode)
       {
-        std::cout << "Error initializing GLEW! "
-                  << glewGetErrorString(glewError) << std::endl;
+        case WindowMode::eWINDOWED:
+        {
+          mWindow = glfwCreateWindow(aOptions.mWidth,
+                                     aOptions.mHeight,
+                                     aOptions.mTitle.c_str(),
+                                     nullptr,
+                                     nullptr);
+          break;
+        }
+        case WindowMode::eFULLSCREEN:
+        {
+          mWindow = glfwCreateWindow(aOptions.mWidth,
+                                     aOptions.mHeight,
+                                     aOptions.mTitle.c_str(),
+                                     glfwGetPrimaryMonitor(),
+                                     nullptr);
+          break;
+        }
+        case WindowMode::eBORDERLESS_FULLSCREEN:
+        {
+          const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+          glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+          glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+          glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+          glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+          mWindow = glfwCreateWindow(mode->width,
+                                     mode->height,
+                                     aOptions.mTitle.c_str(),
+                                     glfwGetPrimaryMonitor(),
+                                     nullptr);
+          break;
+        }
+        default:
+        {
+          break;
+        }
+      }
+
+      if(mWindow == nullptr)
+      {
+        std::cout << "Error creating window! " << std::endl;
+        glfwTerminate();
       }
       else
       {
-        // Initialize DevIL.
-        ilInit();
-        ILenum devilError = ilGetError();
-        if(devilError != IL_NO_ERROR)
+        // Create the OpenGL context.
+        glfwMakeContextCurrent(mWindow);
+
+        // Initialize GLEW.
+        GLenum glewError = glewInit();
+        if(glewError != GLEW_OK)
         {
-          std::cout << "Error initializing DevIL!"
-                    << iluErrorString(devilError) << std::endl;
+          std::cout << "Error initializing GLEW! "
+                    << glewGetErrorString(glewError) << std::endl;
         }
         else
         {
-          init = true;
-
-          // Connect GLFW callback functions.
-          glfwSetFramebufferSizeCallback(mWindow, inputCallbacks::GLFWFramebufferSizeCallback);
-          glfwSetKeyCallback(mWindow, inputCallbacks::GLFWKeyPressedCallback);
-          glfwSetCursorPosCallback(mWindow, inputCallbacks::GLFWMouseMovedCallback);
-          glfwSetCursorEnterCallback(mWindow, inputCallbacks::GLFWMouseEnteredOrLeftCallback);
-          glfwSetMouseButtonCallback(mWindow, inputCallbacks::GLFWMouseButtonPressedCallback);
-          glfwSetScrollCallback(mWindow, inputCallbacks::GLFWMouseScrolledCallback);
-
-          // Set the GLFW cursor input mode.
-          switch(aInfo.mCursorMode)
+          // Initialize DevIL.
+          ilInit();
+          ILenum devilError = ilGetError();
+          if(devilError != IL_NO_ERROR)
           {
-            case CursorMode::eNORMAL:
-            {
-              glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-              break;
-            }
-            case CursorMode::eHIDDEN:
-            {
-              glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-              break;
-            }
-            case CursorMode::eDISABLED:
-            {
-              glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-              break;
-            }
-            default:
-            {
-              break;
-            }
+            std::cout << "Error initializing DevIL!" << std::endl;
+                      //<< iluErrorString(devilError) << std::endl;
           }
+          else
+          {
+            init = true;
 
-          // Set the viewport to the entire window.
-          glViewport(0, 0, aInfo.mWidth, aInfo.mHeight);
+            // Connect GLFW callback functions.
+            glfwSetFramebufferSizeCallback(mWindow, inputCallbacks::GLFWFramebufferSizeCallback);
+            glfwSetKeyCallback(mWindow, inputCallbacks::GLFWKeyPressedCallback);
+            glfwSetCursorPosCallback(mWindow, inputCallbacks::GLFWMouseMovedCallback);
+            glfwSetCursorEnterCallback(mWindow, inputCallbacks::GLFWMouseEnteredOrLeftCallback);
+            glfwSetMouseButtonCallback(mWindow, inputCallbacks::GLFWMouseButtonPressedCallback);
+            glfwSetScrollCallback(mWindow, inputCallbacks::GLFWMouseScrolledCallback);
 
-          // Initialize various OpenGL flags.
-          glEnable(GL_DEPTH_TEST);
+            // Set the GLFW cursor input mode.
+            glfwSetInputMode(mWindow, GLFW_CURSOR, aOptions.mCursorMode);
 
-          // Initialize various DevIL flags.
-          ilEnable(IL_ORIGIN_SET);
-          ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+            // Set the viewport to the entire window.
+            glViewport(0, 0, aOptions.mWidth, aOptions.mHeight);
+
+            // Set various Environment values.
+            mFOV = aOptions.mFOV;
+            mDrawDistance = aOptions.mDrawDistance;
+
+            // Initialize various OpenGL flags.
+            glEnable(GL_DEPTH_TEST);
+
+            // Initialize various DevIL flags.
+            ilEnable(IL_ORIGIN_SET);
+            ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+          }
         }
       }
     }
+  }
+  else
+  {
+    // The Environment has already been initialized, so we need only apply
+    // the new graphics settings.
+
+    // Update the window mode.
+    switch(aOptions.mWindowMode)
+    {
+      case WindowMode::eWINDOWED:
+      {
+        glfwSetWindowMonitor(mWindow,
+                             nullptr,
+                             0,
+                             0,
+                             aOptions.mWidth,
+                             aOptions.mHeight,
+                             GLFW_DONT_CARE);
+        break;
+      }
+      case WindowMode::eFULLSCREEN:
+      {
+        glfwSetWindowMonitor(mWindow,
+                             glfwGetPrimaryMonitor(),
+                             0,
+                             0,
+                             aOptions.mWidth,
+                             aOptions.mHeight,
+                             GLFW_DONT_CARE);
+        break;
+      }
+      case WindowMode::eBORDERLESS_FULLSCREEN:
+      {
+        const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        glfwSetWindowMonitor(mWindow,
+                             glfwGetPrimaryMonitor(),
+                             0,
+                             0,
+                             mode->width,
+                             mode->height,
+                             mode->refreshRate);
+        break;
+      }
+      default:
+      {
+        break;
+      }
+    }
+    
+    // Set the GLFW cursor input mode.
+    glfwSetInputMode(mWindow, GLFW_CURSOR, aOptions.mCursorMode);
+
+    // Set the window title.
+    glfwSetWindowTitle(mWindow, aOptions.mTitle.c_str());
+
+    // Set the viewport to the entire window.
+    glViewport(0, 0, aOptions.mWidth, aOptions.mHeight);
+
+    // Set various Environment values.
+    mFOV = aOptions.mFOV;
+    mDrawDistance = aOptions.mDrawDistance;
   }
 
   mInitialized = init;
@@ -323,12 +407,6 @@ bool Environment::Run()
 }
 
 /*****************************************************************************/
-GLFWwindow* Environment::GetWindow() const
-{
-  return mWindow;
-}
-
-/*****************************************************************************/
 double Environment::GetTime() const
 {
   return glfwGetTime();
@@ -345,12 +423,6 @@ void Environment::LoadScene(Scene& aScene)
 
   mCurrentScene = &aScene;
   mCurrentScene->Load();
-}
-
-/*****************************************************************************/
-Scene* Environment::GetCurrentScene() const
-{
-  return mCurrentScene;
 }
 
 /*****************************************************************************/

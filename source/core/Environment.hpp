@@ -19,22 +19,33 @@
 namespace UrsineCore
 {
   /**
-   * An enumeration for the different cursor modes supported by GLFW.
+   * An enumeration for the three supported types of windows in GLFW.
    */
-  enum class CursorMode
+  enum class WindowMode
   {
-    eNORMAL,
-    eHIDDEN,
-    eDISABLED
+    eWINDOWED,
+    eFULLSCREEN,
+    eBORDERLESS_FULLSCREEN
+  };
+
+  /**
+   * An enumeration for each supported GLFW cursor mode, defined
+   * in the same order as GLFW and assigned the same value.
+   */
+  enum CursorMode
+  {
+    eNORMAL = 0x00034001,
+    eHIDDEN = 0x00034002,
+    eDISABLED = 0x00034003
   };
 
   /**
    * A struct containing information used for various graphical purposes.
-   * TODO: allow setting new options without closing and reopening the window
    */
   struct GraphicsOptions
   {
     CursorMode mCursorMode { CursorMode::eDISABLED };
+    WindowMode mWindowMode { WindowMode::eWINDOWED };
 
     std::string mTitle     { "UrsineEngine" };
 
@@ -86,7 +97,7 @@ namespace UrsineCore
        *
        * @return A pointer to the GLFWWindow.
        */
-      GLFWwindow* GetWindow() const;
+      GLFWwindow* GetWindow() const { return mWindow; }
 
       /**
        * Returns the current time.
@@ -107,7 +118,21 @@ namespace UrsineCore
        *
        * @return A pointer to the current scene.
        */
-      Scene* GetCurrentScene() const;
+      Scene* GetCurrentScene() const { return mCurrentScene; }
+
+      /**
+       * Returns the current Field of View value in degrees.
+       *
+       * @return The current Field of View.
+       */
+      double GetFOV() const { return mFOV; }
+
+      /**
+       * Returns the current draw distance.
+       *
+       * @return The current draw distance.
+       */
+      double GetDrawDistance() const { return mDrawDistance; }
 
     protected:
 
@@ -138,8 +163,9 @@ namespace UrsineCore
       GraphicsOptions mOptions;
 
       bool mInitialized;
-      int mInternalWidth;
-      int mInternalHeight;
+
+      double mFOV;
+      double mDrawDistance;
   };
 }
 

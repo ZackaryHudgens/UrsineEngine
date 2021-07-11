@@ -36,7 +36,9 @@ void SpriteComponent::SetTexture(const Texture& aTexture)
   mMesh.AddTexture(aTexture);
 
   // By default, render the entire texture.
-  TextureClip clip{0, 0, aTexture.GetWidth(), aTexture.GetHeight()};
+  unsigned int w = aTexture.GetData().mWidth;
+  unsigned int h = aTexture.GetData().mHeight;
+  TextureClip clip{0, 0, w, h};
   SetRenderDimensions(clip);
 }
 
@@ -50,6 +52,7 @@ void SpriteComponent::SetRenderDimensions(const TextureClip& aClip)
   double normalizedHeight = aClip.mHeight / magnitude;
 
   // Next, use the normalized width and height to create a rectangle.
+  mMesh.GetVertices().clear();
   MeshVertex vertex;
   vertex.mPosition = glm::vec3(0.0, 0.0, 0.0);  // bottom left
   vertex.mTexCoords = glm::vec2(aClip.mX, aClip.mY);
@@ -65,8 +68,10 @@ void SpriteComponent::SetRenderDimensions(const TextureClip& aClip)
   mMesh.AddVertex(vertex);
 }
 
-void SpriteComponent::CreateAnimation(const std::string& aName)
+bool SpriteComponent::CreateAnimation(const std::string& aName)
 {
+  bool success = true;
+
   auto findAnimation = [&](const SpriteAnimation& aAnimation)
   {
     return aAnimation.GetName() == aName;
@@ -79,12 +84,16 @@ void SpriteComponent::CreateAnimation(const std::string& aName)
   }
   else
   {
-    std::cout << "The animation \"" << aName << "\" already exists!" << std::endl;
+    success = false;
   }
+
+  return success;
 }
 
-void SpriteComponent::SetAnimation(const std::string& aName)
+bool SpriteComponent::SetAnimation(const std::string& aName)
 {
+  bool success = true;
+
   auto findAnimation = [&](const SpriteAnimation& aAnimation)
   {
     return aAnimation.GetName() == aName;
@@ -97,8 +106,10 @@ void SpriteComponent::SetAnimation(const std::string& aName)
   }
   else
   {
-    std::cout << "Couldn't find animation \"" << aName << "\" !" << std::endl;
+    success = false;
   }
+
+  return success;
 }
 
 std::string SpriteComponent::GetCurrentAnimationName() const

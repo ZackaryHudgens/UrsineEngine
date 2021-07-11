@@ -66,7 +66,10 @@ void MeshComponent::Render() const
         // aspect ratio
         // near plane
         // far plane
-        glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)w/(float)h, 0.1f, 100.0f);
+        glm::mat4 proj = glm::perspective(glm::radians((float)env.GetFOV()),
+                                          (float)w/(float)h,
+                                          0.1f,
+                                          (float)env.GetDrawDistance());
         GetCurrentShader()->SetMat4("projectionMatrix", proj);
       }
 

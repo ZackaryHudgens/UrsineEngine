@@ -8,6 +8,7 @@
 
 using UrsineRenderer::Shader;
 
+/******************************************************************************/
 Shader::Shader(const char* aVertexSource,
                const char* aFragmentSource)
   : mProgramId(0)
@@ -28,16 +29,19 @@ Shader::Shader(const char* aVertexSource,
   glDeleteShader(fragmentID);
 }
 
+/******************************************************************************/
 void Shader::Activate() const
 {
   glUseProgram(mProgramId);
 }
 
+/******************************************************************************/
 bool Shader::IsUniformDefined(const std::string& aName) const
 {
   return glGetUniformLocation(mProgramId, aName.c_str()) != -1;
 }
 
+/******************************************************************************/
 void Shader::SetBool(const std::string& aName, bool aValue) const
 {
   int loc = glGetUniformLocation(mProgramId, aName.c_str());
@@ -52,6 +56,7 @@ void Shader::SetBool(const std::string& aName, bool aValue) const
   }
 }
 
+/******************************************************************************/
 void Shader::SetInt(const std::string& aName, int aValue) const
 {
   int loc = glGetUniformLocation(mProgramId, aName.c_str());
@@ -66,6 +71,7 @@ void Shader::SetInt(const std::string& aName, int aValue) const
   }
 }
 
+/******************************************************************************/
 void Shader::SetFloat(const std::string& aName, float aValue) const
 {
   int loc = glGetUniformLocation(mProgramId, aName.c_str());
@@ -80,6 +86,7 @@ void Shader::SetFloat(const std::string& aName, float aValue) const
   }
 }
 
+/******************************************************************************/
 void Shader::SetVec3(const std::string& aName, const glm::vec3& aVec) const
 {
   int loc = glGetUniformLocation(mProgramId, aName.c_str());
@@ -94,6 +101,7 @@ void Shader::SetVec3(const std::string& aName, const glm::vec3& aVec) const
   }
 }
 
+/******************************************************************************/
 void Shader::SetMat4(const std::string& aName, const glm::mat4& aMat) const
 {
   int loc = glGetUniformLocation(mProgramId, aName.c_str());
@@ -108,6 +116,7 @@ void Shader::SetMat4(const std::string& aName, const glm::mat4& aMat) const
   }
 }
 
+/******************************************************************************/
 void Shader::CompileShader(unsigned int& aShaderID,
                            const std::string& aShaderSource,
                            GLenum aShaderType)
@@ -131,6 +140,7 @@ void Shader::CompileShader(unsigned int& aShaderID,
   }
 }
 
+/******************************************************************************/
 void Shader::CreateProgram(unsigned int aVertexID,
                            unsigned int aFragmentID)
 {

@@ -10,12 +10,18 @@
 using UrsineRenderer::Texture;
 using UrsineRenderer::TextureData;
 
+/**
+ * A static cache of texture data; used to prevent reloading
+ * the same textures over and over again.
+ */
 std::map<std::string, TextureData> gLoadedTextureMap;
 
+/*****************************************************************************/
 Texture::Texture()
 {
 }
 
+/*****************************************************************************/
 void Texture::LoadImageFromFile(const std::string& aFilePath)
 {
   // If this image has already been loaded, don't load it again.
@@ -92,6 +98,7 @@ void Texture::LoadImageFromFile(const std::string& aFilePath)
   }
 }
 
+/*****************************************************************************/
 void Texture::Activate() const
 {
   glBindTexture(GL_TEXTURE_2D, mData.mID);
