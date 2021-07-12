@@ -7,3 +7,4 @@ A cross-platform game engine written in C++.
 * GLM (for math)
 * DevIL (for image loading)
 * Assimp (for model loading)
+* Freetype 2 (for font rendering)
