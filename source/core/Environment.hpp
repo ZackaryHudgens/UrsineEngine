@@ -6,6 +6,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 #include "Scene.hpp"
 #include "Signal.hpp"
 
@@ -134,6 +137,14 @@ namespace UrsineCore
        */
       double GetDrawDistance() const { return mDrawDistance; }
 
+      /**
+       * Returns a pointer to the font library. Used by TextComponents
+       * to load fonts with Freetype.
+       *
+       * @return A pointer to the Freetype font library.
+       */
+      FT_Library* GetFontLibrary() { return &mFontLibrary; }
+
     protected:
 
       /**
@@ -156,6 +167,8 @@ namespace UrsineCore
       void Render();
 
       GLFWwindow* mWindow;
+
+      FT_Library mFontLibrary;
 
       static std::unique_ptr<Environment> mInstance;
       Scene* mCurrentScene;

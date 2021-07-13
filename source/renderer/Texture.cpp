@@ -22,7 +22,7 @@ Texture::Texture()
 }
 
 /*****************************************************************************/
-void Texture::LoadImageFromFile(const std::string& aFilePath)
+void Texture::CreateTextureFromFile(const std::string& aFilePath)
 {
   // If this image has already been loaded, don't load it again.
   auto foundTexture = gLoadedTextureMap.find(aFilePath);
@@ -51,27 +51,8 @@ void Texture::LoadImageFromFile(const std::string& aFilePath)
           mData.mWidth = ilGetInteger(IL_IMAGE_WIDTH);
           mData.mHeight = ilGetInteger(IL_IMAGE_HEIGHT);
 
-          // Generate an OpenGL texture.
-          glGenTextures(1, &mData.mID);
-          glBindTexture(GL_TEXTURE_2D, mData.mID);
-
-          // Set texture wrapping and filtering options.
-          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-          // Copy the image data into the currently bound texture.
-          glTexImage2D(GL_TEXTURE_2D,
-                       0,
-                       GL_RGBA,
-                       mData.mWidth,
-                       mData.mHeight,
-                       0,
-                       GL_RGBA,
-                       GL_UNSIGNED_BYTE,
-                       data);
-          glGenerateMipmap(GL_TEXTURE_2D);
+          // Create the OpenGL texture.
+          CreateTextureFromData(data, mData.mWidth, mData.mHeight);
 
           // Store this data in gLoadedTextureMap to avoid loading the same
           // image data.
@@ -95,6 +76,40 @@ void Texture::LoadImageFromFile(const std::string& aFilePath)
     {
       std::cout << "Error loading image! " << ilGetError() << std::endl;
     }
+  }
+}
+
+/*****************************************************************************/
+void Texture::CreateTextureFromData(unsigned char* aData,
+                                    unsigned int aWidth,
+                                    unsigned int aHeight)
+{
+  if(aData != nullptr)
+  {
+    mData.mWidth = aWidth;
+    mData.mHeight = aHeight;
+
+    // Generate an OpenGL texture.
+    glGenTextures(1, &mData.mID);
+    glBindTexture(GL_TEXTURE_2D, mData.mID);
+
+    // Set texture wrapping and filtering options.
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // Copy the image data into the currently bound texture.
+    glTexImage2D(GL_TEXTURE_2D,
+                 0,
+                 GL_RGBA,
+                 mData.mWidth,
+                 mData.mHeight,
+                 0,
+                 GL_RGBA,
+                 GL_UNSIGNED_BYTE,
+                 aData);
+    glGenerateMipmap(GL_TEXTURE_2D);
   }
 }
 

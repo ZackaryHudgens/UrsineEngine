@@ -29,15 +29,34 @@ namespace UrsineRenderer
       Texture();
 
       /**
-       * Loads an image from a file. This uses the DevIL image loading
-       * library; most image filetypes are supported. Additionally,
-       * files loaded with this function are statically cached,
-       * so they don't have to be loaded multiple times over the course
-       * of the game.
+       * Creates an OpenGL texture using the path to an image file.
+       * This uses the DevIL image loading library; most image filetypes
+       * are supported. Additionally, files loaded with this function
+       * are cached, so they don't have to be loaded multiple times over
+       * the course of the game.
+       *
+       * Note that this class can only contain one texture at a time;
+       * calling either CreateTexture function will overwrite any
+       * current data.
        *
        * @param aFilePath The path to an image file.
        */
-      void LoadImageFromFile(const std::string& aFilePath);
+      void CreateTextureFromFile(const std::string& aFilePath);
+
+      /**
+       * Creates an OpenGL texture from preloaded image data.
+       *
+       * Note that this class can only contain one texture at a time;
+       * calling either CreateTexture function will overwrite any
+       * current data.
+       *
+       * @param aData A pointer to the image data.
+       * @param aWidth The width of the image.
+       * @param aHeight The height of the image.
+       */
+      void CreateTextureFromData(unsigned char* aData,
+                                 unsigned int aWidth,
+                                 unsigned int aHeight);
 
       /**
        * Binds the current texture in OpenGL.

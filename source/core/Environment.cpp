@@ -285,32 +285,40 @@ bool Environment::Initialize(const GraphicsOptions& aOptions)
           }
           else
           {
-            init = true;
+            // Initialize Freetype.
+            if(FT_Init_FreeType(&mFontLibrary))
+            {
+              std::cout << "Error initializing Freetype!" << std::endl;
+            }
+            else
+            {
+              init = true;
 
-            // Connect GLFW callback functions.
-            glfwSetFramebufferSizeCallback(mWindow, inputCallbacks::GLFWFramebufferSizeCallback);
-            glfwSetKeyCallback(mWindow, inputCallbacks::GLFWKeyPressedCallback);
-            glfwSetCursorPosCallback(mWindow, inputCallbacks::GLFWMouseMovedCallback);
-            glfwSetCursorEnterCallback(mWindow, inputCallbacks::GLFWMouseEnteredOrLeftCallback);
-            glfwSetMouseButtonCallback(mWindow, inputCallbacks::GLFWMouseButtonPressedCallback);
-            glfwSetScrollCallback(mWindow, inputCallbacks::GLFWMouseScrolledCallback);
+              // Connect GLFW callback functions.
+              glfwSetFramebufferSizeCallback(mWindow, inputCallbacks::GLFWFramebufferSizeCallback);
+              glfwSetKeyCallback(mWindow, inputCallbacks::GLFWKeyPressedCallback);
+              glfwSetCursorPosCallback(mWindow, inputCallbacks::GLFWMouseMovedCallback);
+              glfwSetCursorEnterCallback(mWindow, inputCallbacks::GLFWMouseEnteredOrLeftCallback);
+              glfwSetMouseButtonCallback(mWindow, inputCallbacks::GLFWMouseButtonPressedCallback);
+              glfwSetScrollCallback(mWindow, inputCallbacks::GLFWMouseScrolledCallback);
 
-            // Set the GLFW cursor input mode.
-            glfwSetInputMode(mWindow, GLFW_CURSOR, aOptions.mCursorMode);
+              // Set the GLFW cursor input mode.
+              glfwSetInputMode(mWindow, GLFW_CURSOR, aOptions.mCursorMode);
 
-            // Set the viewport to the entire window.
-            glViewport(0, 0, aOptions.mWidth, aOptions.mHeight);
+              // Set the viewport to the entire window.
+              glViewport(0, 0, aOptions.mWidth, aOptions.mHeight);
 
-            // Set various Environment values.
-            mFOV = aOptions.mFOV;
-            mDrawDistance = aOptions.mDrawDistance;
+              // Set various Environment values.
+              mFOV = aOptions.mFOV;
+              mDrawDistance = aOptions.mDrawDistance;
 
-            // Initialize various OpenGL flags.
-            glEnable(GL_DEPTH_TEST);
+              // Initialize various OpenGL flags.
+              glEnable(GL_DEPTH_TEST);
 
-            // Initialize various DevIL flags.
-            ilEnable(IL_ORIGIN_SET);
-            ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+              // Initialize various DevIL flags.
+              ilEnable(IL_ORIGIN_SET);
+              ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+            }
           }
         }
       }
