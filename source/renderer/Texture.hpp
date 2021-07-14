@@ -24,7 +24,7 @@ namespace UrsineRenderer
     public:
 
       /**
-       * Constructor.
+       * Constructor. Generates an empty OpenGL texture using glGenTextures().
        */
       Texture();
 

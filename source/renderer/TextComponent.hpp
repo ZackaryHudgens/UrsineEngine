@@ -42,14 +42,23 @@ namespace UrsineRenderer
       bool SetFont(const std::string& aFontPath);
 
       /**
+       * Sets the font size. This function fails if there is no current
+       * font specified.
+       *
+       * @param aSize The desired size of the font.
+       * @return True if successful, false otherwise.
        */
-      bool SetHeight(unsigned int aHeight);
+      bool SetSize(unsigned int aSize);
 
     private:
-      FT_Face* mCurrentFontFace;
+
+      /**
+       */
+      void GenerateTextureAtlas();
 
       MeshComponent mMesh;
 
+      std::string mCurrentFont;
       std::string mText;
   };
 }

@@ -19,6 +19,8 @@ std::map<std::string, TextureData> gLoadedTextureMap;
 /*****************************************************************************/
 Texture::Texture()
 {
+  // Generate an OpenGL texture.
+  glGenTextures(1, &mData.mID);
 }
 
 /*****************************************************************************/
@@ -89,8 +91,7 @@ void Texture::CreateTextureFromData(unsigned char* aData,
     mData.mWidth = aWidth;
     mData.mHeight = aHeight;
 
-    // Generate an OpenGL texture.
-    glGenTextures(1, &mData.mID);
+    // Bind the texture for use.
     glBindTexture(GL_TEXTURE_2D, mData.mID);
 
     // Set texture wrapping and filtering options.
