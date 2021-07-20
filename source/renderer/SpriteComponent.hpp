@@ -61,13 +61,6 @@ namespace UrsineRenderer
       void SetRenderDimensions(const TextureClip& aClip);
 
       /**
-       * Returns the MeshComponent used to render the sprite.
-       *
-       * @return A reference to the internal MeshComponent.
-       */
-      MeshComponent& GetMesh() { return mMesh; }
-
-      /**
        * Creates a new animation with the given name. This fails if an
        * animation with the given name already exists.
        *
@@ -152,6 +145,22 @@ namespace UrsineRenderer
 
           int mCurrentFrame;
       };
+
+      /**
+       */
+      void HandleShaderAdded(GraphicalComponent* aComponent,
+                             const Shader& aShader,\
+                             const std::string& aName);
+
+      /**
+       */
+      void HandleShaderRemoved(GraphicalComponent* aComponent,
+                               const std::string& aName);
+
+      /**
+       */
+      void HandleShaderChanged(GraphicalComponent* aComponent,
+                               const std::string& aName);
 
       typedef std::vector<SpriteAnimation> AnimationList;
 

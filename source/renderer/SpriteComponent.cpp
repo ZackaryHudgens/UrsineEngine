@@ -219,6 +219,37 @@ TextureClip* SpriteComponent::SpriteAnimation::GetCurrentFrameData()
   return data;
 }
 
+/*****************************************************************************/
+void SpriteComponent::HandleShaderAdded(GraphicalComponent* aComponent,
+                                        const Shader& aShader,
+                                        const std::string& aName)
+{
+  if(aComponent == this)
+  {
+    mMesh.AddShader(aName, aShader);
+  }
+}
+
+/*****************************************************************************/
+void SpriteComponent::HandleShaderRemoved(GraphicalComponent* aComponent,
+                                          const std::string& aName)
+{
+  if(aComponent == this)
+  {
+    mMesh.RemoveShader(aName);
+  }
+}
+
+/*****************************************************************************/
+void SpriteComponent::HandleShaderChanged(GraphicalComponent* aComponent,
+                                          const std::string& aName)
+{
+  if(aComponent == this)
+  {
+    mMesh.SetCurrentShader(aName);
+  }
+}
+
 /**
  * Animation signals.
  */

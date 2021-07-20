@@ -21,6 +21,7 @@ bool GraphicalComponent::AddShader(const std::string& aName,
   if(mShaderMap.find(aName) == mShaderMap.end())
   {
     mShaderMap.emplace(aName, aShader);
+    ShaderAdded.Notify(this, aShader, aName);
   }
   else
   {
@@ -46,6 +47,7 @@ bool GraphicalComponent::RemoveShader(const std::string& aName)
     }
 
     mShaderMap.erase(aName);
+    ShaderRemoved.Notify(this, aName);
   }
   else
   {
@@ -64,6 +66,7 @@ bool GraphicalComponent::SetCurrentShader(const std::string& aName)
   if(shader != mShaderMap.end())
   {
     mCurrentShader = &(shader->second);
+    ShaderChanged.Notify(this, aName);
   }
   else
   {
@@ -72,3 +75,22 @@ bool GraphicalComponent::SetCurrentShader(const std::string& aName)
 
   return success;
 }
+
+/******************************************************************************/
+const Shader* GraphicalComponent::GetShaderByName(const std::string& aName) const
+{
+  const Shader* retPtr = nullptr;
+
+  auto foundShader = mShaderMap.find(aName);
+  if(foundShader != mShaderMap.end())
+  {
+    retPtr = &(foundShader->second);
+  }
+
+  return retPtr;
+}
+
+/******************************************************************************/
+UrsineRenderer::ShaderAddedSignal UrsineRenderer::ShaderAdded;
+UrsineRenderer::ShaderRemovedSignal UrsineRenderer::ShaderRemoved;
+UrsineRenderer::ShaderChangedSignal UrsineRenderer::ShaderChanged;

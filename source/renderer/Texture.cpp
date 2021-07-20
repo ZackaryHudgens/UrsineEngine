@@ -18,6 +18,7 @@ std::map<std::string, TextureData> gLoadedTextureMap;
 
 /*****************************************************************************/
 Texture::Texture()
+  : mFormat(GL_RGBA)
 {
   // Generate an OpenGL texture.
   glGenTextures(1, &mData.mID);
@@ -103,11 +104,11 @@ void Texture::CreateTextureFromData(unsigned char* aData,
     // Copy the image data into the currently bound texture.
     glTexImage2D(GL_TEXTURE_2D,
                  0,
-                 GL_RGBA,
+                 mFormat,
                  mData.mWidth,
                  mData.mHeight,
                  0,
-                 GL_RGBA,
+                 mFormat,
                  GL_UNSIGNED_BYTE,
                  aData);
     glGenerateMipmap(GL_TEXTURE_2D);

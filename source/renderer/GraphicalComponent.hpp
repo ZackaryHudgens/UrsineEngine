@@ -6,6 +6,7 @@
 
 #include "Component.hpp"
 #include "Shader.hpp"
+#include "Signal.hpp"
 
 using UrsineCore::Component;
 
@@ -63,6 +64,15 @@ namespace UrsineRenderer
       bool SetCurrentShader(const std::string& aName);
 
       /**
+       * Returns a pointer to the Shader with the given name, or nullptr
+       * if no Shader with that name exists.
+       *
+       * @param aName The name of the Shader.
+       * @return A pointer to the Shader if it exists, or nullptr otherwise.
+       */
+      const Shader* GetShaderByName(const std::string& aName) const;
+
+      /**
        * Returns the current Shader.
        *
        * @return A pointer to the current Shader, or nullptr if no Shader
@@ -70,10 +80,19 @@ namespace UrsineRenderer
        */
       const Shader* GetCurrentShader() const { return mCurrentShader; };
 
-    private:
+    protected:
       ShaderMap mShaderMap;
       Shader* mCurrentShader;
   };
+
+  /******************************************************************************/
+  typedef UrsineCore::SignalT<GraphicalComponent*, const Shader&, const std::string&> ShaderAddedSignal;
+  typedef UrsineCore::SignalT<GraphicalComponent*, const std::string&> ShaderRemovedSignal;
+  typedef UrsineCore::SignalT<GraphicalComponent*, const std::string&> ShaderChangedSignal;
+
+  extern ShaderAddedSignal ShaderAdded;
+  extern ShaderRemovedSignal ShaderRemoved;
+  extern ShaderChangedSignal ShaderChanged;
 }
 
 #endif

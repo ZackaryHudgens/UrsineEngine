@@ -4,6 +4,8 @@
 #include <string>
 #include <map>
 
+#include <GL/glew.h>
+
 namespace UrsineRenderer
 {
   /**
@@ -64,6 +66,14 @@ namespace UrsineRenderer
       void Activate() const;
 
       /**
+       * Sets the OpenGL format for texture loading. This defaults to
+       * GL_RGBA.
+       *
+       * @param aFormat The format to set.
+       */
+      void SetLoadFormat(GLint aFormat);
+
+      /**
        * Returns the TextureData associated with this texture.
        *
        * @return A TextureData object for this texture.
@@ -71,6 +81,8 @@ namespace UrsineRenderer
       TextureData GetData() const { return mData; }
 
     private:
+      GLint mFormat;
+
       TextureData mData;
   };
 }

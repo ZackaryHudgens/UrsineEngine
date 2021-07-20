@@ -175,6 +175,7 @@ Environment::Environment()
 /*****************************************************************************/
 Environment::~Environment()
 {
+  FT_Done_FreeType(mFontLibrary);
   glfwTerminate();
 }
 
